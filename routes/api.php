@@ -18,5 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/notes', 'ApiController@getNotes')->name('api_notes');
-Route::post('/deleteNote', 'ApiController@deleteNote')->name('api_delete_note');
+Route::post('/notes', 'ApiController@getNotes')->name('apiNotes');
+Route::post('/create_note', 'ApiController@createNote')->name('createNote');
+Route::post('/delete_note', 'ApiController@deleteNote')->name('deleteNote');

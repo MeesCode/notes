@@ -13,10 +13,9 @@ class ApiController extends Controller
 
     public function getNotes(Request $request)
     {
-        $user = User::where('api_token', $request->api_token)->first();
-
+        $user = User::where('access_token', $request->access_token)->first();
         if($user == null){
-            return '{"error": "unknown token"}';
+            return '{"error": "invalid token"}';
         }
 
         $notes = Note::where('user_id', $user->id)->get();
@@ -25,9 +24,9 @@ class ApiController extends Controller
 
     public function deleteNote(Request $request)
     {
-        $user = User::where('api_token', $request->api_token)->first();
+        $user = User::where('access_token', $request->access_token)->first();
         if($user == null){
-            return '{"error": "unknown token"}';
+            return '{"error": "invalid token"}';
         }
 
         $note = Note::where('id', $request->id)->first();
@@ -41,7 +40,25 @@ class ApiController extends Controller
 
         $note->delete();
 
-        return '{"success": true, "amount": 1}';
+        $notes = Note::where('user_id', $user->id)->get();
+        return $notes->toJson();
+    }
+
+    public function createNote(Request $request)
+    {
+        $user = User::where('access_token', $request->access_token)->first();
+        if($user == null){
+            return '{"error": "invalid token"}';
+        }
+
+        $note = new Note();
+        $note->user_id = $user->id;
+        $note->title = $request->title;
+        $note->text = $request->text;
+        $note->save();
+
+        $notes = Note::where('user_id', $user->id)->get();
+        return $notes->toJson();
     }
 
 }

@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             'name' => env('MY_NAME'),
             'email' => env('MY_EMAIL'),
             'password' => Hash::make(env('MY_PASSWORD')),
-            'api_token' => Str::random(60),
+            'access_token' => Str::random(60),
         ]);
     }
 }

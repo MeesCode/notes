@@ -20,8 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/home', 'HomeController@index')->name('home');
-    Route::post('/internal/createNote', 'HomeController@createNote')->name('createNote');
-    Route::post('/internal/deleteNote', 'HomeController@deleteNote')->name('deleteNote');
+    Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+    Route::get('/api_details', 'HomeController@apiDetails')->name('apiDetails');
 });
 
