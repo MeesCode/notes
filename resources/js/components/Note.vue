@@ -1,7 +1,7 @@
 <template>
     <div class="card mt-3">
 
-        <img v-if="note.file" class="card-img-top" :src="`/api/get_image?access_token=${access_token}&id=${note.id}`">
+        <img v-if="note.file" class="card-img-top" :src="`/api/get_image?api_token=${api_token}&id=${note.id}`">
 
 
         <div class="card-body">
@@ -25,7 +25,7 @@
     export default {
         data(){
             return {
-                access_token: window.user.access_token
+                api_token: window.user.api_token
             }
         },
         props: ['note'],

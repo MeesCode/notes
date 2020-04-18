@@ -2025,7 +2025,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      access_token: window.user.access_token
+      api_token: window.user.api_token
     };
   },
   props: ['note'],
@@ -37807,10 +37807,7 @@ var render = function() {
           staticClass: "card-img-top",
           attrs: {
             src:
-              "/api/get_image?access_token=" +
-              _vm.access_token +
-              "&id=" +
-              _vm.note.id
+              "/api/get_image?api_token=" + _vm.api_token + "&id=" + _vm.note.id
           }
         })
       : _vm._e(),
@@ -51424,14 +51421,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   actions: {
     allNotesFromDatabase: function allNotesFromDatabase(context) {
-      fetch('api/notes', {
+      fetch("api/notes?api_token=".concat(window.user.api_token), {
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": JSON.stringify({
-          access_token: window.user.access_token
-        }),
-        "method": "POST",
+        "method": "GET",
         "mode": "cors"
       }).then(function (data) {
         return data.json();
@@ -51445,10 +51439,10 @@ __webpack_require__.r(__webpack_exports__);
           "Content-Type": "application/json"
         },
         "body": JSON.stringify({
-          access_token: window.user.access_token,
+          api_token: window.user.api_token,
           id: id
         }),
-        "method": "POST",
+        "method": "DELETE",
         "mode": "cors"
       }).then(function (data) {
         return data.json();
@@ -51462,7 +51456,7 @@ __webpack_require__.r(__webpack_exports__);
           "Content-Type": "application/json"
         },
         "body": JSON.stringify({
-          access_token: window.user.access_token,
+          api_token: window.user.api_token,
           note: note
         }),
         "method": "POST",

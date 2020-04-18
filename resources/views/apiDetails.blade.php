@@ -8,7 +8,7 @@
                 <div class="card-header">api token</div>
 
                 <div class="card-body">
-                    {{ Auth::user()->access_token }}
+                    {{ Auth::user()->api_token }}
                 </div>
             </div>
 

@@ -16,37 +16,20 @@ class ApiController extends Controller
 
     public function getNotes(Request $request)
     {
-        $request = json_decode($request->getContent());
-        $user = User::where('access_token', $request->access_token)->first();
-        if($user == null){
-            return '{"error": "invalid token"}';
-        }
-
+        $user = Auth::user();
         $notes = Note::where('user_id', $user->id)->get();
         return $notes->toJson();
     }
 
     public function deleteNote(Request $request)
     {
+        $user = Auth::user();
         $request = json_decode($request->getContent());
-        $user = User::where('access_token', $request->access_token)->first();
-        if($user == null){
-            return '{"error": "invalid token"}';
-        }
-
         $note = Note::where('id', $request->id)->first();
-        if($note == null){
-            return '{"error": "note does not exist"}';
-        }
-
-        if($user->id != $note->user_id){
-            return '{"error": "invalid api token"}';
-        }
 
         if(isset($note->file)){
             Storage::delete($note->file);
         }
-
         $note->delete();
 
         $notes = Note::where('user_id', $user->id)->get();
@@ -55,19 +38,8 @@ class ApiController extends Controller
 
     public function getImage(Request $request)
     {
-        $user = User::where('access_token', $request->query('access_token'))->first();
-        if($user == null){
-            return '{"error": "invalid token"}';
-        }
-
+        $user = Auth::user();
         $note = Note::where('id', $request->query('id'))->first();
-        if($note == null){
-            return '{"error": "note does not exist"}';
-        }
-
-        if($user->id != $note->user_id){
-            return '{"error": "invalid api token"}';
-        }
 
         $headers = array(
             'Content-Disposition' => 'inline',
@@ -80,10 +52,7 @@ class ApiController extends Controller
     public function createNote(Request $request)
     {
         $request = json_decode($request->getContent());
-        $user = User::where('access_token', $request->access_token)->first();
-        if($user == null){
-            return '{"error": "invalid token"}';
-        }
+        $user = Auth::user();
 
         $note = new Note();
         $note->user_id = $user->id;
@@ -105,6 +74,17 @@ class ApiController extends Controller
 
         $notes = Note::where('user_id', $user->id)->get();
         return $notes->toJson();
+    }
+
+    public function apiToken(Request $request)
+    {
+        $credentials = $request->query();
+
+        if (Auth::attempt($credentials)) {
+            $user = User::where('email', $request->input('email'))->first();
+            return json_encode(['api_token' => $user->api_token]);
+        }
+        abort(401);
     }
 
 

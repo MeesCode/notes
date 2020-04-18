@@ -15,14 +15,11 @@ export default {
 	actions: {
 
         allNotesFromDatabase(context){
-            fetch('api/notes', {
+            fetch(`api/notes?api_token=${window.user.api_token}`, {
                 "headers": {
                     "Content-Type": "application/json",
                 },
-                "body": JSON.stringify({
-                    access_token: window.user.access_token
-                }),
-                "method": "POST",
+                "method": "GET",
                 "mode": "cors" })
             .then(data => data.json())
             .then(notes => {
@@ -36,10 +33,10 @@ export default {
                     "Content-Type": "application/json",
                 },
                 "body": JSON.stringify({
-                    access_token: window.user.access_token,
+                    api_token: window.user.api_token,
                     id: id,
                 }),
-                "method": "POST",
+                "method": "DELETE",
                 "mode": "cors" })
             .then(data => data.json())
             .then(notes => {
@@ -53,7 +50,7 @@ export default {
                     "Content-Type": "application/json",
                 },
                 "body": JSON.stringify({
-                    access_token: window.user.access_token,
+                    api_token: window.user.api_token,
                     note: note,
                 }),
                 "method": "POST",

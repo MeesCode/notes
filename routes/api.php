@@ -18,7 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/notes', 'ApiController@getNotes')->name('apiNotes');
-Route::post('/create_note', 'ApiController@createNote')->name('createNote');
-Route::post('/delete_note', 'ApiController@deleteNote')->name('deleteNote');
-Route::get('/get_image', 'ApiController@getImage')->name('getImage');
+Route::get('/api_token', 'ApiController@apiToken')->name('apiToken');
+
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('/notes', 'ApiController@getNotes')->name('apiNotes');
+    Route::post('/create_note', 'ApiController@createNote')->name('createNote');
+    Route::delete('/delete_note', 'ApiController@deleteNote')->name('deleteNote');
+    Route::get('/get_image', 'ApiController@getImage')->name('getImage');
+});

@@ -13,7 +13,7 @@ class Note extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'text', 'archived', 'pinned', 'color', 'image'
+        'title', 'text', 'archived', 'pinned', 'color', 'file'
     ];
 
 }
