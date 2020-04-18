@@ -1940,7 +1940,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     getBase64: function getBase64(file) {
@@ -1968,7 +1967,7 @@ __webpack_require__.r(__webpack_exports__);
             file: encodedFile
           };
 
-          _this.$store.dispatch("addNoteToDatabase", note);
+          _this.$store.dispatch("addNote", note);
 
           _this.$refs.title.value = "";
           _this.$refs.text.value = "";
@@ -1979,7 +1978,7 @@ __webpack_require__.r(__webpack_exports__);
           title: this.$refs.title.value,
           text: this.$refs.text.value
         };
-        this.$store.dispatch("addNoteToDatabase", note);
+        this.$store.dispatch("addNote", note);
         this.$refs.title.value = "";
         this.$refs.text.value = "";
         this.$refs.text.file = [];
@@ -2031,7 +2030,10 @@ __webpack_require__.r(__webpack_exports__);
   props: ['note'],
   methods: {
     deleteNode: function deleteNode(id) {
-      this.$store.dispatch("deleteNoteFromDatabase", id);
+      this.$store.dispatch("deleteNote", id);
+    },
+    toggleArchiveNode: function toggleArchiveNode(id) {
+      this.$store.dispatch("toggleArchiveNote", id);
     }
   }
 });
@@ -2056,8 +2058,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['filter'],
   mounted: function mounted() {
-    this.$store.dispatch("allNotesFromDatabase");
+    this.$store.dispatch(this.filter);
   },
   computed: {
     getAllNotes: function getAllNotes() {
@@ -37714,9 +37717,9 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [_vm._v("Dashboard")]),
-      _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
+        _c("h5", { staticClass: "card-title" }, [_vm._v("Create a note")]),
+        _vm._v(" "),
         _c(
           "form",
           {
@@ -37746,20 +37749,15 @@ var render = function() {
             _c("div", { staticClass: "form-group" }, [
               _c("label", { attrs: { for: "text" } }, [_vm._v("Text")]),
               _vm._v(" "),
-              _c("input", {
+              _c("textarea", {
                 ref: "text",
                 staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  name: "text",
-                  id: "text",
-                  placeholder: "enter text"
-                }
+                attrs: { name: "text", id: "text", placeholder: "enter text" }
               })
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "file" } }, [_vm._v("File")]),
+              _c("label", { attrs: { for: "file" } }, [_vm._v("Image")]),
               _vm._v(" "),
               _c("input", {
                 ref: "file",
@@ -37819,7 +37817,16 @@ var render = function() {
         _vm._v(_vm._s(_vm.note.text) + "\n\n        ")
       ]),
       _c("div", { staticClass: "float-right text-right inline-block" }, [
-        _vm._m(0),
+        _c("button", { staticClass: "btn p-0", attrs: { type: "submit" } }, [
+          _c("i", {
+            staticClass: "fa fa-archive text-primary",
+            on: {
+              click: function($event) {
+                return _vm.toggleArchiveNode(_vm.note.id)
+              }
+            }
+          })
+        ]),
         _vm._v(" "),
         _c("button", { staticClass: "btn p-0", attrs: { type: "submit" } }, [
           _c("i", {
@@ -37835,16 +37842,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "btn p-0", attrs: { type: "submit" } }, [
-      _c("i", { staticClass: "fa fa-archive text-primary" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -51420,20 +51418,49 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   actions: {
-    allNotesFromDatabase: function allNotesFromDatabase(context) {
+    allNotes: function allNotes(context) {
+      context.commit('setType', 'all');
       fetch("api/notes?api_token=".concat(window.user.api_token), {
         "headers": {
           "Content-Type": "application/json"
         },
         "method": "GET",
         "mode": "cors"
-      }).then(function (data) {
-        return data.json();
-      }).then(function (notes) {
-        context.commit('notes', notes);
+      }).then(function (res) {
+        if (res.status != 200) {
+          console.log('the server did not accept our request');
+          return;
+        }
+
+        res.json().then(function (notes) {
+          context.commit('notes', notes);
+        });
+      })["catch"](function (err) {
+        return console.log('could not fetch resource', err);
       });
     },
-    deleteNoteFromDatabase: function deleteNoteFromDatabase(context, id) {
+    allArchivedNotes: function allArchivedNotes(context) {
+      context.commit('setType', 'archived');
+      fetch("api/archived_notes?api_token=".concat(window.user.api_token), {
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "GET",
+        "mode": "cors"
+      }).then(function (res) {
+        if (res.status != 200) {
+          console.log('the server did not accept our request');
+          return;
+        }
+
+        res.json().then(function (notes) {
+          context.commit('notes', notes);
+        });
+      })["catch"](function (err) {
+        return console.log('could not fetch resource', err);
+      });
+    },
+    deleteNote: function deleteNote(context, id) {
       fetch('api/delete_note', {
         "headers": {
           "Content-Type": "application/json"
@@ -51444,13 +51471,18 @@ __webpack_require__.r(__webpack_exports__);
         }),
         "method": "DELETE",
         "mode": "cors"
-      }).then(function (data) {
-        return data.json();
-      }).then(function (notes) {
-        context.commit('notes', notes);
+      }).then(function (res) {
+        if (res.status != 200) {
+          console.log('the server did not accept our request');
+          return;
+        }
+
+        res.json().then(context.commit('deleteNote', id));
+      })["catch"](function (err) {
+        return console.log('could not fetch resource', err);
       });
     },
-    addNoteToDatabase: function addNoteToDatabase(context, note) {
+    addNote: function addNote(context, note) {
       fetch('api/create_note', {
         "headers": {
           "Content-Type": "application/json"
@@ -51461,16 +51493,56 @@ __webpack_require__.r(__webpack_exports__);
         }),
         "method": "POST",
         "mode": "cors"
-      }).then(function (data) {
-        return data.json();
-      }).then(function (notes) {
-        context.commit('notes', notes);
+      }).then(function (res) {
+        if (res.status != 200) {
+          console.log('the server did not accept our request');
+          return;
+        }
+
+        res.json().then(function (note) {
+          context.commit('addNote', note);
+        });
+      })["catch"](function (err) {
+        return console.log('could not fetch resource', err);
+      });
+    },
+    toggleArchiveNote: function toggleArchiveNote(context, id) {
+      fetch('api/toggle_archive', {
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": JSON.stringify({
+          api_token: window.user.api_token,
+          id: id
+        }),
+        "method": "PATCH",
+        "mode": "cors"
+      }).then(function (res) {
+        if (res.status != 200) {
+          console.log('the server did not accept our request');
+          return;
+        }
+
+        res.json().then(function (note) {
+          return context.commit('deleteNote', note.id);
+        });
+      })["catch"](function (err) {
+        return console.log('could not fetch resource', err);
       });
     }
   },
   mutations: {
     notes: function notes(state, data) {
       return state.notes = data;
+    },
+    deleteNote: function deleteNote(state, id) {
+      var index = state.notes.findIndex(function (i) {
+        return i.id == id;
+      });
+      return state.notes.splice(index, 1);
+    },
+    addNote: function addNote(state, note) {
+      return state.notes.push(note);
     }
   }
 });

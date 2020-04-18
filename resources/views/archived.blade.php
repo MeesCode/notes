@@ -5,8 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
 
-            <create-note></create-note>
-            <note-list filter="allNotes"></note-list>
+            <note-list filter="allArchivedNotes"></note-list>
 
         </div>
     </div>

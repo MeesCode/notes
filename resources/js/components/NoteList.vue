@@ -8,8 +8,9 @@
 
 <script>
 export default {
+    props: ['filter'],
     mounted() {
-        this.$store.dispatch("allNotesFromDatabase")
+        this.$store.dispatch(this.filter)
     },
     computed: {
         getAllNotes(){

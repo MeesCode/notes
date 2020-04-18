@@ -10,7 +10,7 @@
 
             <div class="float-right text-right inline-block">
                 <button class="btn p-0" type="submit">
-                    <i class="fa fa-archive text-primary"></i>
+                    <i @click="toggleArchiveNode(note.id)" class="fa fa-archive text-primary"></i>
                 </button>						
                 <button class="btn p-0" type="submit">
                     <i @click="deleteNode(note.id)" class="fa fa-trash text-danger"></i>
@@ -31,7 +31,10 @@
         props: ['note'],
         methods: {
             deleteNode(id){
-                this.$store.dispatch("deleteNoteFromDatabase", id)
+                this.$store.dispatch("deleteNote", id)
+            },
+            toggleArchiveNode(id){
+                this.$store.dispatch("toggleArchiveNote", id)
             },
         },
     }

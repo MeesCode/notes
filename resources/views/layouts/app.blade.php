@@ -58,6 +58,10 @@
                             </li>
 
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('archived') }}">archived notes </a>
+                            </li>
+
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('apiDetails') }}">api details</a>
                             </li>
 

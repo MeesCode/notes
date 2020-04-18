@@ -20,4 +20,9 @@ class HomeController extends Controller
         return view('apiDetails');
     }
 
+    public function archived(Request $request)
+    {
+        return view('archived');
+    }
+
 }

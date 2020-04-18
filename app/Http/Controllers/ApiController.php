@@ -17,7 +17,14 @@ class ApiController extends Controller
     public function getNotes(Request $request)
     {
         $user = Auth::user();
-        $notes = Note::where('user_id', $user->id)->get();
+        $notes = Note::where(['user_id' => $user->id, 'archived' => false])->get();
+        return $notes->toJson();
+    }
+
+    public function getArchivedNotes(Request $request)
+    {
+        $user = Auth::user();
+        $notes = Note::where(['user_id' => $user->id, 'archived' => true])->get();
         return $notes->toJson();
     }
 
@@ -32,8 +39,7 @@ class ApiController extends Controller
         }
         $note->delete();
 
-        $notes = Note::where('user_id', $user->id)->get();
-        return $notes->toJson();
+        return response()->json(['success' => 'success'], 200);
     }
 
     public function getImage(Request $request)
@@ -71,9 +77,7 @@ class ApiController extends Controller
         }
 
         $note->save();
-
-        $notes = Note::where('user_id', $user->id)->get();
-        return $notes->toJson();
+        return $note->toJson();
     }
 
     public function apiToken(Request $request)
@@ -84,7 +88,18 @@ class ApiController extends Controller
             $user = User::where('email', $request->input('email'))->first();
             return json_encode(['api_token' => $user->api_token]);
         }
-        abort(401);
+        return response()->json(['error' => 'invalid'], 401);;
+    }
+
+    public function toggleArchive(Request $request)
+    {
+        $user = Auth::user();
+        $note = Note::where('id', $request->id)->first();
+
+        $note->archived = !$note->archived;
+        $note->save();
+
+        return $note->toJson();
     }
 
 

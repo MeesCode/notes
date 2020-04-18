@@ -2,9 +2,8 @@
     <div>
 
         <div class="card">
-            <div class="card-header">Dashboard</div>
-
             <div class="card-body">
+                <h5 class="card-title">Create a note</h5>
                 <form v-on:submit.prevent="createNote()" >
                     <div class="form-group">
                         <label for="title">Title</label>
@@ -13,11 +12,11 @@
 
                     <div class="form-group">
                         <label for="text">Text</label>
-                        <input type="text" ref="text" name="text" class="form-control" id="text" placeholder="enter text">
+                        <textarea ref="text" name="text" class="form-control" id="text" placeholder="enter text"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="file">File</label>
+                        <label for="file">Image</label>
                         <input type="file" ref="file" name="file" class="form-control-file" id="file">
                     </div>
 
@@ -51,7 +50,7 @@
                             text: this.$refs.text.value,
                             file: encodedFile,
                         }
-                        this.$store.dispatch("addNoteToDatabase", note)
+                        this.$store.dispatch("addNote", note)
                         this.$refs.title.value = ""
                         this.$refs.text.value = ""
                         this.$refs.text.file = []
@@ -61,7 +60,7 @@
                         title: this.$refs.title.value,
                         text: this.$refs.text.value,
                     }
-                    this.$store.dispatch("addNoteToDatabase", note)
+                    this.$store.dispatch("addNote", note)
                     this.$refs.title.value = ""
                     this.$refs.text.value = ""
                     this.$refs.text.file = []
