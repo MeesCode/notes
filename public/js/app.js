@@ -1935,16 +1935,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
+    getBase64: function getBase64(file) {
+      return new Promise(function (resolve, reject) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = function () {
+          return resolve(reader.result);
+        };
+
+        reader.onerror = function (error) {
+          return resolve(error);
+        };
+      });
+    },
     createNote: function createNote() {
-      var note = {
-        title: this.$refs.title.value,
-        text: this.$refs.text.value
-      };
-      this.$refs.title.value = "";
-      this.$refs.text.value = "";
-      this.$store.dispatch("addNoteToDatabase", note);
+      var _this = this;
+
+      if (this.$refs.file.files[0]) {
+        this.getBase64(this.$refs.file.files[0]).then(function (encodedFile) {
+          var note = {
+            title: _this.$refs.title.value,
+            text: _this.$refs.text.value,
+            file: encodedFile
+          };
+
+          _this.$store.dispatch("addNoteToDatabase", note);
+
+          _this.$refs.title.value = "";
+          _this.$refs.text.value = "";
+          _this.$refs.text.file = [];
+        });
+      } else {
+        var note = {
+          title: this.$refs.title.value,
+          text: this.$refs.text.value
+        };
+        this.$store.dispatch("addNoteToDatabase", note);
+        this.$refs.title.value = "";
+        this.$refs.text.value = "";
+        this.$refs.text.file = [];
+      }
     }
   }
 });
@@ -1982,7 +2021,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      access_token: window.user.access_token
+    };
+  },
   props: ['note'],
   methods: {
     deleteNode: function deleteNode(id) {
@@ -37713,6 +37758,16 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "file" } }, [_vm._v("File")]),
+              _vm._v(" "),
+              _c("input", {
+                ref: "file",
+                staticClass: "form-control-file",
+                attrs: { type: "file", name: "file", id: "file" }
+              })
+            ]),
+            _vm._v(" "),
             _c(
               "button",
               { staticClass: "btn btn-primary", attrs: { type: "submit" } },
@@ -37747,12 +37802,25 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card mt-3" }, [
-    _c("div", { staticClass: "card-header" }, [
-      _vm._v("\n        " + _vm._s(_vm.note.title) + "\n    ")
-    ]),
+    _vm.note.file
+      ? _c("img", {
+          staticClass: "card-img-top",
+          attrs: {
+            src:
+              "/api/get_image?access_token=" +
+              _vm.access_token +
+              "&id=" +
+              _vm.note.id
+          }
+        })
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
-      _vm._v("\n        " + _vm._s(_vm.note.text) + "\n\n        "),
+      _c("h5", { staticClass: "card-title" }, [_vm._v(_vm._s(_vm.note.title))]),
+      _vm._v(" "),
+      _c("p", { staticClass: "card-text" }, [
+        _vm._v(_vm._s(_vm.note.text) + "\n\n        ")
+      ]),
       _c("div", { staticClass: "float-right text-right inline-block" }, [
         _vm._m(0),
         _vm._v(" "),
@@ -51395,8 +51463,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         "body": JSON.stringify({
           access_token: window.user.access_token,
-          title: note.title,
-          text: note.text
+          note: note
         }),
         "method": "POST",
         "mode": "cors"

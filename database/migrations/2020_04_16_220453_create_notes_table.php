@@ -25,7 +25,7 @@ class CreateNotesTable extends Migration
             $table->boolean('archived')->default(false);
             $table->boolean('pinned')->default(false);
             $table->enum('color', $colors)->default('white');
-            $table->string('image', 256)->nullable();
+            $table->string('file')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

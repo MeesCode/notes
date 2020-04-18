@@ -54,8 +54,7 @@ export default {
                 },
                 "body": JSON.stringify({
                     access_token: window.user.access_token,
-                    title: note.title,
-                    text: note.text,
+                    note: note,
                 }),
                 "method": "POST",
                 "mode": "cors" })

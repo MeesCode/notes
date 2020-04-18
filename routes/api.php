@@ -21,3 +21,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/notes', 'ApiController@getNotes')->name('apiNotes');
 Route::post('/create_note', 'ApiController@createNote')->name('createNote');
 Route::post('/delete_note', 'ApiController@deleteNote')->name('deleteNote');
+Route::get('/get_image', 'ApiController@getImage')->name('getImage');
