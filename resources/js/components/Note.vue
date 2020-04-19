@@ -1,8 +1,7 @@
 <template>
-    <div class="card mt-3 mb-0" style="display: inline-block">
+    <div class="card mt-3 mb-0 d-inline-block" :class="`background-${note.color}`">
 
-        <img v-if="note.file" class="card-img-top" :src="`/api/get_image?api_token=${api_token}&id=${note.id}`">
-
+        <img v-if="note.file" :key="note.file" class="card-img-top" :src="imgSrc">
 
         <div class="card-body">
             <h5 class="card-title">{{ note.title }}</h5>
@@ -24,7 +23,7 @@
         <div class="modal fade" tabindex="-1" ref="modal" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <create-note edit="true" :note="note"></create-note>
+                    <create-note v-on:note-edited="closeModal" edit="true" :note="note"></create-note>
                 </div>
             </div>
         </div>
@@ -45,14 +44,17 @@
         components: {
             VueMarkdown
         },
+        computed: {
+            imgSrc: function(){
+                return `/api/get_image?api_token=${this.api_token}&id=${this.note.id}&t=${this.note.file}`
+            }
+        },
         methods: {
             editNode(id){
-                $(this.$refs.modal).modal({
-                    backdrop: true,
-                    keyboard: true,
-                    focus: true,
-                    show: true
-                })
+                $(this.$refs.modal).modal('show')
+            },
+            closeModal(){
+                $(this.$refs.modal).modal('hide')
             },
             deleteNode(id){
                 this.$store.dispatch("deleteNote", id)

@@ -1899,6 +1899,50 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ColorPicker.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ColorPicker.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      curColor: this.color,
+      colors: ['red', 'blue', 'green', 'white', 'yellow', 'pink', 'purple', 'orange', 'turqoise', 'brown', 'grey']
+    };
+  },
+  props: {
+    color: {
+      type: String,
+      "default": 'white'
+    }
+  },
+  mounted: function mounted() {
+    this.$emit('color-change', this.color);
+  },
+  methods: {
+    setColor: function setColor(c) {
+      this.curColor = c;
+      this.$emit('color-change', c);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateNote.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CreateNote.vue?vue&type=script&lang=js& ***!
@@ -1940,7 +1984,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      color: 'white'
+    };
+  },
   props: ['edit', 'note'],
   computed: {
     id: function id() {
@@ -1952,6 +2007,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    changeColor: function changeColor(c) {
+      this.color = c;
+    },
     getBase64: function getBase64(file) {
       return new Promise(function (resolve, reject) {
         var reader = new FileReader();
@@ -1969,11 +2027,14 @@ __webpack_require__.r(__webpack_exports__);
     createNote: function createNote(fun) {
       var _this = this;
 
+      this.$emit('note-edited', null);
+
       if (this.$refs.file.files[0]) {
         this.getBase64(this.$refs.file.files[0]).then(function (encodedFile) {
           var note = {
             title: _this.$refs.title.value,
             text: _this.$refs.text.value,
+            color: _this.color,
             file: encodedFile,
             id: _this.id
           };
@@ -1988,6 +2049,7 @@ __webpack_require__.r(__webpack_exports__);
         var note = {
           title: this.$refs.title.value,
           text: this.$refs.text.value,
+          color: this.color,
           id: this.id
         };
         this.$store.dispatch(fun, note);
@@ -2045,7 +2107,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2057,14 +2118,17 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     VueMarkdown: vue_markdown__WEBPACK_IMPORTED_MODULE_0___default.a
   },
+  computed: {
+    imgSrc: function imgSrc() {
+      return "/api/get_image?api_token=".concat(this.api_token, "&id=").concat(this.note.id, "&t=").concat(this.note.file);
+    }
+  },
   methods: {
     editNode: function editNode(id) {
-      $(this.$refs.modal).modal({
-        backdrop: true,
-        keyboard: true,
-        focus: true,
-        show: true
-      });
+      $(this.$refs.modal).modal('show');
+    },
+    closeModal: function closeModal() {
+      $(this.$refs.modal).modal('hide');
     },
     deleteNode: function deleteNode(id) {
       this.$store.dispatch("deleteNote", id);
@@ -60590,6 +60654,47 @@ exports.Z = [32, 160, 5760, 8192, 8193, 8194, 8195, 8196, 8197, 8198, 8199, 8200
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ColorPicker.vue?vue&type=template&id=023f0f94&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ColorPicker.vue?vue&type=template&id=023f0f94& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    _vm._l(_vm.colors, function(c) {
+      return _c("i", {
+        key: c,
+        class: [
+          { active: c == _vm.curColor },
+          "color-picker mr-1 d-inline-block background-" + c
+        ],
+        on: {
+          click: function($event) {
+            return _vm.setColor(c)
+          }
+        }
+      })
+    }),
+    0
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateNote.vue?vue&type=template&id=20dd5cb9&":
 /*!*************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CreateNote.vue?vue&type=template&id=20dd5cb9& ***!
@@ -60676,12 +60781,33 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-              [_vm._v("\n                    create note\n                ")]
-            )
-          ]
+            _vm.edit
+              ? _c("color-picker", {
+                  attrs: { color: _vm.note.color },
+                  on: { "color-change": _vm.changeColor }
+                })
+              : _c("color-picker", {
+                  attrs: { color: "white" },
+                  on: { "color-change": _vm.changeColor }
+                }),
+            _vm._v(" "),
+            !_vm.edit
+              ? _c(
+                  "button",
+                  { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+                  [
+                    _vm._v(
+                      "\n                    create note\n                "
+                    )
+                  ]
+                )
+              : _c(
+                  "button",
+                  { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+                  [_vm._v("\n                    edit note\n                ")]
+                )
+          ],
+          1
         )
       ])
     ])
@@ -60711,18 +60837,16 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "card mt-3 mb-0", staticStyle: { display: "inline-block" } },
+    {
+      staticClass: "card mt-3 mb-0 d-inline-block",
+      class: "background-" + _vm.note.color
+    },
     [
       _vm.note.file
         ? _c("img", {
+            key: _vm.note.file,
             staticClass: "card-img-top",
-            attrs: {
-              src:
-                "/api/get_image?api_token=" +
-                _vm.api_token +
-                "&id=" +
-                _vm.note.id
-            }
+            attrs: { src: _vm.imgSrc }
           })
         : _vm._e(),
       _vm._v(" "),
@@ -60799,7 +60923,12 @@ var render = function() {
             _c(
               "div",
               { staticClass: "modal-content" },
-              [_c("create-note", { attrs: { edit: "true", note: _vm.note } })],
+              [
+                _c("create-note", {
+                  attrs: { edit: "true", note: _vm.note },
+                  on: { "note-edited": _vm.closeModal }
+                })
+              ],
               1
             )
           ])
@@ -74568,6 +74697,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store(_store_index_
 Vue.component('note-list', __webpack_require__(/*! ./components/NoteList.vue */ "./resources/js/components/NoteList.vue")["default"]);
 Vue.component('note', __webpack_require__(/*! ./components/Note.vue */ "./resources/js/components/Note.vue")["default"]);
 Vue.component('create-note', __webpack_require__(/*! ./components/CreateNote.vue */ "./resources/js/components/CreateNote.vue")["default"]);
+Vue.component('color-picker', __webpack_require__(/*! ./components/ColorPicker.vue */ "./resources/js/components/ColorPicker.vue")["default"]);
 var app = new Vue({
   el: '#app',
   store: store
@@ -74622,6 +74752,75 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var userHeader = document.head.querySelector('meta[name="user"]');
 window.user = null;
 if (userHeader) if (userHeader.content) window.user = JSON.parse(userHeader.content);
+
+/***/ }),
+
+/***/ "./resources/js/components/ColorPicker.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/ColorPicker.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ColorPicker_vue_vue_type_template_id_023f0f94___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ColorPicker.vue?vue&type=template&id=023f0f94& */ "./resources/js/components/ColorPicker.vue?vue&type=template&id=023f0f94&");
+/* harmony import */ var _ColorPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ColorPicker.vue?vue&type=script&lang=js& */ "./resources/js/components/ColorPicker.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ColorPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ColorPicker_vue_vue_type_template_id_023f0f94___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ColorPicker_vue_vue_type_template_id_023f0f94___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ColorPicker.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/ColorPicker.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/ColorPicker.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ColorPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ColorPicker.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ColorPicker.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ColorPicker_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ColorPicker.vue?vue&type=template&id=023f0f94&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/ColorPicker.vue?vue&type=template&id=023f0f94& ***!
+  \********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ColorPicker_vue_vue_type_template_id_023f0f94___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ColorPicker.vue?vue&type=template&id=023f0f94& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ColorPicker.vue?vue&type=template&id=023f0f94&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ColorPicker_vue_vue_type_template_id_023f0f94___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ColorPicker_vue_vue_type_template_id_023f0f94___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

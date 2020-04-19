@@ -72,6 +72,7 @@ class ApiController extends Controller
         $note->user_id = $user->id;
         $note->title = $request->note->title;
         $note->text = $request->note->text;
+        $note->color = $request->note->color;
 
         // if a file is added
         if(isset($request->note->file)){
@@ -101,9 +102,16 @@ class ApiController extends Controller
         $note->user_id = $user->id;
         $note->title = $request->note->title;
         $note->text = $request->note->text;
+        $note->color = $request->note->color;
 
         // if a file is added
         if(isset($request->note->file)){
+
+            // delete old file
+            if(isset($note->file)){
+                Storage::delete($note->file);
+            }
+
             $image = $request->note->file;
             preg_match("/data:image\/(.*?);/",$image,$image_extension);
             $image = preg_replace('/data:image\/(.*?);base64,/','',$image); 

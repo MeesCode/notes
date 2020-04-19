@@ -1,5 +1,23 @@
 .card-columns {
-    @include media-breakpoint-down(sm) {
-      column-count: 2;
-    }
+  @include media-breakpoint-down(sm) {
+    column-count: 2;
   }
+}
+
+.color-picker{
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 1em;
+  height: 1em;
+}
+
+.color-picker.active{
+  border: 3px solid black;
+  border-radius: 50%;
+  width: 1em;
+  height: 1em;
+}
+
+.card{
+  transition: .5s ease background-color;
+}

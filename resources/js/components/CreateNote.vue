@@ -20,9 +20,15 @@
                         <input type="file" ref="file" name="file" class="form-control-file" id="file">
                     </div>
 
-                    <button type="submit" class="btn btn-primary">
+                    <color-picker v-if="edit" :color="note.color" v-on:color-change="changeColor"></color-picker>
+                    <color-picker v-else color="white" v-on:color-change="changeColor"></color-picker>
+
+                    <button v-if="!edit" type="submit" class="btn btn-primary">
                         create note
-                    </button>						
+                    </button>
+                    <button v-else type="submit" class="btn btn-primary">
+                        edit note
+                    </button>							
                 </form>
             </div>
         </div>
@@ -32,6 +38,11 @@
 
 <script>
     export default {
+        data(){
+            return {
+                color: 'white'
+            }
+        },
         props: ['edit', 'note'],
         computed: {
                 id: function() {
@@ -43,6 +54,9 @@
                 }
             },
         methods: {
+            changeColor(c) {
+                this.color = c
+            },
             getBase64(file) {
                 return new Promise((resolve, reject) => {
                     const reader = new FileReader();
@@ -52,12 +66,14 @@
                 });
             },
             createNote(fun){
+                this.$emit('note-edited', null)
                 if(this.$refs.file.files[0]){
                     this.getBase64(this.$refs.file.files[0])
                     .then(encodedFile => {
                         let note = {
                             title: this.$refs.title.value,
                             text: this.$refs.text.value,
+                            color: this.color,
                             file: encodedFile,
                             id: this.id
                         }
@@ -70,6 +86,7 @@
                     let note = {
                         title: this.$refs.title.value,
                         text: this.$refs.text.value,
+                        color: this.color,
                         id: this.id
                     }
                     this.$store.dispatch(fun, note)

@@ -14,6 +14,7 @@ const store = new Vuex.Store(
 Vue.component('note-list', require('./components/NoteList.vue').default);
 Vue.component('note', require('./components/Note.vue').default);
 Vue.component('create-note', require('./components/CreateNote.vue').default);
+Vue.component('color-picker', require('./components/ColorPicker.vue').default);
 
 const app = new Vue({
     el: '#app',
