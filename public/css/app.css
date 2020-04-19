@@ -13926,3 +13926,10 @@ a.text-dark:focus {
   }
 }
 
+@media (max-width: 767.98px) {
+  .card-columns {
+    -moz-column-count: 2;
+         column-count: 2;
+  }
+}
+

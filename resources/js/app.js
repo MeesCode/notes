@@ -11,7 +11,6 @@ const store = new Vuex.Store(
    storeData
 )
 
-
 Vue.component('note-list', require('./components/NoteList.vue').default);
 Vue.component('note', require('./components/Note.vue').default);
 Vue.component('create-note', require('./components/CreateNote.vue').default);

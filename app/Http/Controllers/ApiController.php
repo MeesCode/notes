@@ -32,7 +32,11 @@ class ApiController extends Controller
     {
         $user = Auth::user();
         $request = json_decode($request->getContent());
-        $note = Note::where('id', $request->id)->first();
+        $note = Note::where(['id' => $request->id, 'user_id' => $user->id])->first();
+
+        if(!isset($note)){
+            abort(404);
+        }
 
         if(isset($note->file)){
             Storage::delete($note->file);
@@ -45,7 +49,11 @@ class ApiController extends Controller
     public function getImage(Request $request)
     {
         $user = Auth::user();
-        $note = Note::where('id', $request->query('id'))->first();
+        $note = Note::where(['id' => $request->query('id'), 'user_id' => $user->id])->first();
+
+        if(!isset($note)){
+            abort(404);
+        }
 
         $headers = array(
             'Content-Disposition' => 'inline',
@@ -80,6 +88,35 @@ class ApiController extends Controller
         return $note->toJson();
     }
 
+    public function editNote(Request $request)
+    {
+        $request = json_decode($request->getContent());
+        $user = Auth::user();
+        $note = Note::where(['id' => $request->note->id, 'user_id' => $user->id])->first();
+
+        if(!isset($note)){
+            abort(404);
+        }
+
+        $note->user_id = $user->id;
+        $note->title = $request->note->title;
+        $note->text = $request->note->text;
+
+        // if a file is added
+        if(isset($request->note->file)){
+            $image = $request->note->file;
+            preg_match("/data:image\/(.*?);/",$image,$image_extension);
+            $image = preg_replace('/data:image\/(.*?);base64,/','',$image); 
+            $image = str_replace(' ', '+', $image);
+            $imageName = 'image_' . time() . '.' . $image_extension[1];
+            Storage::disk('local')->put($imageName,base64_decode($image));
+            $note->file = $imageName;
+        }
+
+        $note->save();
+        return $note->toJson();
+    }
+
     public function apiToken(Request $request)
     {
         $credentials = $request->query();
@@ -94,7 +131,11 @@ class ApiController extends Controller
     public function toggleArchive(Request $request)
     {
         $user = Auth::user();
-        $note = Note::where('id', $request->id)->first();
+        $note = Note::where(['id' => $request->id, 'user_id' => $user->id])->first();
+
+        if(!isset($note)){
+            abort(404);
+        }
 
         $note->archived = !$note->archived;
         $note->save();
