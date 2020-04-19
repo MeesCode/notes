@@ -6,7 +6,7 @@
 
         <div class="card-body">
             <h5 class="card-title">{{ note.title }}</h5>
-            <p class="card-text">{{ note.text }}
+            <vue-markdown>{{ note.text }}</vue-markdown>
 
             <div class="float-right text-right inline-block">
                 <button class="btn p-0" type="submit">
@@ -22,6 +22,8 @@
 </template>
 
 <script>
+    import VueMarkdown from 'vue-markdown'
+
     export default {
         data(){
             return {
@@ -29,6 +31,9 @@
             }
         },
         props: ['note'],
+        components: {
+            VueMarkdown
+        },
         methods: {
             deleteNode(id){
                 this.$store.dispatch("deleteNote", id)
