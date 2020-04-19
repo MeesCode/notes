@@ -17,14 +17,17 @@ class ApiController extends Controller
     public function getNotes(Request $request)
     {
         $user = Auth::user();
-        $notes = Note::where(['user_id' => $user->id, 'archived' => false])->orderBy('id', 'desc')->get();
-        return $notes->toJson();
-    }
-
-    public function getArchivedNotes(Request $request)
-    {
-        $user = Auth::user();
-        $notes = Note::where(['user_id' => $user->id, 'archived' => true])->orderBy('id', 'desc')->get();
+        $filter = ['user_id' => $user->id];
+        if(null !== $request->query('archived')){
+            if($request->query('archived') == "true" || $request->query('archived') == "1")
+                $filter['archived'] = true;
+            else
+                $filter['archived'] = false;
+        }
+        if(null !== $request->query('color')){
+            $filter['color'] = $request->query('color');
+        }
+        $notes = Note::where($filter)->orderBy('id', 'desc')->get();
         return $notes->toJson();
     }
 
@@ -70,7 +73,6 @@ class ApiController extends Controller
 
         $note = new Note();
         $note->user_id = $user->id;
-        $note->title = $request->note->title;
         $note->text = $request->note->text;
         $note->color = $request->note->color;
 
@@ -100,7 +102,6 @@ class ApiController extends Controller
         }
 
         $note->user_id = $user->id;
-        $note->title = $request->note->title;
         $note->text = $request->note->text;
         $note->color = $request->note->color;
         $note->archived = $request->note->archived;

@@ -6,18 +6,14 @@
                 <h5 v-if="!edit" class="card-title">Create a note</h5>
                 <h5 v-else class="card-title">Edit a note</h5>
                 <form v-on:submit.prevent="() => { if(edit){ createNote('editNote') } else { createNote('addNote') }}" >
+
                     <div class="form-group">
-                        <input v-if="!edit" type="text" ref="title" name="title" class="form-control" id="title" placeholder="enter title">
-                        <input v-else type="text" ref="title" name="title" class="form-control" id="title" :value="note.title">
+                        <textarea v-if="!edit" ref="text" name="text" class="form-control" placeholder="enter text"></textarea>
+                        <textarea v-else ref="text" name="text" class="form-control" :value="note.text"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <textarea v-if="!edit" ref="text" name="text" class="form-control" id="text" placeholder="enter text"></textarea>
-                        <textarea v-else ref="text" name="text" class="form-control" :value="note.text" id="text"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="file" ref="file" name="file" class="form-control-file" id="file">
+                        <input type="file" ref="file" name="file" class="form-control-file">
                     </div>
 
                     <color-picker v-if="edit" :color="note.color" v-on:color-change="changeColor"></color-picker>
@@ -63,7 +59,6 @@
                     this.getBase64(this.$refs.file.files[0])
                     .then(encodedFile => {
                         let note = {
-                            title: this.$refs.title.value,
                             text: this.$refs.text.value,
                             color: this.color,
                             file: encodedFile,
@@ -71,22 +66,19 @@
                             id: this.id
                         }
                         this.$store.dispatch(fun, note)
-                        this.$refs.title.value = ""
                         this.$refs.text.value = ""
-                        this.$refs.text.file = []
+                        this.$refs.file.value = ""
                     })
                 } else {
                     let note = {
-                        title: this.$refs.title.value,
                         text: this.$refs.text.value,
                         color: this.color,
                         archived: this.edit ? this.note.archived : false,
                         id: this.id
                     }
                     this.$store.dispatch(fun, note)
-                    this.$refs.title.value = ""
                     this.$refs.text.value = ""
-                    this.$refs.text.file = []
+                    this.$refs.file.value = ""
                 }
             },
         },

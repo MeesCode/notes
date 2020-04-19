@@ -10,11 +10,12 @@
 export default {
     props: ['filter'],
     mounted() {
-        this.$store.dispatch(this.filter)
+        console.log(this.filter)
+        this.$store.dispatch('getNotes', this.filter)
     },
     computed: {
         getAllNotes(){
-            return this.$store.getters.allNotes
+            return this.$store.getters.getNotes
         }
     },
 

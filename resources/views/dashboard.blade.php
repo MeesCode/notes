@@ -6,7 +6,7 @@
         <div class="col-md-8">
 
             <create-note></create-note>
-            <note-list filter="allNotes"></note-list>
+            <note-list :filter="{{json_encode(['archived' => false])}}" ></note-list>
 
         </div>
     </div>

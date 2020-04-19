@@ -1983,10 +1983,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2021,7 +2017,6 @@ __webpack_require__.r(__webpack_exports__);
       if (this.$refs.file.files[0]) {
         this.getBase64(this.$refs.file.files[0]).then(function (encodedFile) {
           var note = {
-            title: _this.$refs.title.value,
             text: _this.$refs.text.value,
             color: _this.color,
             file: encodedFile,
@@ -2031,22 +2026,19 @@ __webpack_require__.r(__webpack_exports__);
 
           _this.$store.dispatch(fun, note);
 
-          _this.$refs.title.value = "";
           _this.$refs.text.value = "";
-          _this.$refs.text.file = [];
+          _this.$refs.file.value = "";
         });
       } else {
         var note = {
-          title: this.$refs.title.value,
           text: this.$refs.text.value,
           color: this.color,
           archived: this.edit ? this.note.archived : false,
           id: this.id
         };
         this.$store.dispatch(fun, note);
-        this.$refs.title.value = "";
         this.$refs.text.value = "";
-        this.$refs.text.file = [];
+        this.$refs.file.value = "";
       }
     }
   }
@@ -2065,7 +2057,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_markdown__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-markdown */ "./node_modules/vue-markdown/dist/vue-markdown.common.js");
 /* harmony import */ var vue_markdown__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_markdown__WEBPACK_IMPORTED_MODULE_0__);
-//
 //
 //
 //
@@ -2154,11 +2145,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['filter'],
   mounted: function mounted() {
-    this.$store.dispatch(this.filter);
+    console.log(this.filter);
+    this.$store.dispatch('getNotes', this.filter);
   },
   computed: {
     getAllNotes: function getAllNotes() {
-      return this.$store.getters.allNotes;
+      return this.$store.getters.getNotes;
     }
   }
 });
@@ -60729,39 +60721,15 @@ var render = function() {
           [
             _c("div", { staticClass: "form-group" }, [
               !_vm.edit
-                ? _c("input", {
-                    ref: "title",
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      name: "title",
-                      id: "title",
-                      placeholder: "enter title"
-                    }
-                  })
-                : _c("input", {
-                    ref: "title",
-                    staticClass: "form-control",
-                    attrs: { type: "text", name: "title", id: "title" },
-                    domProps: { value: _vm.note.title }
-                  })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              !_vm.edit
                 ? _c("textarea", {
                     ref: "text",
                     staticClass: "form-control",
-                    attrs: {
-                      name: "text",
-                      id: "text",
-                      placeholder: "enter text"
-                    }
+                    attrs: { name: "text", placeholder: "enter text" }
                   })
                 : _c("textarea", {
                     ref: "text",
                     staticClass: "form-control",
-                    attrs: { name: "text", id: "text" },
+                    attrs: { name: "text" },
                     domProps: { value: _vm.note.text }
                   })
             ]),
@@ -60770,7 +60738,7 @@ var render = function() {
               _c("input", {
                 ref: "file",
                 staticClass: "form-control-file",
-                attrs: { type: "file", name: "file", id: "file" }
+                attrs: { type: "file", name: "file" }
               })
             ]),
             _vm._v(" "),
@@ -60847,10 +60815,6 @@ var render = function() {
         "div",
         { staticClass: "card-body" },
         [
-          _c("h5", { staticClass: "card-title" }, [
-            _vm._v(_vm._s(_vm.note.title))
-          ]),
-          _vm._v(" "),
           _c("vue-markdown", { attrs: { source: _vm.note.text } }),
           _vm._v(" "),
           _c("div", { staticClass: "float-right text-right inline-block" }, [
@@ -75033,38 +74997,41 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
     notes: []
   },
   getters: {
-    allNotes: function allNotes(state) {
+    getNotes: function getNotes(state) {
       return state.notes;
     }
   },
   actions: {
-    allNotes: function allNotes(context) {
-      fetch("api/notes?api_token=".concat(window.user.api_token), {
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "method": "GET",
-        "mode": "cors"
-      }).then(function (res) {
-        if (res.status != 200) {
-          console.log('the server did not accept our request');
-          return;
-        }
+    getNotes: function getNotes(context, filter) {
+      var s = '';
 
-        res.json().then(function (notes) {
-          context.commit('notes', notes);
-        });
-      })["catch"](function (err) {
-        return console.log('could not fetch resource', err);
-      });
-    },
-    allArchivedNotes: function allArchivedNotes(context) {
-      fetch("api/archived_notes?api_token=".concat(window.user.api_token), {
+      for (var _i = 0, _Object$entries = Object.entries(filter); _i < _Object$entries.length; _i++) {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+            v = _Object$entries$_i[0],
+            k = _Object$entries$_i[1];
+
+        s += "&".concat(v, "=").concat(k);
+      }
+
+      console.log("api/notes?api_token=".concat(window.user.api_token).concat(s));
+      fetch("api/notes?api_token=".concat(window.user.api_token).concat(s), {
         "headers": {
           "Content-Type": "application/json"
         },
@@ -75171,14 +75138,11 @@ __webpack_require__.r(__webpack_exports__);
       var index = state.notes.findIndex(function (i) {
         return i.id == note.id;
       });
-      console.log(note);
-      console.log(state.notes);
 
       if (note.archived != state.notes[index].archived) {
         return state.notes.splice(index, 1);
       }
 
-      console.log('not archived');
       return state.notes.splice(index, 1, note);
     }
   }

@@ -6,7 +6,7 @@ export default {
 
 	getters: {
 
-        allNotes(state){ 
+        getNotes(state){ 
             return state.notes
         },
 
@@ -14,28 +14,13 @@ export default {
 
 	actions: {
 
-        allNotes(context){
-            fetch(`api/notes?api_token=${window.user.api_token}`, {
-                "headers": {
-                    "Content-Type": "application/json",
-                },
-                "method": "GET",
-                "mode": "cors" })
-            .then(res => {
-                if(res.status != 200) {
-                    console.log('the server did not accept our request')
-                    return
-                }
-                res.json()
-                .then(notes => {
-                    context.commit('notes', notes)
-                })
-            })
-            .catch(err => console.log('could not fetch resource', err))
-        },
-
-        allArchivedNotes(context){
-            fetch(`api/archived_notes?api_token=${window.user.api_token}`, {
+        getNotes(context, filter){
+            let s = ''
+            for(let [v, k] of Object.entries(filter)){
+                s += `&${v}=${k}`
+            }
+            console.log(`api/notes?api_token=${window.user.api_token}${s}`)
+            fetch(`api/notes?api_token=${window.user.api_token}${s}`, {
                 "headers": {
                     "Content-Type": "application/json",
                 },
@@ -140,12 +125,9 @@ export default {
         },
         updateNote(state, note){
             let index = state.notes.findIndex(i => i.id == note.id)
-            console.log(note)
-            console.log(state.notes)
             if(note.archived != state.notes[index].archived){
                 return state.notes.splice(index, 1)
             }
-            console.log('not archived')
             return state.notes.splice(index, 1, note)
         },
 	}

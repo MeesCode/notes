@@ -4,7 +4,6 @@
         <img v-if="note.file" :key="note.file" class="card-img-top" :src="imgSrc">
 
         <div class="card-body">
-            <h5 class="card-title">{{ note.title }}</h5>
             <vue-markdown :source="note.text"></vue-markdown>
 
             <div class="float-right text-right inline-block">
