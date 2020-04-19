@@ -59,8 +59,10 @@
             deleteNode(id){
                 this.$store.dispatch("deleteNote", id)
             },
-            toggleArchiveNode(id){
-                this.$store.dispatch("toggleArchiveNote", id)
+            toggleArchiveNode(){
+                let n = JSON.parse(JSON.stringify(this.note))
+                n.archived = !n.archived
+                this.$store.dispatch('editNote', n)
             },
         },
     }

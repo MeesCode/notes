@@ -14037,16 +14037,15 @@ a.text-dark:focus {
   border-radius: 50%;
   width: 1em;
   height: 1em;
+  cursor: pointer;
+  transition: 0.25s ease border-width;
 }
 
 .color-picker.active {
   border: 3px solid black;
-  border-radius: 50%;
-  width: 1em;
-  height: 1em;
 }
 
 .card {
-  transition: 0.5s ease background-color;
+  transition: 0.25s ease background-color;
 }
 

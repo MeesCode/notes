@@ -21,9 +21,6 @@ export default {
             default: 'white'
         }
     },
-    mounted(){
-        this.$emit('color-change', this.color)
-    },
     methods: {
         setColor(c){
             this.curColor = c

@@ -27,5 +27,4 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('/edit_note', 'ApiController@editNote')->name('editNote');
     Route::delete('/delete_note', 'ApiController@deleteNote')->name('deleteNote');
     Route::get('/get_image', 'ApiController@getImage')->name('getImage');
-    Route::patch('/toggle_archive', 'ApiController@toggleArchive')->name('toggleArchive');
 });

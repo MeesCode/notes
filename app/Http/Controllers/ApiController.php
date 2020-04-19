@@ -17,14 +17,14 @@ class ApiController extends Controller
     public function getNotes(Request $request)
     {
         $user = Auth::user();
-        $notes = Note::where(['user_id' => $user->id, 'archived' => false])->get();
+        $notes = Note::where(['user_id' => $user->id, 'archived' => false])->orderBy('id', 'desc')->get();
         return $notes->toJson();
     }
 
     public function getArchivedNotes(Request $request)
     {
         $user = Auth::user();
-        $notes = Note::where(['user_id' => $user->id, 'archived' => true])->get();
+        $notes = Note::where(['user_id' => $user->id, 'archived' => true])->orderBy('id', 'desc')->get();
         return $notes->toJson();
     }
 
@@ -103,22 +103,28 @@ class ApiController extends Controller
         $note->title = $request->note->title;
         $note->text = $request->note->text;
         $note->color = $request->note->color;
+        $note->archived = $request->note->archived;
 
         // if a file is added
         if(isset($request->note->file)){
 
-            // delete old file
-            if(isset($note->file)){
-                Storage::delete($note->file);
-            }
-
             $image = $request->note->file;
             preg_match("/data:image\/(.*?);/",$image,$image_extension);
-            $image = preg_replace('/data:image\/(.*?);base64,/','',$image); 
-            $image = str_replace(' ', '+', $image);
-            $imageName = 'image_' . time() . '.' . $image_extension[1];
-            Storage::disk('local')->put($imageName,base64_decode($image));
-            $note->file = $imageName;
+
+            // new upload
+            if(count($image_extension) == 2){
+
+                // delete old file
+                if(isset($note->file)){
+                    Storage::delete($note->file);
+                }
+
+                $image = preg_replace('/data:image\/(.*?);base64,/','',$image); 
+                $image = str_replace(' ', '+', $image);
+                $imageName = 'image_' . time() . '.' . $image_extension[1];
+                Storage::disk('local')->put($imageName,base64_decode($image));
+                $note->file = $imageName;
+            }
         }
 
         $note->save();
@@ -135,22 +141,5 @@ class ApiController extends Controller
         }
         return response()->json(['error' => 'invalid'], 401);;
     }
-
-    public function toggleArchive(Request $request)
-    {
-        $user = Auth::user();
-        $note = Note::where(['id' => $request->id, 'user_id' => $user->id])->first();
-
-        if(!isset($note)){
-            abort(404);
-        }
-
-        $note->archived = !$note->archived;
-        $note->save();
-
-        return $note->toJson();
-    }
-
-
 
 }

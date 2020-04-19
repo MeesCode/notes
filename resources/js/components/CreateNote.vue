@@ -40,19 +40,11 @@
     export default {
         data(){
             return {
-                color: 'white'
+                color: this.edit ? this.note.color : 'white',
+                id: this.edit ? this.note.id : 0
             }
         },
         props: ['edit', 'note'],
-        computed: {
-                id: function() {
-                    if(this.edit) { 
-                        return this.note.id 
-                    } else { 
-                        return 0 
-                    }
-                }
-            },
         methods: {
             changeColor(c) {
                 this.color = c
@@ -75,6 +67,7 @@
                             text: this.$refs.text.value,
                             color: this.color,
                             file: encodedFile,
+                            archived: this.edit ? this.note.archived : false,
                             id: this.id
                         }
                         this.$store.dispatch(fun, note)
@@ -87,6 +80,7 @@
                         title: this.$refs.title.value,
                         text: this.$refs.text.value,
                         color: this.color,
+                        archived: this.edit ? this.note.archived : false,
                         id: this.id
                     }
                     this.$store.dispatch(fun, note)

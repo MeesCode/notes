@@ -1930,9 +1930,6 @@ __webpack_require__.r(__webpack_exports__);
       "default": 'white'
     }
   },
-  mounted: function mounted() {
-    this.$emit('color-change', this.color);
-  },
   methods: {
     setColor: function setColor(c) {
       this.curColor = c;
@@ -1993,19 +1990,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      color: 'white'
+      color: this.edit ? this.note.color : 'white',
+      id: this.edit ? this.note.id : 0
     };
   },
   props: ['edit', 'note'],
-  computed: {
-    id: function id() {
-      if (this.edit) {
-        return this.note.id;
-      } else {
-        return 0;
-      }
-    }
-  },
   methods: {
     changeColor: function changeColor(c) {
       this.color = c;
@@ -2036,6 +2025,7 @@ __webpack_require__.r(__webpack_exports__);
             text: _this.$refs.text.value,
             color: _this.color,
             file: encodedFile,
+            archived: _this.edit ? _this.note.archived : false,
             id: _this.id
           };
 
@@ -2050,6 +2040,7 @@ __webpack_require__.r(__webpack_exports__);
           title: this.$refs.title.value,
           text: this.$refs.text.value,
           color: this.color,
+          archived: this.edit ? this.note.archived : false,
           id: this.id
         };
         this.$store.dispatch(fun, note);
@@ -2133,8 +2124,10 @@ __webpack_require__.r(__webpack_exports__);
     deleteNode: function deleteNode(id) {
       this.$store.dispatch("deleteNote", id);
     },
-    toggleArchiveNode: function toggleArchiveNode(id) {
-      this.$store.dispatch("toggleArchiveNote", id);
+    toggleArchiveNode: function toggleArchiveNode() {
+      var n = JSON.parse(JSON.stringify(this.note));
+      n.archived = !n.archived;
+      this.$store.dispatch('editNote', n);
     }
   }
 });
@@ -75159,30 +75152,6 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return console.log('could not fetch resource', err);
       });
-    },
-    toggleArchiveNote: function toggleArchiveNote(context, id) {
-      fetch('api/toggle_archive', {
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": JSON.stringify({
-          api_token: window.user.api_token,
-          id: id
-        }),
-        "method": "PATCH",
-        "mode": "cors"
-      }).then(function (res) {
-        if (res.status != 200) {
-          console.log('the server did not accept our request');
-          return;
-        }
-
-        res.json().then(function (note) {
-          return context.commit('deleteNote', note.id);
-        });
-      })["catch"](function (err) {
-        return console.log('could not fetch resource', err);
-      });
     }
   },
   mutations: {
@@ -75196,12 +75165,20 @@ __webpack_require__.r(__webpack_exports__);
       return state.notes.splice(index, 1);
     },
     addNote: function addNote(state, note) {
-      return state.notes.push(note);
+      return state.notes.unshift(note);
     },
     updateNote: function updateNote(state, note) {
       var index = state.notes.findIndex(function (i) {
         return i.id == note.id;
       });
+      console.log(note);
+      console.log(state.notes);
+
+      if (note.archived != state.notes[index].archived) {
+        return state.notes.splice(index, 1);
+      }
+
+      console.log('not archived');
       return state.notes.splice(index, 1, note);
     }
   }
