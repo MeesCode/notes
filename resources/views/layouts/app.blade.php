@@ -19,6 +19,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <meta name="mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" type="image/png" href="favicon-192.png">
+    <link rel="shortcut icon" sizes="192x192" href="favicon-192.png">
+    <link rel="apple-touch-icon" href="favicon-192.png">
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
