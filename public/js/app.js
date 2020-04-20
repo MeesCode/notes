@@ -2018,13 +2018,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     emptyFields: function emptyFields() {
       this.$refs.text.value = "";
-      this.$refs.file.value = "";
+      this.$refs.image.value = "";
     },
     removeImage: function removeImage() {
       this.$emit('note-edited', null);
       var note = {
         id: this.note.id,
-        file: ""
+        has_image: false
       };
       this.$store.dispatch('editNote', note);
     },
@@ -2032,7 +2032,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$emit('note-edited', null);
-      var note = {};
+      var note = {
+        archived: false
+      };
 
       if (this.edit) {
         note.id = this.note.id;
@@ -2047,11 +2049,13 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         note.text = this.$refs.text.value;
         note.color = this.color;
+        note.has_image = false;
       }
 
-      if (this.$refs.file.files[0]) {
-        this.getBase64(this.$refs.file.files[0]).then(function (encodedFile) {
-          note.file = encodedFile;
+      if (this.$refs.image.files[0]) {
+        this.getBase64(this.$refs.image.files[0]).then(function (encodedFile) {
+          note.has_image = true;
+          note.image_data = encodedFile;
 
           _this.$store.dispatch(fun, note);
 
@@ -2123,7 +2127,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     imgSrc: function imgSrc() {
-      return "/api/get_image?api_token=".concat(this.api_token, "&id=").concat(this.note.id, "&t=").concat(this.note.file);
+      return "/api/get_image?api_token=".concat(this.api_token, "&id=").concat(this.note.id, "&t=").concat(this.note.image_name);
     }
   },
   methods: {
@@ -60758,14 +60762,14 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
               _c("input", {
-                ref: "file",
+                ref: "image",
                 staticClass: "form-control-file",
-                attrs: { type: "file", name: "file" }
+                attrs: { type: "file", name: "image" }
               })
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
-              _vm.edit && _vm.note.file
+              _vm.edit && _vm.note.has_image
                 ? _c(
                     "a",
                     {
@@ -60849,7 +60853,7 @@ var render = function() {
       class: "background-" + _vm.note.color
     },
     [
-      _vm.note.file
+      _vm.note.has_image
         ? _c("img", {
             key: _vm.note.file,
             staticClass: "card-img-top",

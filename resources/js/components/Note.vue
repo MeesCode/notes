@@ -1,7 +1,7 @@
 <template>
     <div class="card mt-3 mb-0 d-inline-block" :class="`background-${note.color}`">
 
-        <img v-if="note.file" :key="note.file" class="card-img-top" :src="imgSrc">
+        <img v-if="note.has_image" :key="note.file" class="card-img-top" :src="imgSrc">
 
         <div class="card-body">
             <vue-markdown :source="note.text"></vue-markdown>
@@ -45,7 +45,7 @@
         },
         computed: {
             imgSrc: function(){
-                return `/api/get_image?api_token=${this.api_token}&id=${this.note.id}&t=${this.note.file}`
+                return `/api/get_image?api_token=${this.api_token}&id=${this.note.id}&t=${this.note.image_name}`
             }
         },
         methods: {

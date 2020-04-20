@@ -13,11 +13,11 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="file" ref="file" name="file" class="form-control-file">
+                        <input type="file" ref="image" name="image" class="form-control-file">
                     </div>
 
                     <div class="form-group">
-                        <a v-if="edit && note.file" @click="removeImage" type="submit" class="text-danger">
+                        <a v-if="edit && note.has_image" @click="removeImage" type="submit" class="text-danger">
                             remove image
                         </a>
                     </div>
@@ -62,20 +62,22 @@
             },
             emptyFields(){
                 this.$refs.text.value = ""
-                this.$refs.file.value = ""
+                this.$refs.image.value = ""
             },
             removeImage(){
                 this.$emit('note-edited', null)
                 let note = {
                     id: this.note.id,
-                    file: ""
+                    has_image: false
                 }
                 this.$store.dispatch('editNote', note)
             },
             createNote(fun){
                 this.$emit('note-edited', null)
 
-                let note = {}
+                let note = {
+                    archived: false
+                }
 
                 if(this.edit){
                     note.id = this.note.id
@@ -88,12 +90,14 @@
                 } else {
                     note.text = this.$refs.text.value
                     note.color = this.color
+                    note.has_image = false
                 }
 
-                if(this.$refs.file.files[0]){
-                    this.getBase64(this.$refs.file.files[0])
+                if(this.$refs.image.files[0]){
+                    this.getBase64(this.$refs.image.files[0])
                     .then(encodedFile => {
-                        note.file = encodedFile
+                        note.has_image = true
+                        note.image_data = encodedFile
                         this.$store.dispatch(fun, note)
                         this.emptyFields()
                     })

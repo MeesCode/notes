@@ -14,15 +14,19 @@ use Illuminate\Support\Facades\Storage;
 class ApiController extends Controller
 {
 
+    private function stringToBool($s){
+        if($s == '1' || $s == 'true'){
+            return true;
+        }
+        return false;
+    }
+
     public function getNotes(Request $request)
     {
         $user = Auth::user();
         $filter = ['user_id' => $user->id];
         if(null !== $request->query('archived')){
-            if($request->query('archived') == "true" || $request->query('archived') == "1")
-                $filter['archived'] = true;
-            else
-                $filter['archived'] = false;
+            $filter['archived'] = $this->stringToBool($request->query('archived'));
         }
         if(null !== $request->query('color')){
             $filter['color'] = $request->query('color');
@@ -62,7 +66,7 @@ class ApiController extends Controller
             'Content-Disposition' => 'inline',
         );
 
-        return Storage::download($note->file, $note->file, $headers);
+        return Storage::download($note->image_name, $note->image_name, $headers);
 
     }
 
@@ -76,30 +80,23 @@ class ApiController extends Controller
         $note->text = $request->note->text;
         $note->color = $request->note->color;
 
-        $note = $this->saveImageIfAdded($request, $note);
+        if(isset($request->note->has_image) && isset($request->note->image_data)){
 
-        $note->save();
-        return $note->toJson();
-    }
+            $image = $request->note->image_data;
+            preg_match("/data:image\/(.*?);/", $image, $image_extension);
 
-    private function saveImageIfAdded($request, $note){
-        if(isset($request->note->file)){
-
-            // delete old file
-            if(isset($note->file)){
-                Storage::delete($note->file);
+            if(count($image_extension) == 2){
+                $image = preg_replace('/data:image\/(.*?);base64,/', '', $image); 
+                $image = str_replace(' ', '+', $image);
+                $imageName = 'image_' . time() . '.' . $image_extension[1];
+                Storage::disk('local')->put($imageName, base64_decode($image));
+                $note->image_name = $imageName;
+                $note->has_image = true;
             }
-
-            $image = $request->note->file;
-            preg_match("/data:image\/(.*?);/",$image,$image_extension);
-            $image = preg_replace('/data:image\/(.*?);base64,/','',$image); 
-            $image = str_replace(' ', '+', $image);
-            $imageName = 'image_' . time() . '.' . $image_extension[1];
-            Storage::disk('local')->put($imageName,base64_decode($image));
-            $note->file = $imageName;
         }
 
-        return $note;
+        $note->save();
+        return Note::find($note->id);
     }
 
     public function editNote(Request $request)
@@ -118,18 +115,38 @@ class ApiController extends Controller
             }
         }
 
-        if($request->note->file == ""){
+        if(isset($request->note->has_image) 
+        && $this->stringToBool($request->note->has_image) 
+        && isset($request->note->image_data)){
+
             // delete old file
-            if(isset($note->file)){
-                Storage::delete($note->file);
+            if($note->has_image && isset($note->image_name)){
+                Storage::delete($note->image_name);
             }
-            $note->file = null;
-        } else {
-            $note = $this->saveImageIfAdded($request, $note);
+
+            $image = $request->note->image_data;
+            preg_match("/data:image\/(.*?);/", $image, $image_extension);
+
+            if(count($image_extension) == 2){
+                $image = preg_replace('/data:image\/(.*?);base64,/', '', $image); 
+                $image = str_replace(' ', '+', $image);
+                $imageName = 'image_' . time() . '.' . $image_extension[1];
+                Storage::disk('local')->put($imageName, base64_decode($image));
+                $note->image_name = $imageName;
+                $note->has_image = true;
+            }
+        }
+
+        if(isset($request->note->has_image)
+        && $note->has_image
+        && !$this->stringToBool($request->note->has_image)){
+            Storage::delete($note->image_name);
+            $note->image_name = null;
+            $note->has_image = false;
         }
 
         $note->save();
-        return $note->toJson();
+        return Note::find($note->id);
     }
 
     public function apiToken(Request $request)
