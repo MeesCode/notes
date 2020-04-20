@@ -76,8 +76,20 @@ class ApiController extends Controller
         $note->text = $request->note->text;
         $note->color = $request->note->color;
 
-        // if a file is added
+        $note = $this->saveImageIfAdded($request, $note);
+
+        $note->save();
+        return $note->toJson();
+    }
+
+    private function saveImageIfAdded($request, $note){
         if(isset($request->note->file)){
+
+            // delete old file
+            if(isset($note->file)){
+                Storage::delete($note->file);
+            }
+
             $image = $request->note->file;
             preg_match("/data:image\/(.*?);/",$image,$image_extension);
             $image = preg_replace('/data:image\/(.*?);base64,/','',$image); 
@@ -87,8 +99,7 @@ class ApiController extends Controller
             $note->file = $imageName;
         }
 
-        $note->save();
-        return $note->toJson();
+        return $note;
     }
 
     public function editNote(Request $request)
@@ -107,21 +118,14 @@ class ApiController extends Controller
             }
         }
 
-        // if a file is added
-        if(isset($request->note->file)){
-
+        if($request->note->file == ""){
             // delete old file
             if(isset($note->file)){
                 Storage::delete($note->file);
             }
-
-            $image = $request->note->file;
-            preg_match("/data:image\/(.*?);/",$image,$image_extension);
-            $image = preg_replace('/data:image\/(.*?);base64,/','',$image); 
-            $image = str_replace(' ', '+', $image);
-            $imageName = 'image_' . time() . '.' . $image_extension[1];
-            Storage::disk('local')->put($imageName,base64_decode($image));
-            $note->file = $imageName;
+            $note->file = null;
+        } else {
+            $note = $this->saveImageIfAdded($request, $note);
         }
 
         $note->save();

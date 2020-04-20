@@ -1983,6 +1983,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2011,6 +2019,14 @@ __webpack_require__.r(__webpack_exports__);
     emptyFields: function emptyFields() {
       this.$refs.text.value = "";
       this.$refs.file.value = "";
+    },
+    removeImage: function removeImage() {
+      this.$emit('note-edited', null);
+      var note = {
+        id: this.note.id,
+        file: ""
+      };
+      this.$store.dispatch('editNote', note);
     },
     createNote: function createNote(fun) {
       var _this = this;
@@ -60748,15 +60764,40 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _vm.edit
-              ? _c("color-picker", {
-                  attrs: { color: _vm.color },
-                  on: { "color-change": _vm.changeColor }
-                })
-              : _c("color-picker", {
-                  attrs: { color: _vm.color },
-                  on: { "color-change": _vm.changeColor }
-                }),
+            _c("div", { staticClass: "form-group" }, [
+              _vm.edit && _vm.note.file
+                ? _c(
+                    "a",
+                    {
+                      staticClass: "text-danger",
+                      attrs: { type: "submit" },
+                      on: { click: _vm.removeImage }
+                    },
+                    [
+                      _vm._v(
+                        "\n                        remove image\n                    "
+                      )
+                    ]
+                  )
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "form-group" },
+              [
+                _vm.edit
+                  ? _c("color-picker", {
+                      attrs: { color: _vm.color },
+                      on: { "color-change": _vm.changeColor }
+                    })
+                  : _c("color-picker", {
+                      attrs: { color: _vm.color },
+                      on: { "color-change": _vm.changeColor }
+                    })
+              ],
+              1
+            ),
             _vm._v(" "),
             !_vm.edit
               ? _c(
@@ -60773,8 +60814,7 @@ var render = function() {
                   { staticClass: "btn btn-primary", attrs: { type: "submit" } },
                   [_vm._v("\n                    edit note\n                ")]
                 )
-          ],
-          1
+          ]
         )
       ])
     ])

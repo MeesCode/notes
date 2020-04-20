@@ -16,8 +16,16 @@
                         <input type="file" ref="file" name="file" class="form-control-file">
                     </div>
 
-                    <color-picker v-if="edit" :color="color" v-on:color-change="changeColor"></color-picker>
-                    <color-picker v-else :color="color" v-on:color-change="changeColor"></color-picker>
+                    <div class="form-group">
+                        <a v-if="edit && note.file" @click="removeImage" type="submit" class="text-danger">
+                            remove image
+                        </a>
+                    </div>
+
+                    <div class="form-group">
+                        <color-picker v-if="edit" :color="color" v-on:color-change="changeColor"></color-picker>
+                        <color-picker v-else :color="color" v-on:color-change="changeColor"></color-picker>
+                    </div>
 
                     <button v-if="!edit" type="submit" class="btn btn-primary">
                         create note
@@ -55,6 +63,14 @@
             emptyFields(){
                 this.$refs.text.value = ""
                 this.$refs.file.value = ""
+            },
+            removeImage(){
+                this.$emit('note-edited', null)
+                let note = {
+                    id: this.note.id,
+                    file: ""
+                }
+                this.$store.dispatch('editNote', note)
             },
             createNote(fun){
                 this.$emit('note-edited', null)
