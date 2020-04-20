@@ -18,6 +18,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    <meta name="mobile-web-app-capable" content="yes">
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('opensidebar').addEventListener('click', () => {

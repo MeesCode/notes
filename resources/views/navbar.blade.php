@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-md navbar-dark shadow-sm">
 
-    <a class="navbar-brand"id="opensidebar">
+    <a class="navbar-brand" id="opensidebar cursor-pointer">
         <i class="fa fa-bars"></i>
         {{ config('app.name') }}
     </a>

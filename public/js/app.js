@@ -2154,6 +2154,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2173,6 +2181,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     editNode: function editNode(id) {
       $(this.$refs.modal).modal('show');
+    },
+    imgModalOpen: function imgModalOpen(id) {
+      $(this.$refs.imgModal).modal('show');
     },
     closeModal: function closeModal() {
       $(this.$refs.modal).modal('hide');
@@ -60961,8 +60972,9 @@ var render = function() {
         _vm.note.has_image
           ? _c("img", {
               key: _vm.note.file,
-              staticClass: "card-img-top",
-              attrs: { src: _vm.imgSrc }
+              staticClass: "cursor-pointer card-img-top",
+              attrs: { src: _vm.imgSrc },
+              on: { click: _vm.imgModalOpen }
             })
           : _vm._e(),
         _vm._v(" "),
@@ -61049,7 +61061,25 @@ var render = function() {
           )
         ])
       ]
-    )
+    ),
+    _vm._v(" "),
+    _vm.note.has_image
+      ? _c(
+          "div",
+          {
+            ref: "imgModal",
+            staticClass: "modal fade",
+            attrs: { tabindex: "-1", role: "dialog" }
+          },
+          [
+            _c("div", { staticClass: "modal-dialog" }, [
+              _c("div", { staticClass: "modal-content" }, [
+                _c("img", { staticClass: "w-100", attrs: { src: _vm.imgSrc } })
+              ])
+            ])
+          ]
+        )
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -75265,7 +75295,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             v = _Object$entries$_i[0],
             k = _Object$entries$_i[1];
 
-        if (k) s += "&".concat(v, "=").concat(k);
+        console.log(k);
+
+        if (k !== null) {
+          s += "&".concat(v, "=").concat(k);
+        }
       }
 
       fetch("api/notes?api_token=".concat(window.user.api_token).concat(s), {

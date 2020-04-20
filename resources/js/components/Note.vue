@@ -2,7 +2,7 @@
     <div>
         <div ref="card" class="card mt-3 mb-0 d-inline-block bounceIn animated" :class="`d-inline-block background-${note.color}`">
 
-            <img v-if="note.has_image" :key="note.file" class="card-img-top" :src="imgSrc">
+            <img v-if="note.has_image" @click="imgModalOpen" :key="note.file" class="cursor-pointer card-img-top" :src="imgSrc">
 
             <div class="card-body">
                 <vue-markdown :source="note.text"></vue-markdown>
@@ -26,6 +26,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <create-note v-on:note-edited="closeModal" edit="true" :note="note"></create-note>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="note.has_image" class="modal fade" tabindex="-1" ref="imgModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <img class="w-100" :src="imgSrc">
                 </div>
             </div>
         </div>
@@ -54,6 +62,9 @@
         methods: {
             editNode(id){
                 $(this.$refs.modal).modal('show')
+            },
+            imgModalOpen(id){
+                $(this.$refs.imgModal).modal('show')
             },
             closeModal(){
                 $(this.$refs.modal).modal('hide')

@@ -17281,7 +17281,29 @@ a[aria-expanded=true] {
   width: 100%;
 }
 
-#opensidebar {
+.cursor-pointer {
   cursor: pointer;
+}
+
+@media (min-width: 100em) {
+  .container {
+    max-width: 1570px;
+  }
+
+  .card-columns {
+    -moz-column-count: 4;
+    column-count: 4;
+  }
+}
+
+@media (min-width: 130em) {
+  .container {
+    max-width: 2170px;
+  }
+
+  .card-columns {
+    -moz-column-count: 5;
+    column-count: 5;
+  }
 }
 

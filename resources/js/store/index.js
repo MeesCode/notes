@@ -29,7 +29,10 @@ export default {
         getNotes(context, filter){
             let s = ''
             for(let [v, k] of Object.entries(filter)){
-                if(k) s += `&${v}=${k}`
+                console.log(k)
+                if(k !== null) {
+                    s += `&${v}=${k}`
+                }
             }
             fetch(`api/notes?api_token=${window.user.api_token}${s}`, {
                 "headers": {
