@@ -12,7 +12,7 @@ export default {
     data(){
         return {
             curColor: this.color,
-            colors: ['red', 'blue', 'green', 'white', 'yellow', 'pink', 'purple', 'orange', 'turqoise', 'brown', 'grey']
+            colors: ['white', 'pink', 'red', 'orange', 'yellow', 'green', 'turqoise', 'blue', 'purple']
         }
     },
     props: {

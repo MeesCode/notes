@@ -1,20 +1,20 @@
 <template>
-    <div class="card mt-3 mb-0 d-inline-block" :class="`background-${note.color}`">
+    <div ref="card" class="card mt-3 mb-0 bounceIn animated" :class="`d-inline-block background-${note.color}`">
 
         <img v-if="note.has_image" :key="note.file" class="card-img-top" :src="imgSrc">
 
         <div class="card-body">
             <vue-markdown :source="note.text"></vue-markdown>
 
-            <div class="float-right text-right inline-block">
+            <div class="float-right text-right">
                 <button class="btn p-0" type="submit">
-                    <i data-toggle="modal" @click="editNode()" class="fa fa-edit text-primary"></i>
+                    <i @click="editNode()" title="edit this note" class="fa fa-edit text-primary note-edit-button"></i>
                 </button>	
                 <button class="btn p-0" type="submit">
-                    <i @click="toggleArchiveNode(note.id)" class="fa fa-archive text-primary"></i>
+                    <i @click="toggleArchiveNode(note.id)" title="toggle archive" class="fa fa-archive text-primary note-edit-button"></i>
                 </button>						
                 <button class="btn p-0" type="submit">
-                    <i @click="deleteNode(note.id)" class="fa fa-trash text-danger"></i>
+                    <i @click="deleteNode(note.id)" title="delete this note" class="fa fa-trash text-danger note-edit-button"></i>
                 </button>						
             </div>
         </div>
@@ -56,14 +56,20 @@
                 $(this.$refs.modal).modal('hide')
             },
             deleteNode(id){
-                this.$store.dispatch("deleteNote", id)
+                this.$refs.card.classList.add('bounceOut')
+                this.$refs.card.addEventListener('animationend', () => { 
+                    this.$store.dispatch("deleteNote", id)
+                })
             },
             toggleArchiveNode(){
                 let n = {
                     id: this.note.id,
                     archived: !this.note.archived
                 }
-                this.$store.dispatch('editNote', n)
+                this.$refs.card.classList.add('bounceOut')
+                this.$refs.card.addEventListener('animationend', () => { 
+                    this.$store.dispatch('editNote', n)
+                })
             },
         },
     }

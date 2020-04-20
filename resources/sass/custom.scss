@@ -19,4 +19,86 @@
 
 .card{
   transition: .25s ease background-color;
+  width: 100%;
+
+  border-radius: 2px;
+  border-width: 0px;
+  background-color: #373d42;
+  color: white;
+
+  box-shadow: 0px 3px 12px -3px rgba(0,0,0,0.47);
+}
+
+body{
+  background-color: #27262d;
+}
+
+.navbar{
+  box-shadow: 0px 3px 12px -3px rgba(0,0,0,0.47);
+  background-color: #3a3f44;
+}
+
+.wrapper {
+  display: flex;
+  align-items: stretch;
+}
+
+#sidebar {
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 100vh;
+}
+
+#sidebar.active {
+  margin-left: -250px;
+}
+
+@media (max-width: 768px) {
+  #sidebar {
+      margin-left: -250px;
+  }
+  #sidebar.active {
+      margin-left: 0;
+  }
+}
+
+#sidebar {
+  /* don't forget to add all the previously mentioned styles here too */
+  background: #3a3f44;
+  color: #fff;
+  transition: all 0.3s;
+
+  a{
+    color: white;
+  }
+}
+
+#sidebar ul p {
+  color: #fff;
+  padding: 10px;
+}
+
+#sidebar ul li a {
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
+  color: rgba(255, 255, 255, 0.5);
+}
+#sidebar ul li a:hover {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+  color: #fff;
+  background: #3d4145;
+}
+
+#content{
+  width: 100%;
+}
+
+#opensidebar{
+  cursor: pointer;
 }
