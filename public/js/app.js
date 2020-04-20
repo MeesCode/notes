@@ -61072,7 +61072,7 @@ var render = function() {
             attrs: { tabindex: "-1", role: "dialog" }
           },
           [
-            _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-dialog modal-dialog-centered" }, [
               _c("div", { staticClass: "modal-content" }, [
                 _c("img", { staticClass: "w-100", attrs: { src: _vm.imgSrc } })
               ])

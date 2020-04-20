@@ -17282,7 +17282,7 @@ a[aria-expanded=true] {
 }
 
 .cursor-pointer {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 @media (min-width: 100em) {

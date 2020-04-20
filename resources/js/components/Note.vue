@@ -31,7 +31,7 @@
         </div>
 
         <div v-if="note.has_image" class="modal fade" tabindex="-1" ref="imgModal" role="dialog">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <img class="w-100" :src="imgSrc">
                 </div>
