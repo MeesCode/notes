@@ -11,6 +11,7 @@ export default {
     props: ['filter'],
     mounted() {
         this.$store.dispatch('getNotes', this.filter)
+        this.$store.dispatch('setFilter', this.filter)
     },
     computed: {
         getAllNotes(){

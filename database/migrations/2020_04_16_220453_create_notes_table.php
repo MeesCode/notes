@@ -20,7 +20,7 @@ class CreateNotesTable extends Migration
 
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('text');
+            $table->varchar('text', 65535);
             $table->boolean('archived')->default(false);
             $table->boolean('pinned')->default(false);
             $table->enum('color', $colors)->default('white');

@@ -2223,6 +2223,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['filter'],
   mounted: function mounted() {
     this.$store.dispatch('getNotes', this.filter);
+    this.$store.dispatch('setFilter', this.filter);
   },
   computed: {
     getAllNotes: function getAllNotes() {
@@ -75238,14 +75239,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
-    notes: []
+    notes: [],
+    filter: {
+      archived: false,
+      color: null
+    }
   },
   getters: {
     getNotes: function getNotes(state) {
       return state.notes;
+    },
+    getFilter: function getFilter(state) {
+      return state.filter;
     }
   },
   actions: {
+    setFilter: function setFilter(context, filter) {
+      context.commit('filter', filter);
+    },
     getNotes: function getNotes(context, filter) {
       var s = '';
 
@@ -75254,7 +75265,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             v = _Object$entries$_i[0],
             k = _Object$entries$_i[1];
 
-        s += "&".concat(v, "=").concat(k);
+        if (k) s += "&".concat(v, "=").concat(k);
       }
 
       fetch("api/notes?api_token=".concat(window.user.api_token).concat(s), {
@@ -75348,6 +75359,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     }
   },
   mutations: {
+    filter: function filter(state, _filter) {
+      return state.filter = _filter;
+    },
     notes: function notes(state, data) {
       return state.notes = data;
     },
@@ -75358,7 +75372,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       return state.notes.splice(index, 1);
     },
     addNote: function addNote(state, note) {
-      return state.notes.unshift(note);
+      if (!state.filter.archived) {
+        return state.notes.unshift(note);
+      }
+
+      return state.notes;
     },
     updateNote: function updateNote(state, note) {
       var index = state.notes.findIndex(function (i) {

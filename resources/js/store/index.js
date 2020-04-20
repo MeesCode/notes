@@ -2,6 +2,10 @@ export default {
 
 	state: {
         notes: [],
+        filter: {
+            archived: false,
+            color: null
+        }
 	},
 
 	getters: {
@@ -10,14 +14,22 @@ export default {
             return state.notes
         },
 
+        getFilter(state){ 
+            return state.filter
+        },
+
 	},
 
 	actions: {
 
+        setFilter(context, filter){
+            context.commit('filter', filter)
+        },
+
         getNotes(context, filter){
             let s = ''
             for(let [v, k] of Object.entries(filter)){
-                s += `&${v}=${k}`
+                if(k) s += `&${v}=${k}`
             }
             fetch(`api/notes?api_token=${window.user.api_token}${s}`, {
                 "headers": {
@@ -112,6 +124,9 @@ export default {
 	},
 
 	mutations: {
+        filter(state,filter) {
+            return state.filter = filter
+        },
         notes(state,data) {
             return state.notes = data
         },
@@ -120,7 +135,10 @@ export default {
             return state.notes.splice(index, 1)
         },
         addNote(state, note){
-            return state.notes.unshift(note)
+            if(!state.filter.archived){
+                return state.notes.unshift(note)
+            }
+            return state.notes
         },
         updateNote(state, note){
             let index = state.notes.findIndex(i => i.id == note.id)
