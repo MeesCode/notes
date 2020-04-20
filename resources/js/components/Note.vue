@@ -1,22 +1,25 @@
 <template>
-    <div ref="card" class="card mt-3 mb-0 bounceIn animated" :class="`d-inline-block background-${note.color}`">
+    <div>
+        <div ref="card" class="card mt-3 mb-0 d-inline-block bounceIn animated" :class="`d-inline-block background-${note.color}`">
 
-        <img v-if="note.has_image" :key="note.file" class="card-img-top" :src="imgSrc">
+            <img v-if="note.has_image" :key="note.file" class="card-img-top" :src="imgSrc">
 
-        <div class="card-body">
-            <vue-markdown :source="note.text"></vue-markdown>
+            <div class="card-body">
+                <vue-markdown :source="note.text"></vue-markdown>
 
-            <div class="float-right text-right">
-                <button class="btn p-0" type="submit">
-                    <i @click="editNode()" title="edit this note" class="fa fa-edit text-primary note-edit-button"></i>
-                </button>	
-                <button class="btn p-0" type="submit">
-                    <i @click="toggleArchiveNode(note.id)" title="toggle archive" class="fa fa-archive text-primary note-edit-button"></i>
-                </button>						
-                <button class="btn p-0" type="submit">
-                    <i @click="deleteNode(note.id)" title="delete this note" class="fa fa-trash text-danger note-edit-button"></i>
-                </button>						
+                <div class="float-right text-right">
+                    <button class="btn p-0" type="submit">
+                        <i @click="editNode()" title="edit this note" class="fa fa-edit text-primary note-edit-button"></i>
+                    </button>	
+                    <button class="btn p-0" type="submit">
+                        <i @click="toggleArchiveNode(note.id)" title="toggle archive" class="fa fa-archive text-primary note-edit-button"></i>
+                    </button>						
+                    <button class="btn p-0" type="submit">
+                        <i @click="deleteNode(note.id)" title="delete this note" class="fa fa-trash text-danger note-edit-button"></i>
+                    </button>						
+                </div>
             </div>
+
         </div>
 
         <div class="modal fade" tabindex="-1" ref="modal" role="dialog">

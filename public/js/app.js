@@ -2071,9 +2071,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$emit('note-edited', null);
-      var note = {
-        archived: false
-      };
+      var note = {};
 
       if (this.edit) {
         note.id = this.note.id;
@@ -2121,6 +2119,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_markdown__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-markdown */ "./node_modules/vue-markdown/dist/vue-markdown.common.js");
 /* harmony import */ var vue_markdown__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_markdown__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
 //
 //
 //
@@ -60947,106 +60948,108 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      ref: "card",
-      staticClass: "card mt-3 mb-0 bounceIn animated",
-      class: "d-inline-block background-" + _vm.note.color
-    },
-    [
-      _vm.note.has_image
-        ? _c("img", {
-            key: _vm.note.file,
-            staticClass: "card-img-top",
-            attrs: { src: _vm.imgSrc }
-          })
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "card-body" },
-        [
-          _c("vue-markdown", { attrs: { source: _vm.note.text } }),
-          _vm._v(" "),
-          _c("div", { staticClass: "float-right text-right" }, [
-            _c(
-              "button",
-              { staticClass: "btn p-0", attrs: { type: "submit" } },
-              [
-                _c("i", {
-                  staticClass: "fa fa-edit text-primary note-edit-button",
-                  attrs: { title: "edit this note" },
-                  on: {
-                    click: function($event) {
-                      return _vm.editNode()
-                    }
-                  }
-                })
-              ]
-            ),
+  return _c("div", [
+    _c(
+      "div",
+      {
+        ref: "card",
+        staticClass: "card mt-3 mb-0 d-inline-block bounceIn animated",
+        class: "d-inline-block background-" + _vm.note.color
+      },
+      [
+        _vm.note.has_image
+          ? _c("img", {
+              key: _vm.note.file,
+              staticClass: "card-img-top",
+              attrs: { src: _vm.imgSrc }
+            })
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _c("vue-markdown", { attrs: { source: _vm.note.text } }),
             _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn p-0", attrs: { type: "submit" } },
-              [
-                _c("i", {
-                  staticClass: "fa fa-archive text-primary note-edit-button",
-                  attrs: { title: "toggle archive" },
-                  on: {
-                    click: function($event) {
-                      return _vm.toggleArchiveNode(_vm.note.id)
+            _c("div", { staticClass: "float-right text-right" }, [
+              _c(
+                "button",
+                { staticClass: "btn p-0", attrs: { type: "submit" } },
+                [
+                  _c("i", {
+                    staticClass: "fa fa-edit text-primary note-edit-button",
+                    attrs: { title: "edit this note" },
+                    on: {
+                      click: function($event) {
+                        return _vm.editNode()
+                      }
                     }
-                  }
-                })
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn p-0", attrs: { type: "submit" } },
-              [
-                _c("i", {
-                  staticClass: "fa fa-trash text-danger note-edit-button",
-                  attrs: { title: "delete this note" },
-                  on: {
-                    click: function($event) {
-                      return _vm.deleteNode(_vm.note.id)
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                { staticClass: "btn p-0", attrs: { type: "submit" } },
+                [
+                  _c("i", {
+                    staticClass: "fa fa-archive text-primary note-edit-button",
+                    attrs: { title: "toggle archive" },
+                    on: {
+                      click: function($event) {
+                        return _vm.toggleArchiveNode(_vm.note.id)
+                      }
                     }
-                  }
-                })
-              ]
-            )
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          ref: "modal",
-          staticClass: "modal fade",
-          attrs: { tabindex: "-1", role: "dialog" }
-        },
-        [
-          _c("div", { staticClass: "modal-dialog" }, [
-            _c(
-              "div",
-              { staticClass: "modal-content" },
-              [
-                _c("create-note", {
-                  attrs: { edit: "true", note: _vm.note },
-                  on: { "note-edited": _vm.closeModal }
-                })
-              ],
-              1
-            )
-          ])
-        ]
-      )
-    ]
-  )
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                { staticClass: "btn p-0", attrs: { type: "submit" } },
+                [
+                  _c("i", {
+                    staticClass: "fa fa-trash text-danger note-edit-button",
+                    attrs: { title: "delete this note" },
+                    on: {
+                      click: function($event) {
+                        return _vm.deleteNode(_vm.note.id)
+                      }
+                    }
+                  })
+                ]
+              )
+            ])
+          ],
+          1
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        ref: "modal",
+        staticClass: "modal fade",
+        attrs: { tabindex: "-1", role: "dialog" }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c(
+            "div",
+            { staticClass: "modal-content" },
+            [
+              _c("create-note", {
+                attrs: { edit: "true", note: _vm.note },
+                on: { "note-edited": _vm.closeModal }
+              })
+            ],
+            1
+          )
+        ])
+      ]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

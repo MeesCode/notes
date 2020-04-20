@@ -1,4 +1,4 @@
-<nav id="sidebar" class="active">
+<nav id="sidebar" class="">
     <ul class="list-unstyled components">
 
         <li class="nav-item">

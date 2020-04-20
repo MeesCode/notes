@@ -75,9 +75,7 @@
             createNote(fun){
                 this.$emit('note-edited', null)
 
-                let note = {
-                    archived: false
-                }
+                let note = {}
 
                 if(this.edit){
                     note.id = this.note.id

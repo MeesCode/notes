@@ -23,6 +23,7 @@
             document.getElementById('opensidebar').addEventListener('click', () => {
                 document.getElementById('sidebar').classList.toggle('active')
             })
+            document.getElementById('sidebar').classList.remove('active')
         })
     </script>
 
