@@ -1986,8 +1986,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      color: this.edit ? this.note.color : 'white',
-      id: this.edit ? this.note.id : 0
+      color: this.edit ? this.note.color : 'white'
     };
   },
   props: ['edit', 'note'],
@@ -2009,36 +2008,42 @@ __webpack_require__.r(__webpack_exports__);
         };
       });
     },
+    emptyFields: function emptyFields() {
+      this.$refs.text.value = "";
+      this.$refs.file.value = "";
+    },
     createNote: function createNote(fun) {
       var _this = this;
 
       this.$emit('note-edited', null);
+      var note = {};
+
+      if (this.edit) {
+        note.id = this.note.id;
+
+        if (this.color != this.note.color) {
+          note.color = this.color;
+        }
+
+        if (this.$refs.text.value != this.note.text) {
+          note.text = this.$refs.text.value;
+        }
+      } else {
+        note.text = this.$refs.text.value;
+        note.color = this.color;
+      }
 
       if (this.$refs.file.files[0]) {
         this.getBase64(this.$refs.file.files[0]).then(function (encodedFile) {
-          var note = {
-            text: _this.$refs.text.value,
-            color: _this.color,
-            file: encodedFile,
-            archived: _this.edit ? _this.note.archived : false,
-            id: _this.id
-          };
+          note.file = encodedFile;
 
           _this.$store.dispatch(fun, note);
 
-          _this.$refs.text.value = "";
-          _this.$refs.file.value = "";
+          _this.emptyFields();
         });
       } else {
-        var note = {
-          text: this.$refs.text.value,
-          color: this.color,
-          archived: this.edit ? this.note.archived : false,
-          id: this.id
-        };
         this.$store.dispatch(fun, note);
-        this.$refs.text.value = "";
-        this.$refs.file.value = "";
+        this.emptyFields();
       }
     }
   }
@@ -2116,8 +2121,10 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("deleteNote", id);
     },
     toggleArchiveNode: function toggleArchiveNode() {
-      var n = JSON.parse(JSON.stringify(this.note));
-      n.archived = !n.archived;
+      var n = {
+        id: this.note.id,
+        archived: !this.note.archived
+      };
       this.$store.dispatch('editNote', n);
     }
   }
@@ -2145,7 +2152,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['filter'],
   mounted: function mounted() {
-    console.log(this.filter);
     this.$store.dispatch('getNotes', this.filter);
   },
   computed: {
@@ -60744,11 +60750,11 @@ var render = function() {
             _vm._v(" "),
             _vm.edit
               ? _c("color-picker", {
-                  attrs: { color: _vm.note.color },
+                  attrs: { color: _vm.color },
                   on: { "color-change": _vm.changeColor }
                 })
               : _c("color-picker", {
-                  attrs: { color: "white" },
+                  attrs: { color: _vm.color },
                   on: { "color-change": _vm.changeColor }
                 }),
             _vm._v(" "),
@@ -75030,7 +75036,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         s += "&".concat(v, "=").concat(k);
       }
 
-      console.log("api/notes?api_token=".concat(window.user.api_token).concat(s));
       fetch("api/notes?api_token=".concat(window.user.api_token).concat(s), {
         "headers": {
           "Content-Type": "application/json"

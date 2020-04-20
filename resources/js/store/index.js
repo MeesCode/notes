@@ -19,7 +19,6 @@ export default {
             for(let [v, k] of Object.entries(filter)){
                 s += `&${v}=${k}`
             }
-            console.log(`api/notes?api_token=${window.user.api_token}${s}`)
             fetch(`api/notes?api_token=${window.user.api_token}${s}`, {
                 "headers": {
                     "Content-Type": "application/json",

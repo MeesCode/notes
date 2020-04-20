@@ -10,7 +10,6 @@
 export default {
     props: ['filter'],
     mounted() {
-        console.log(this.filter)
         this.$store.dispatch('getNotes', this.filter)
     },
     computed: {

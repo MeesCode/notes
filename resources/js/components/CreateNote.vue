@@ -16,8 +16,8 @@
                         <input type="file" ref="file" name="file" class="form-control-file">
                     </div>
 
-                    <color-picker v-if="edit" :color="note.color" v-on:color-change="changeColor"></color-picker>
-                    <color-picker v-else color="white" v-on:color-change="changeColor"></color-picker>
+                    <color-picker v-if="edit" :color="color" v-on:color-change="changeColor"></color-picker>
+                    <color-picker v-else :color="color" v-on:color-change="changeColor"></color-picker>
 
                     <button v-if="!edit" type="submit" class="btn btn-primary">
                         create note
@@ -37,7 +37,6 @@
         data(){
             return {
                 color: this.edit ? this.note.color : 'white',
-                id: this.edit ? this.note.id : 0
             }
         },
         props: ['edit', 'note'],
@@ -53,32 +52,38 @@
                     reader.onerror = error => resolve(error);
                 });
             },
+            emptyFields(){
+                this.$refs.text.value = ""
+                this.$refs.file.value = ""
+            },
             createNote(fun){
                 this.$emit('note-edited', null)
+
+                let note = {}
+
+                if(this.edit){
+                    note.id = this.note.id
+                    if(this.color != this.note.color){
+                        note.color = this.color
+                    }
+                    if(this.$refs.text.value != this.note.text){
+                        note.text = this.$refs.text.value
+                    }
+                } else {
+                    note.text = this.$refs.text.value
+                    note.color = this.color
+                }
+
                 if(this.$refs.file.files[0]){
                     this.getBase64(this.$refs.file.files[0])
                     .then(encodedFile => {
-                        let note = {
-                            text: this.$refs.text.value,
-                            color: this.color,
-                            file: encodedFile,
-                            archived: this.edit ? this.note.archived : false,
-                            id: this.id
-                        }
+                        note.file = encodedFile
                         this.$store.dispatch(fun, note)
-                        this.$refs.text.value = ""
-                        this.$refs.file.value = ""
+                        this.emptyFields()
                     })
                 } else {
-                    let note = {
-                        text: this.$refs.text.value,
-                        color: this.color,
-                        archived: this.edit ? this.note.archived : false,
-                        id: this.id
-                    }
                     this.$store.dispatch(fun, note)
-                    this.$refs.text.value = ""
-                    this.$refs.file.value = ""
+                    this.emptyFields()
                 }
             },
         },

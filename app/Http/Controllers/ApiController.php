@@ -101,31 +101,27 @@ class ApiController extends Controller
             abort(404);
         }
 
-        $note->user_id = $user->id;
-        $note->text = $request->note->text;
-        $note->color = $request->note->color;
-        $note->archived = $request->note->archived;
+        foreach(['text', 'color', 'archived'] as $p){
+            if(isset($request->note->{$p})){
+                $note[$p] = $request->note->{$p};
+            }
+        }
 
         // if a file is added
         if(isset($request->note->file)){
 
+            // delete old file
+            if(isset($note->file)){
+                Storage::delete($note->file);
+            }
+
             $image = $request->note->file;
             preg_match("/data:image\/(.*?);/",$image,$image_extension);
-
-            // new upload
-            if(count($image_extension) == 2){
-
-                // delete old file
-                if(isset($note->file)){
-                    Storage::delete($note->file);
-                }
-
-                $image = preg_replace('/data:image\/(.*?);base64,/','',$image); 
-                $image = str_replace(' ', '+', $image);
-                $imageName = 'image_' . time() . '.' . $image_extension[1];
-                Storage::disk('local')->put($imageName,base64_decode($image));
-                $note->file = $imageName;
-            }
+            $image = preg_replace('/data:image\/(.*?);base64,/','',$image); 
+            $image = str_replace(' ', '+', $image);
+            $imageName = 'image_' . time() . '.' . $image_extension[1];
+            Storage::disk('local')->put($imageName,base64_decode($image));
+            $note->file = $imageName;
         }
 
         $note->save();
