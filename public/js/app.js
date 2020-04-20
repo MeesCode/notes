@@ -60864,12 +60864,16 @@ var render = function() {
                 ? _c("textarea", {
                     ref: "text",
                     staticClass: "form-control",
-                    attrs: { name: "text", placeholder: "enter text" }
+                    attrs: {
+                      name: "text",
+                      rows: "10",
+                      placeholder: "enter text"
+                    }
                   })
                 : _c("textarea", {
                     ref: "text",
                     staticClass: "form-control",
-                    attrs: { name: "text" },
+                    attrs: { name: "text", rows: "10" },
                     domProps: { value: _vm.note.text }
                   })
             ]),

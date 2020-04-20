@@ -8,8 +8,8 @@
                 <form v-on:submit.prevent="() => { if(edit){ createNote('editNote') } else { createNote('addNote') }}" >
 
                     <div class="form-group">
-                        <textarea v-if="!edit" ref="text" name="text" class="form-control" placeholder="enter text"></textarea>
-                        <textarea v-else ref="text" name="text" class="form-control" :value="note.text"></textarea>
+                        <textarea v-if="!edit" ref="text" name="text" class="form-control" rows="10" placeholder="enter text"></textarea>
+                        <textarea v-else ref="text" name="text" class="form-control" rows="10" :value="note.text"></textarea>
                     </div>
 
                     <div class="form-group">
