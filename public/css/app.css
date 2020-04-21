@@ -17206,6 +17206,8 @@ a.text-dark:focus {
   background-color: #373d42;
   color: white;
   box-shadow: 0px 3px 12px -3px rgba(0, 0, 0, 0.47);
+  -webkit-animation-duration: 0.75s;
+          animation-duration: 0.75s;
 }
 
 body {
@@ -17285,25 +17287,40 @@ a[aria-expanded=true] {
   cursor: pointer !important;
 }
 
-@media (min-width: 100em) {
-  .container {
-    max-width: 1570px;
-  }
+.note_tile {
+  width: 165px;
+  margin: 0.5em;
+}
 
-  .card-columns {
-    -moz-column-count: 4;
-    column-count: 4;
+@media (min-width: 576px) {
+  .note_tile {
+    width: 165px;
   }
 }
 
-@media (min-width: 130em) {
-  .container {
-    max-width: 2170px;
+@media (min-width: 768px) {
+  .note_tile {
+    width: 180px;
   }
+}
 
-  .card-columns {
-    -moz-column-count: 5;
-    column-count: 5;
+@media (min-width: 992px) {
+  .note_tile {
+    width: 200px;
   }
+}
+
+@media (min-width: 1200px) {
+  .note_tile {
+    width: 250px;
+  }
+}
+
+.my-container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 

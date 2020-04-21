@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div ref="card" class="card mt-3 mb-0 d-inline-block bounceIn animated" :class="`d-inline-block background-${note.color}`">
+        <div ref="card" class="card mb-0 d-inline-block" :class="`d-inline-block background-${note.color}`">
 
-            <img v-if="note.has_image" @click="imgModalOpen" :key="note.file" class="cursor-pointer card-img-top" :src="imgSrc">
+            <img v-if="note.has_image" @load="$emit('img-loaded', null)" @click="imgModalOpen" :key="note.file" class="cursor-pointer card-img-top" :src="imgSrc">
 
             <div class="card-body">
                 <vue-markdown :source="note.text"></vue-markdown>
@@ -70,20 +70,20 @@
                 $(this.$refs.modal).modal('hide')
             },
             deleteNode(id){
-                this.$refs.card.classList.add('bounceOut')
-                this.$refs.card.addEventListener('animationend', () => { 
+                // this.$refs.card.classList.add('zoomOut')
+                // this.$refs.card.addEventListener('animationend', () => { 
                     this.$store.dispatch("deleteNote", id)
-                })
+                // })
             },
             toggleArchiveNode(){
                 let n = {
                     id: this.note.id,
                     archived: !this.note.archived
                 }
-                this.$refs.card.classList.add('bounceOut')
-                this.$refs.card.addEventListener('animationend', () => { 
+                // this.$refs.card.classList.add('zoomOut')
+                // this.$refs.card.addEventListener('animationend', () => { 
                     this.$store.dispatch('editNote', n)
-                })
+                // })
             },
         },
     }

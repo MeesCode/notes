@@ -27,6 +27,7 @@
   color: white;
 
   box-shadow: 0px 3px 12px -3px rgba(0,0,0,0.47);
+  animation-duration: .75s;
 }
 
 body{
@@ -103,24 +104,43 @@ body{
   cursor: pointer !important;
 }
 
-@media (min-width: 100em) {
-  .container {
-    max-width: 1570px;
-  }
-  .card-columns {
-      -webkit-column-count: 4;
-      -moz-column-count: 4;
-      column-count: 4;
+.note_tile{
+  width: 165px;
+  margin: .5em;
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) { 
+  .note_tile{
+    width: 165px;
   }
 }
 
-@media (min-width: 130em) {
-  .container {
-    max-width: 2170px;
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) { 
+  .note_tile{
+    width: 180px;
   }
-  .card-columns {
-      -webkit-column-count: 5;
-      -moz-column-count: 5;
-      column-count: 5;
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) { 
+  .note_tile{
+    width: 200px;
   }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { 
+  .note_tile{
+    width: 250px;
+  }
+}
+
+.my-container{
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }

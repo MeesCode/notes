@@ -29,7 +29,6 @@ export default {
         getNotes(context, filter){
             let s = ''
             for(let [v, k] of Object.entries(filter)){
-                console.log(k)
                 if(k !== null) {
                     s += `&${v}=${k}`
                 }
