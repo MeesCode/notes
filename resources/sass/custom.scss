@@ -148,3 +148,18 @@ body{
 #content{
   overflow-x: hidden;
 }
+
+.search{
+  display: contents;
+
+  input[type=search]{
+    background: #3a3f44;
+    border: 1px solid white;
+    color: white;
+    // background-color: rgba(255, 255, 255, 0.25);
+
+    ::placeholder{
+      color: rgba(255, 255, 255, 0.25);
+    }
+  }
+}

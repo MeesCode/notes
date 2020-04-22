@@ -1,17 +1,21 @@
 
 <nav class="navbar navbar-expand-md navbar-dark shadow-sm">
 
-    <a class="navbar-brand cursor-pointer" id="opensidebar">
+    <a class="navbar-brand cursor-pointer mr-auto" id="opensidebar">
         <i class="fa fa-bars mr-2"></i>
         {{ config('app.name') }}
     </a>
 
-    <ul class="navbar-nav ml-auto">
+    <span class="navbar-nav ml-auto mr-auto w-25">
         @auth
-            <li class="nav-item navbar-brand">
-                <create-from-poppup></create-from-poppup>
-            </li>
+            <search></search>
         @endauth
-    </ul>
+    </span>
+
+    <span class="navbar-nav ml-auto">
+        @auth
+            <create-from-poppup></create-from-poppup>
+        @endauth
+    </span>
 
 </nav>

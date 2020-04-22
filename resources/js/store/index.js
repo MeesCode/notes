@@ -31,13 +31,9 @@ export default {
         },
 
         getNotes(context, filter){
-            let s = ''
-            for(let [v, k] of Object.entries(filter)){
-                if(k !== null) {
-                    s += `&${v}=${k}`
-                }
-            }
-            fetch(`api/notes?api_token=${window.user.api_token}${s}`, {
+            filter.api_token = window.user.api_token
+            const params = new URLSearchParams(filter).toString();
+            fetch(`api/notes?${params}`, {
                 "headers": {
                     "Content-Type": "application/json",
                 },

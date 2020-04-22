@@ -19,6 +19,7 @@ Vue.component('note', require('./components/Note.vue').default);
 Vue.component('create-note', require('./components/CreateNote.vue').default);
 Vue.component('color-picker', require('./components/ColorPicker.vue').default);
 Vue.component('create-from-poppup', require('./components/CreateFromPoppup.vue').default);
+Vue.component('search', require('./components/Search.vue').default);
 
 const app = new Vue({
     el: '#app',

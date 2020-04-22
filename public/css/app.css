@@ -17328,3 +17328,33 @@ a[aria-expanded=true] {
   overflow-x: hidden;
 }
 
+.search {
+  display: contents;
+}
+
+.search input[type=search] {
+  background: #3a3f44;
+  border: 1px solid white;
+  color: white;
+}
+
+.search input[type=search] ::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.search input[type=search] ::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.search input[type=search] :-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.search input[type=search] ::-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.search input[type=search] ::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+

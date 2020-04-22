@@ -24,13 +24,16 @@ class ApiController extends Controller
     public function getNotes(Request $request)
     {
         $user = Auth::user();
-        $filter = ['user_id' => $user->id];
+        $filter = [['user_id', '=', $user->id]];
         if(null !== $request->query('archived')){
-            $filter['archived'] = $this->stringToBool($request->query('archived'));
+            array_push($filter, ['archived', '=', $this->stringToBool($request->query('archived'))]);
         }
         if(null !== $request->query('color')){
-            $filter['color'] = $request->query('color');
+            array_push($filter, ['color', '=', $request->query('color')]);
         }
+        if(null !== $request->query('search')){
+            array_push($filter, ['text', 'like', '%'.$request->query('search').'%']);
+        } 
         $notes = Note::where($filter)->orderBy('id', 'desc')->get();
         return $notes->toJson();
     }
