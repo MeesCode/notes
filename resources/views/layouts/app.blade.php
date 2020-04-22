@@ -23,15 +23,6 @@
     <link rel="shortcut icon" sizes="192x192" href="favicon-192.png">
     <link rel="apple-touch-icon" href="favicon-192.png">
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById('opensidebar').addEventListener('click', () => {
-                document.getElementById('sidebar').classList.toggle('active')
-            })
-            document.getElementById('sidebar').classList.remove('active')
-        })
-    </script>
-
 </head>
 <body>
     <div id="app">

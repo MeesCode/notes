@@ -13,13 +13,13 @@
 
                 <div class="float-right text-right">
                     <button class="btn p-0" type="submit">
-                        <i @click="editNode()" title="edit this note" class="fa fa-edit text-primary note-edit-button"></i>
+                        <i @click="editNode()" title="edit this note" class="fa fa-edit text-white note-edit-button"></i>
                     </button>	
                     <button class="btn p-0" type="submit">
-                        <i @click="toggleArchiveNode(note.id)" title="toggle archive" class="fa fa-archive text-primary note-edit-button"></i>
+                        <i @click="toggleArchiveNode(note.id)" title="toggle archive" class="fa fa-archive text-white note-edit-button"></i>
                     </button>						
                     <button class="btn p-0" type="submit">
-                        <i @click="deleteNode(note.id)" title="delete this note" class="fa fa-trash text-danger note-edit-button"></i>
+                        <i @click="deleteNode(note.id)" title="delete this note" class="fa fa-trash text-white note-edit-button"></i>
                     </button>						
                 </div>
             </div>

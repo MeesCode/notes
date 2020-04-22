@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import EventBus from '../event-bus';
+
 export default {
     data: () => ({
         masonryId: 'note_grid',
@@ -15,6 +17,12 @@ export default {
     mounted() {
         this.$store.dispatch('setFilter', this.filter)
         this.$store.dispatch('setNotes', this.notes)
+
+        EventBus.$on('toggle-sidebar', (payLoad) => {
+            setTimeout(() => {
+                this.redraw()
+            }, 300)
+        });
     },
     methods:{
         redraw(){

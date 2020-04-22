@@ -21,6 +21,7 @@ Vue.component('color-picker', require('./components/ColorPicker.vue').default);
 Vue.component('create-from-poppup', require('./components/CreateFromPoppup.vue').default);
 Vue.component('search', require('./components/Search.vue').default);
 Vue.component('toggles', require('./components/Toggles.vue').default);
+Vue.component('sidebar-toggle', require('./components/SidebarToggle.vue').default);
 
 const app = new Vue({
     el: '#app',

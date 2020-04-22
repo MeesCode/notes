@@ -119,20 +119,6 @@
 
                 let note = this.generateNote()
 
-                if(this.edit){
-                    note.id = this.note.id
-                    if(this.color != this.note.color){
-                        note.color = this.color
-                    }
-                    if(this.$refs.text.value != this.note.text){
-                        note.text = this.$refs.text.value
-                    }
-                } else {
-                    note.text = this.$refs.text.value
-                    note.color = this.color
-                    note.has_image = false
-                }
-
                 if(this.$refs.image.files[0]){
                     this.getBase64(this.$refs.image.files[0])
                     .then(encodedFile => {

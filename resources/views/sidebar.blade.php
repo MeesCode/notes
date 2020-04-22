@@ -13,7 +13,7 @@
 
             <li class="nav-item">
                 <a href="{{ route('dashboard') }}">
-                    <i class="mr-2 fa fa-cog"></i>
+                    <i class="mr-2 fa fa-th-large"></i>
                     notes
                 </a>
             </li>

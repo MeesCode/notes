@@ -6222,11 +6222,11 @@
 }
 
 .text-pink {
-  color: #eb84a6;
+  color: #eb6e97;
 }
 
 .background-pink {
-  background-color: #eb84a6 !important;
+  background-color: #eb6e97 !important;
 }
 
 .text-red {
@@ -6238,59 +6238,51 @@
 }
 
 .text-orange {
-  color: #f6aa5d;
+  color: #fd9c3c;
 }
 
 .background-orange {
-  background-color: #f6aa5d !important;
+  background-color: #fd9c3c !important;
 }
 
 .text-yellow {
-  color: #fff389;
+  color: #fbe836;
 }
 
 .background-yellow {
-  background-color: #fff389 !important;
+  background-color: #fbe836 !important;
 }
 
 .text-green {
-  color: #88f6a0;
+  color: #48dd68;
 }
 
 .background-green {
-  background-color: #88f6a0 !important;
+  background-color: #48dd68 !important;
 }
 
 .text-turqoise {
-  color: #75dacf;
+  color: #2ed6c3;
 }
 
 .background-turqoise {
-  background-color: #75dacf !important;
-}
-
-.text-cyan {
-  color: #7cb7e7;
-}
-
-.background-cyan {
-  background-color: #7cb7e7 !important;
+  background-color: #2ed6c3 !important;
 }
 
 .text-brown {
-  color: #b39876;
+  color: #8b7253;
 }
 
 .background-brown {
-  background-color: #b39876 !important;
+  background-color: #8b7253 !important;
 }
 
 .text-grey {
-  color: #b4b4b4;
+  color: #8f8f8f;
 }
 
 .background-grey {
-  background-color: #b4b4b4 !important;
+  background-color: #8f8f8f !important;
 }
 
 /*!
@@ -6304,19 +6296,19 @@
   --blue: #51a2e4;
   --indigo: #6574cd;
   --purple: #a778ee;
-  --pink: #eb84a6;
+  --pink: #eb6e97;
   --red: #f14b45;
-  --orange: #f6aa5d;
-  --yellow: #fff389;
-  --green: #88f6a0;
+  --orange: #fd9c3c;
+  --yellow: #fbe836;
+  --green: #48dd68;
   --teal: #20c997;
-  --cyan: #7cb7e7;
+  --cyan: #17a2b8;
   --white: #fff;
   --gray: #6c757d;
   --gray-dark: #343a40;
-  --turqoise: #75dacf;
-  --brown: #b39876;
-  --grey: #b4b4b4;
+  --turqoise: #2ed6c3;
+  --brown: #8b7253;
+  --grey: #8f8f8f;
   --primary: #007bff;
   --secondary: #6c757d;
   --success: #28a745;
@@ -17269,7 +17261,7 @@ body {
 }
 
 #sidebar ul li a {
-  padding: 1em;
+  padding: 0.5em 1em;
   font-size: 1.1em;
   display: block;
   color: rgba(255, 255, 255, 0.5);
