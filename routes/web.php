@@ -22,6 +22,5 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/notes', 'HomeController@dashboard')->name('dashboard');
     Route::get('/api_details', 'HomeController@apiDetails')->name('apiDetails');
-    Route::get('/archive', 'HomeController@archived')->name('archived');
 });
 

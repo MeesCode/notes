@@ -15,24 +15,17 @@ class HomeController extends Controller
         $filter = ['user_id' => Auth::user()->id, 'archived' => false];
         $notes = Note::where($filter)->get();
         return view('dashboard', 
-            ['filter' => $filter, 
-            'notes' => $notes]
+            [
+                'toggles' => true,
+                'filter' => $filter, 
+                'notes' => $notes
+            ]
         );
     }
 
     public function apiDetails(Request $request)
     {
-        return view('apiDetails');
-    }
-
-    public function archived(Request $request)
-    {
-        $filter = ['user_id' => Auth::user()->id, 'archived' => true];
-        $notes = Note::where($filter)->get();
-        return view('dashboard', 
-            ['filter' => $filter, 
-            'notes' => $notes]
-        );
+        return view('apiDetails', ['toggles' => false]);
     }
 
 }

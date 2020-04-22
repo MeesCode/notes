@@ -8,13 +8,17 @@
 
     <span class="navbar-nav ml-auto mr-auto w-25">
         @auth
-            <search></search>
+            @if($toggles)
+                <search></search>
+            @endif
         @endauth
     </span>
 
     <span class="navbar-nav ml-auto">
         @auth
-            <create-from-poppup></create-from-poppup>
+            @if($toggles)
+                <create-from-poppup></create-from-poppup>
+            @endif
         @endauth
     </span>
 

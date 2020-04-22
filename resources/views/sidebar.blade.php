@@ -2,19 +2,19 @@
     <ul class="list-unstyled components">
 
         @auth
-            <li class="nav-item">
-                
-                <a href="{{ route('dashboard') }}">
-                    <i class="mr-2 fa fa-sticky-note"></i>
-                    notes
-                </a>
-            </li>
+
+            @if($toggles)
+                <li class="nav-item divider mt-3">toggles</li>
+            
+                <toggles></toggles>
+            @endif
+
+            <li class="nav-item divider mt-3">pages</li>
 
             <li class="nav-item">
-                
-                <a href="{{ route('archived') }}">
-                    <i class="mr-2 fa fa-archive"></i>
-                    archive
+                <a href="{{ route('dashboard') }}">
+                    <i class="mr-2 fa fa-cog"></i>
+                    notes
                 </a>
             </li>
 
@@ -24,6 +24,8 @@
                     api details
                 </a>
             </li>
+
+            <li class="nav-item divider mt-3">actions</li>
             
             <li class="nav-item">
                 <a class="dropdown-item" href="{{ route('logout') }}"

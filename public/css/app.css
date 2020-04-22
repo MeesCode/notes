@@ -17257,14 +17257,24 @@ body {
 
 #sidebar ul p {
   color: #fff;
-  padding: 10px;
+  padding: 1em;
 }
 
 #sidebar ul li a {
-  padding: 10px;
+  padding: 1em;
   font-size: 1.1em;
   display: block;
   color: rgba(255, 255, 255, 0.5);
+}
+
+#sidebar ul li.divider {
+  padding: 1em 0;
+  padding-bottom: 0.2em;
+  font-size: 1.1em;
+  display: block;
+  color: rgba(255, 255, 255, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  margin: 0 1em;
 }
 
 #sidebar ul li a:hover {
