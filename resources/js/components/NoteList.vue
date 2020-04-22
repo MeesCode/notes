@@ -38,7 +38,7 @@ export default {
         getAllNotes(val){
             setTimeout(() => {
                 this.redraw()
-            }, 20)
+            }, 100)
         }
     }
 

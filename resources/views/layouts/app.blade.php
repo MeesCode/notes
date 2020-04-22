@@ -36,7 +36,7 @@
 
                 <div class="search-content">
                     @auth
-                        @if($toggles)
+                        @if($toggles ?? '')
                             <search></search>
                         @endif
                     @endauth

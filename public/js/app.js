@@ -2299,7 +2299,7 @@ __webpack_require__.r(__webpack_exports__);
 
       setTimeout(function () {
         _this2.redraw();
-      }, 20);
+      }, 100);
     }
   }
 });

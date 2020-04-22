@@ -3,7 +3,7 @@
 
         @auth
 
-            @if($toggles)
+            @if($toggles ?? '')
                 <li class="nav-item divider mt-3">toggles</li>
             
                 <toggles></toggles>
