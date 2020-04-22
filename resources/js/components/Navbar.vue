@@ -1,6 +1,6 @@
 <template>
     
-    <nav class="navbar navbar-expand-md navbar-dark shadow-sm">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark shadow-sm">
 
         <a class="navbar-brand cursor-pointer mr-auto" @click="toggle">
             <i class="fa fa-bars mr-2"></i>

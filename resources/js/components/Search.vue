@@ -14,7 +14,7 @@ export default {
             let filter = this.$store.getters.getFilter
             filter.text = this.$refs.text.value
             delete filter.archived
-            this.$store.dispatch('setFilter', filter)
+            this.$router.push({ path: 'notes', query: filter })
         }
     }
 }

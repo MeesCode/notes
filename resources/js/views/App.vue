@@ -8,11 +8,7 @@
             <div id="content">
 
                 <div class="search-content">
-                    <!-- @auth -->
-                        <!-- @if($toggles ?? '') -->
-                            <search></search>
-                        <!-- @endif -->
-                    <!-- @endauth -->
+                    <search></search>
                 </div>
 
                 <main class="py-4">
@@ -36,6 +32,11 @@ export default {
     mounted() {
         this.$store.dispatch('setNotes', this.notes)
         this.$store.dispatch('setUser', this.user)
+    },
+    watch: {
+        '$route.params': function (val) {
+            this.$store.dispatch('setFilter', this.$route.query)
+        },
     }
 }
 </script>

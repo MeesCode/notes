@@ -33,22 +33,9 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {
-            path: '/active',
-            name: 'active',
+            path: '/notes',
+            name: 'notes',
             component: Notes,
-            beforeEnter (to, from, next) {
-                store.dispatch('setFilter', {archived: false, color: null, text: null})
-                next()
-            }
-        },
-        {
-            path: '/archive',
-            name: 'archive',
-            component: Notes,
-            beforeEnter (to, from, next) {
-                store.dispatch('setFilter', {archived: true, color: null, text: null})
-                next()
-            }
         },
         {
             path: '/api-details',

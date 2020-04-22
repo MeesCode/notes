@@ -2267,24 +2267,14 @@ __webpack_require__.r(__webpack_exports__);
       $(this.$refs.modal).modal('hide');
     },
     deleteNode: function deleteNode(id) {
-      var _this = this;
-
-      this.$refs.card.classList.add('zoomOut');
-      this.$refs.card.addEventListener('animationend', function () {
-        _this.$store.dispatch("deleteNote", id);
-      });
+      this.$store.dispatch("deleteNote", id);
     },
     toggleArchiveNode: function toggleArchiveNode() {
-      var _this2 = this;
-
       var n = {
         id: this.note.id,
         archived: !this.note.archived
       };
-      this.$refs.card.classList.add('zoomOut');
-      this.$refs.card.addEventListener('animationend', function () {
-        _this2.$store.dispatch('editNote', n);
-      });
+      this.$store.dispatch('editNote', n);
     }
   }
 });
@@ -2315,7 +2305,10 @@ __webpack_require__.r(__webpack_exports__);
       var filter = this.$store.getters.getFilter;
       filter.text = this.$refs.text.value;
       delete filter.archived;
-      this.$store.dispatch('setFilter', filter);
+      this.$router.push({
+        path: 'notes',
+        query: filter
+      });
     }
   }
 });
@@ -2380,14 +2373,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      active: false
+      isActive: false
     };
   },
   mounted: function mounted() {
     var _this = this;
 
     _event_bus__WEBPACK_IMPORTED_MODULE_0__["default"].$on('toggle-sidebar', function (payLoad) {
-      _this.active = !_this.active;
+      _this.isActive = !_this.isActive;
     });
   },
   methods: {
@@ -2447,15 +2440,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['notes', 'user'],
   mounted: function mounted() {
     this.$store.dispatch('setNotes', this.notes);
     this.$store.dispatch('setUser', this.user);
+  },
+  watch: {
+    '$route.params': function $routeParams(val) {
+      this.$store.dispatch('setFilter', this.$route.query);
+    }
   }
 });
 
@@ -63986,7 +63980,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "nav",
-    { staticClass: "navbar navbar-expand-md navbar-dark shadow-sm" },
+    { staticClass: "navbar fixed-top navbar-expand-md navbar-dark shadow-sm" },
     [
       _c(
         "a",
@@ -64043,7 +64037,7 @@ var render = function() {
       "div",
       {
         ref: "card",
-        staticClass: "card mb-0 d-inline-block animated zoomIn",
+        staticClass: "card mb-0 d-inline-block",
         class: "d-inline-block background-" + _vm.note.color,
         attrs: { "data-archived": _vm.note.archived }
       },
@@ -64250,7 +64244,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "nav",
-    { class: { active: _vm.active }, attrs: { id: "sidebar" } },
+    { class: { active: _vm.isActive }, attrs: { id: "sidebar" } },
     [
       _c("ul", { staticClass: "list-unstyled components" }, [
         _c("li", { staticClass: "nav-item divider mt-3" }, [_vm._v("toggles")]),
@@ -64259,10 +64253,21 @@ var render = function() {
           "li",
           { staticClass: "nav-item cursor-pointer" },
           [
-            _c("router-link", { attrs: { to: { name: "active" } } }, [
-              _c("i", { staticClass: "mr-2 fa fa-sticky-note" }),
-              _vm._v("\n                    active\n                ")
-            ])
+            _c(
+              "router-link",
+              {
+                attrs: {
+                  to: {
+                    name: "notes",
+                    query: { archived: false, color: null, text: null }
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "mr-2 fa fa-sticky-note" }),
+                _vm._v("\n                    active\n                ")
+              ]
+            )
           ],
           1
         ),
@@ -64271,10 +64276,21 @@ var render = function() {
           "li",
           { staticClass: "nav-item cursor-pointer" },
           [
-            _c("router-link", { attrs: { to: { name: "archive" } } }, [
-              _c("i", { staticClass: "mr-2 fa fa-archive" }),
-              _vm._v("\n                    archive\n                ")
-            ])
+            _c(
+              "router-link",
+              {
+                attrs: {
+                  to: {
+                    name: "notes",
+                    query: { archived: true, color: null, text: null }
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "mr-2 fa fa-archive" }),
+                _vm._v("\n                    archive\n                ")
+              ]
+            )
           ],
           1
         ),
@@ -81268,29 +81284,9 @@ Vue.component('search', __webpack_require__(/*! ./components/Search.vue */ "./re
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]({
   mode: 'history',
   routes: [{
-    path: '/active',
-    name: 'active',
-    component: _views_Notes__WEBPACK_IMPORTED_MODULE_5__["default"],
-    beforeEnter: function beforeEnter(to, from, next) {
-      store.dispatch('setFilter', {
-        archived: false,
-        color: null,
-        text: null
-      });
-      next();
-    }
-  }, {
-    path: '/archive',
-    name: 'archive',
-    component: _views_Notes__WEBPACK_IMPORTED_MODULE_5__["default"],
-    beforeEnter: function beforeEnter(to, from, next) {
-      store.dispatch('setFilter', {
-        archived: true,
-        color: null,
-        text: null
-      });
-      next();
-    }
+    path: '/notes',
+    name: 'notes',
+    component: _views_Notes__WEBPACK_IMPORTED_MODULE_5__["default"]
   }, {
     path: '/api-details',
     name: 'api details',

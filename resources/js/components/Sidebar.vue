@@ -1,18 +1,18 @@
 <template>
-    <nav id="sidebar" v-bind:class="{'active': active}">
+    <nav id="sidebar" v-bind:class="{'active': isActive}">
     <ul class="list-unstyled components">
 
             <li class="nav-item divider mt-3">toggles</li>
         
             <li class="nav-item cursor-pointer">
-                <router-link :to="{ name: 'active' }">
+                <router-link :to="{ name: 'notes', query: {archived: false, color: null, text: null} }">
                     <i class="mr-2 fa fa-sticky-note"></i>
                     active
                 </router-link>
             </li>
 
             <li class="nav-item cursor-pointer">
-                <router-link :to="{ name: 'archive' }">
+                <router-link :to="{ name: 'notes', query: {archived: true, color: null, text: null} }">
                     <i class="mr-2 fa fa-archive"></i>
                     archive
                 </router-link>
@@ -48,12 +48,12 @@ import EventBus from '../event-bus';
 export default {
     data(){
         return{
-            active: false
+            isActive: false
         }
     },
     mounted(){
         EventBus.$on('toggle-sidebar', (payLoad) => {
-            this.active = !this.active
+            this.isActive = !this.isActive
         });
     },
     methods: {

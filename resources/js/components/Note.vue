@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div ref="card" :data-archived="note.archived" class="card mb-0 d-inline-block animated zoomIn" :class="`d-inline-block background-${note.color}`">
+        <div ref="card" :data-archived="note.archived" class="card mb-0 d-inline-block" :class="`d-inline-block background-${note.color}`">
 
             <img v-if="note.has_image" @load="$emit('img-loaded', null)" @click="imgModalOpen" :key="note.file" class="cursor-pointer card-img-top" :src="imgSrc">
 
@@ -69,20 +69,14 @@
                 $(this.$refs.modal).modal('hide')
             },
             deleteNode(id){
-                this.$refs.card.classList.add('zoomOut')
-                this.$refs.card.addEventListener('animationend', () => { 
-                    this.$store.dispatch("deleteNote", id)
-                })
+                this.$store.dispatch("deleteNote", id)
             },
             toggleArchiveNode(){
                 let n = {
                     id: this.note.id,
                     archived: !this.note.archived
                 }
-                this.$refs.card.classList.add('zoomOut')
-                this.$refs.card.addEventListener('animationend', () => { 
-                    this.$store.dispatch('editNote', n)
-                })
+                this.$store.dispatch('editNote', n)
             },
         },
     }

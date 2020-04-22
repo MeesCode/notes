@@ -25,6 +25,5 @@
     <div id="app">
         <app :notes="{{json_encode($notes)}}" :user="{{json_encode(Auth::user())}}"></app>
     </div>
-
 </body>
 </html>
