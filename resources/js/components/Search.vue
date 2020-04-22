@@ -11,10 +11,13 @@
 export default {
     methods: {
         search(){
-            let filter = this.$store.getters.getFilter
-            filter.text = this.$refs.text.value
-            delete filter.archived
-            this.$router.push({ path: 'notes', query: filter })
+            this.$router.push({ path: 'notes', 
+                query: {
+                    archived: null, 
+                    color: null, 
+                    text: this.$refs.text.value
+                } 
+            })
         }
     }
 }

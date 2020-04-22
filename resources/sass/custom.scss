@@ -194,3 +194,7 @@ body{
   padding: .5em 1em;
   background-color: #3a3f44;
 }
+
+.modal-backdrop{
+  z-index: 900;
+}

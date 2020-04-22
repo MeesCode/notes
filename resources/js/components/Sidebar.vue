@@ -56,21 +56,5 @@ export default {
             this.isActive = !this.isActive
         });
     },
-    methods: {
-        archived(){
-            let filter = this.$store.getters.getFilter
-            filter.archived = true
-            delete filter.search
-            this.$store.dispatch('setFilter', filter)
-            this.$store.dispatch('getNotes', filter)
-        },
-        active(){
-            let filter = this.$store.getters.getFilter
-            filter.archived = false
-            delete filter.search
-            this.$store.dispatch('setFilter', filter)
-            this.$store.dispatch('getNotes', filter)
-        }
-    },
 }
 </script>

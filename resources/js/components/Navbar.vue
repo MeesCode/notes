@@ -8,19 +8,11 @@
         </a>
 
         <span class="search-nav navbar-nav ml-auto mr-auto w-25">
-            <!-- @auth -->
-                <!-- @if($toggles) -->
-                    <search></search>
-                <!-- @endif -->
-            <!-- @endauth -->
+            <search></search>
         </span>
 
         <span class="navbar-nav ml-auto">
-            <!-- @auth -->
-                <!-- @if($toggles) -->
-                    <create-from-poppup></create-from-poppup>
-                <!-- @endif -->
-            <!-- @endauth -->
+            <create-from-poppup></create-from-poppup>
         </span>
 
     </nav>

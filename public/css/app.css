@@ -17382,3 +17382,7 @@ a[aria-expanded=true] {
   background-color: #3a3f44;
 }
 
+.modal-backdrop {
+  z-index: 900;
+}
+

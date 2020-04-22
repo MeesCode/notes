@@ -2167,14 +2167,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['appname'],
@@ -2302,12 +2294,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     search: function search() {
-      var filter = this.$store.getters.getFilter;
-      filter.text = this.$refs.text.value;
-      delete filter.archived;
       this.$router.push({
         path: 'notes',
-        query: filter
+        query: {
+          archived: null,
+          color: null,
+          text: this.$refs.text.value
+        }
       });
     }
   }
@@ -2382,22 +2375,6 @@ __webpack_require__.r(__webpack_exports__);
     _event_bus__WEBPACK_IMPORTED_MODULE_0__["default"].$on('toggle-sidebar', function (payLoad) {
       _this.isActive = !_this.isActive;
     });
-  },
-  methods: {
-    archived: function archived() {
-      var filter = this.$store.getters.getFilter;
-      filter.archived = true;
-      delete filter.search;
-      this.$store.dispatch('setFilter', filter);
-      this.$store.dispatch('getNotes', filter);
-    },
-    active: function active() {
-      var filter = this.$store.getters.getFilter;
-      filter.archived = false;
-      delete filter.search;
-      this.$store.dispatch('setFilter', filter);
-      this.$store.dispatch('getNotes', filter);
-    }
   }
 });
 
