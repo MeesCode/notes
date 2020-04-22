@@ -26,6 +26,10 @@ export default {
             context.commit('filter', filter)
         },
 
+        setNotes(context, notes){
+            context.commit('notes', notes)
+        },
+
         getNotes(context, filter){
             let s = ''
             for(let [v, k] of Object.entries(filter)){

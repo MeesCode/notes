@@ -12,7 +12,12 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        return view('dashboard');
+        $filter = ['user_id' => Auth::user()->id, 'archived' => false];
+        $notes = Note::where($filter)->get();
+        return view('dashboard', 
+            ['filter' => $filter, 
+            'notes' => $notes]
+        );
     }
 
     public function apiDetails(Request $request)
@@ -22,7 +27,12 @@ class HomeController extends Controller
 
     public function archived(Request $request)
     {
-        return view('archived');
+        $filter = ['user_id' => Auth::user()->id, 'archived' => true];
+        $notes = Note::where($filter)->get();
+        return view('dashboard', 
+            ['filter' => $filter, 
+            'notes' => $notes]
+        );
     }
 
 }

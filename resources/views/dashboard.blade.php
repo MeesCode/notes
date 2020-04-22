@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
 
-            <note-list :filter="{{json_encode(['archived' => false])}}" ></note-list>
+            <note-list :filter="{{json_encode($filter)}}" :notes="{{json_encode($notes)}}" ></note-list>
 
         </div>
     </div>

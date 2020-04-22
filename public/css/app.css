@@ -17206,8 +17206,8 @@ a.text-dark:focus {
   background-color: #373d42;
   color: white;
   box-shadow: 0px 3px 12px -3px rgba(0, 0, 0, 0.47);
-  -webkit-animation-duration: 0.75s;
-          animation-duration: 0.75s;
+  -webkit-animation-duration: 0.25s;
+          animation-duration: 0.25s;
 }
 
 body {
@@ -17322,5 +17322,9 @@ a[aria-expanded=true] {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+}
+
+#content {
+  overflow-x: hidden;
 }
 

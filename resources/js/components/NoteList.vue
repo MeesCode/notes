@@ -9,12 +9,12 @@
 <script>
 export default {
     data: () => ({
-        masonryId: 'note_grid'
+        masonryId: 'note_grid',
     }),
-    props: ['filter'],
+    props: ['filter', 'notes'],
     mounted() {
-        this.$store.dispatch('getNotes', this.filter)
         this.$store.dispatch('setFilter', this.filter)
+        this.$store.dispatch('setNotes', this.notes)
     },
     methods:{
         redraw(){

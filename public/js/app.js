@@ -2189,18 +2189,24 @@ __webpack_require__.r(__webpack_exports__);
       $(this.$refs.modal).modal('hide');
     },
     deleteNode: function deleteNode(id) {
-      // this.$refs.card.classList.add('zoomOut')
-      // this.$refs.card.addEventListener('animationend', () => { 
-      this.$store.dispatch("deleteNote", id); // })
+      var _this = this;
+
+      this.$refs.card.classList.add('zoomOut');
+      this.$refs.card.addEventListener('animationend', function () {
+        _this.$store.dispatch("deleteNote", id);
+      });
     },
     toggleArchiveNode: function toggleArchiveNode() {
+      var _this2 = this;
+
       var n = {
         id: this.note.id,
         archived: !this.note.archived
-      }; // this.$refs.card.classList.add('zoomOut')
-      // this.$refs.card.addEventListener('animationend', () => { 
-
-      this.$store.dispatch('editNote', n); // })
+      };
+      this.$refs.card.classList.add('zoomOut');
+      this.$refs.card.addEventListener('animationend', function () {
+        _this2.$store.dispatch('editNote', n);
+      });
     }
   }
 });
@@ -2230,10 +2236,10 @@ __webpack_require__.r(__webpack_exports__);
       masonryId: 'note_grid'
     };
   },
-  props: ['filter'],
+  props: ['filter', 'notes'],
   mounted: function mounted() {
-    this.$store.dispatch('getNotes', this.filter);
     this.$store.dispatch('setFilter', this.filter);
+    this.$store.dispatch('setNotes', this.notes);
   },
   methods: {
     redraw: function redraw() {
@@ -63723,7 +63729,7 @@ var render = function() {
       "div",
       {
         ref: "card",
-        staticClass: "card mb-0 d-inline-block",
+        staticClass: "card mb-0 d-inline-block animated zoomIn",
         class: "d-inline-block background-" + _vm.note.color
       },
       [
@@ -78204,6 +78210,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   actions: {
     setFilter: function setFilter(context, filter) {
       context.commit('filter', filter);
+    },
+    setNotes: function setNotes(context, notes) {
+      context.commit('notes', notes);
     },
     getNotes: function getNotes(context, filter) {
       var s = '';
