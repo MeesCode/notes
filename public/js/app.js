@@ -2294,13 +2294,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     search: function search() {
+      var filter = {
+        archived: null,
+        color: null
+      };
+      filter.text = this.$refs.text.value;
       this.$router.push({
         path: 'notes',
-        query: {
-          archived: null,
-          color: null,
-          text: this.$refs.text.value
-        }
+        query: filter
       });
     }
   }
@@ -2362,12 +2363,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       isActive: false
     };
+  },
+  methods: {
+    changeColor: function changeColor(c) {
+      var filter = {
+        archived: null,
+        text: null
+      };
+      filter.color = c;
+      this.$router.push({
+        path: 'notes',
+        query: filter
+      });
+    }
   },
   mounted: function mounted() {
     var _this = this;
@@ -64223,73 +64238,88 @@ var render = function() {
     "nav",
     { class: { active: _vm.isActive }, attrs: { id: "sidebar" } },
     [
-      _c("ul", { staticClass: "list-unstyled components" }, [
-        _c("li", { staticClass: "nav-item divider mt-3" }, [_vm._v("toggles")]),
-        _vm._v(" "),
-        _c(
-          "li",
-          { staticClass: "nav-item cursor-pointer" },
-          [
-            _c(
-              "router-link",
-              {
-                attrs: {
-                  to: {
-                    name: "notes",
-                    query: { archived: false, color: null, text: null }
+      _c(
+        "ul",
+        { staticClass: "list-unstyled components" },
+        [
+          _c("li", { staticClass: "nav-item divider mt-3" }, [
+            _vm._v("filter")
+          ]),
+          _vm._v(" "),
+          _c(
+            "li",
+            { staticClass: "nav-item cursor-pointer" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: {
+                      name: "notes",
+                      query: { archived: false, color: null, text: null }
+                    }
                   }
-                }
-              },
-              [
-                _c("i", { staticClass: "mr-2 fa fa-sticky-note" }),
-                _vm._v("\n                    active\n                ")
-              ]
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "li",
-          { staticClass: "nav-item cursor-pointer" },
-          [
-            _c(
-              "router-link",
-              {
-                attrs: {
-                  to: {
-                    name: "notes",
-                    query: { archived: true, color: null, text: null }
+                },
+                [
+                  _c("i", { staticClass: "mr-2 fa fa-sticky-note" }),
+                  _vm._v("\n                    active\n                ")
+                ]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            { staticClass: "nav-item cursor-pointer" },
+            [
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: {
+                      name: "notes",
+                      query: { archived: true, color: null, text: null }
+                    }
                   }
-                }
-              },
-              [
-                _c("i", { staticClass: "mr-2 fa fa-archive" }),
-                _vm._v("\n                    archive\n                ")
-              ]
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("li", { staticClass: "nav-item divider mt-3" }, [_vm._v("pages")]),
-        _vm._v(" "),
-        _c(
-          "li",
-          { staticClass: "nav-item" },
-          [
-            _c("router-link", { attrs: { to: { name: "api details" } } }, [
-              _c("i", { staticClass: "mr-2 fa fa-cog" }),
-              _vm._v("\n                    api details\n                ")
-            ])
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("li", { staticClass: "nav-item divider mt-3" }, [_vm._v("actions")]),
-        _vm._v(" "),
-        _vm._m(0)
-      ])
+                },
+                [
+                  _c("i", { staticClass: "mr-2 fa fa-archive" }),
+                  _vm._v("\n                    archive\n                ")
+                ]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("color-picker", {
+            staticClass: "ml-3 my-2",
+            attrs: { color: "white" },
+            on: { "color-change": _vm.changeColor }
+          }),
+          _vm._v(" "),
+          _c("li", { staticClass: "nav-item divider mt-3" }, [_vm._v("pages")]),
+          _vm._v(" "),
+          _c(
+            "li",
+            { staticClass: "nav-item" },
+            [
+              _c("router-link", { attrs: { to: { name: "api details" } } }, [
+                _c("i", { staticClass: "mr-2 fa fa-cog" }),
+                _vm._v("\n                    api details\n                ")
+              ])
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("li", { staticClass: "nav-item divider mt-3" }, [
+            _vm._v("actions")
+          ]),
+          _vm._v(" "),
+          _vm._m(0)
+        ],
+        1
+      )
     ]
   )
 }

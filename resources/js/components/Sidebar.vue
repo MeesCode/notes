@@ -2,7 +2,7 @@
     <nav id="sidebar" v-bind:class="{'active': isActive}">
     <ul class="list-unstyled components">
 
-            <li class="nav-item divider mt-3">toggles</li>
+            <li class="nav-item divider mt-3">filter</li>
         
             <li class="nav-item cursor-pointer">
                 <router-link :to="{ name: 'notes', query: {archived: false, color: null, text: null} }">
@@ -18,6 +18,7 @@
                 </router-link>
             </li>
 
+            <color-picker class="ml-3 my-2" color="white" v-on:color-change="changeColor"></color-picker>
 
             <li class="nav-item divider mt-3">pages</li>
 
@@ -51,6 +52,13 @@ export default {
             isActive: false
         }
     },
+    methods:{
+        changeColor(c){
+            let filter = {archived: null, text: null}
+            filter.color = c
+            this.$router.push({ path: 'notes', query: filter })
+        }
+    },  
     mounted(){
         EventBus.$on('toggle-sidebar', (payLoad) => {
             this.isActive = !this.isActive

@@ -17184,8 +17184,8 @@ a.text-dark:focus {
 .color-picker {
   border: 1px solid black;
   border-radius: 50%;
-  width: 1em;
-  height: 1em;
+  width: 1.4em;
+  height: 1.4em;
   cursor: pointer;
   transition: 0.25s ease border-width;
 }

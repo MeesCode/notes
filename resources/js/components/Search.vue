@@ -11,13 +11,9 @@
 export default {
     methods: {
         search(){
-            this.$router.push({ path: 'notes', 
-                query: {
-                    archived: null, 
-                    color: null, 
-                    text: this.$refs.text.value
-                } 
-            })
+            let filter = {archived: null, color: null}
+            filter.text = this.$refs.text.value
+            this.$router.push({ path: 'notes', query: filter })
         }
     }
 }
