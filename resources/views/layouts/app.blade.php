@@ -42,6 +42,15 @@
             @include('sidebar')
 
             <div id="content">
+
+                <div class="search-content">
+                    @auth
+                        @if($toggles)
+                            <search></search>
+                        @endif
+                    @endauth
+                </div>
+
                 <main class="py-4">
                     @yield('content')
                 </main>

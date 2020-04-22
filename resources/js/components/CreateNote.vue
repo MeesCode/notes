@@ -5,7 +5,7 @@
             <div class="card-body">
                 <h5 v-if="!edit" class="card-title">Create a note</h5>
                 <h5 v-else class="card-title">Edit a note</h5>
-                <form v-on:submit.prevent="() => { if(edit){ createNote('editNote') } else { createNote('addNote') }}" >
+                <form v-on:submit.prevent="() => { if(edit){ editNote() } else { createNote() }}" >
 
                     <div class="form-group">
                         <textarea v-if="!edit" ref="text" name="text" class="form-control" rows="10" placeholder="enter text"></textarea>
@@ -72,9 +72,7 @@
                 }
                 this.$store.dispatch('editNote', note)
             },
-            createNote(fun){
-                this.$emit('note-edited', null)
-
+            generateNote(){
                 let note = {}
 
                 if(this.edit){
@@ -90,6 +88,12 @@
                     note.color = this.color
                     note.has_image = false
                 }
+                return note
+            },
+            createNote(){
+                this.$emit('note-edited', null)
+
+                let note = this.generateNote()
 
                 let filter = this.$store.getters.getFilter
                 filter.archived = false
@@ -102,11 +106,43 @@
                     .then(encodedFile => {
                         note.has_image = true
                         note.image_data = encodedFile
-                        this.$store.dispatch(fun, note)
+                        this.$store.dispatch('addNote', note)
                         this.emptyFields()
                     })
                 } else {
-                    this.$store.dispatch(fun, note)
+                    this.$store.dispatch('addNote', note)
+                    this.emptyFields()
+                }
+            },
+            editNote(){
+                this.$emit('note-edited', null)
+
+                let note = this.generateNote()
+
+                if(this.edit){
+                    note.id = this.note.id
+                    if(this.color != this.note.color){
+                        note.color = this.color
+                    }
+                    if(this.$refs.text.value != this.note.text){
+                        note.text = this.$refs.text.value
+                    }
+                } else {
+                    note.text = this.$refs.text.value
+                    note.color = this.color
+                    note.has_image = false
+                }
+
+                if(this.$refs.image.files[0]){
+                    this.getBase64(this.$refs.image.files[0])
+                    .then(encodedFile => {
+                        note.has_image = true
+                        note.image_data = encodedFile
+                        this.$store.dispatch('editNote', note)
+                        this.emptyFields()
+                    })
+                } else {
+                    this.$store.dispatch('editNote', note)
                     this.emptyFields()
                 }
             },

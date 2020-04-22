@@ -2066,10 +2066,7 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.$store.dispatch('editNote', note);
     },
-    createNote: function createNote(fun) {
-      var _this = this;
-
-      this.$emit('note-edited', null);
+    generateNote: function generateNote() {
       var note = {};
 
       if (this.edit) {
@@ -2088,6 +2085,13 @@ __webpack_require__.r(__webpack_exports__);
         note.has_image = false;
       }
 
+      return note;
+    },
+    createNote: function createNote() {
+      var _this = this;
+
+      this.$emit('note-edited', null);
+      var note = this.generateNote();
       var filter = this.$store.getters.getFilter;
       filter.archived = false;
       delete filter.search;
@@ -2099,12 +2103,48 @@ __webpack_require__.r(__webpack_exports__);
           note.has_image = true;
           note.image_data = encodedFile;
 
-          _this.$store.dispatch(fun, note);
+          _this.$store.dispatch('addNote', note);
 
           _this.emptyFields();
         });
       } else {
-        this.$store.dispatch(fun, note);
+        this.$store.dispatch('addNote', note);
+        this.emptyFields();
+      }
+    },
+    editNote: function editNote() {
+      var _this2 = this;
+
+      this.$emit('note-edited', null);
+      var note = this.generateNote();
+
+      if (this.edit) {
+        note.id = this.note.id;
+
+        if (this.color != this.note.color) {
+          note.color = this.color;
+        }
+
+        if (this.$refs.text.value != this.note.text) {
+          note.text = this.$refs.text.value;
+        }
+      } else {
+        note.text = this.$refs.text.value;
+        note.color = this.color;
+        note.has_image = false;
+      }
+
+      if (this.$refs.image.files[0]) {
+        this.getBase64(this.$refs.image.files[0]).then(function (encodedFile) {
+          note.has_image = true;
+          note.image_data = encodedFile;
+
+          _this2.$store.dispatch('editNote', note);
+
+          _this2.emptyFields();
+        });
+      } else {
+        this.$store.dispatch('editNote', note);
         this.emptyFields();
       }
     }
@@ -2124,6 +2164,10 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_markdown__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-markdown */ "./node_modules/vue-markdown/dist/vue-markdown.common.js");
 /* harmony import */ var vue_markdown__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_markdown__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
 //
 //
 //
@@ -63695,9 +63739,9 @@ var render = function() {
                 $event.preventDefault()
                 return (function() {
                   if (_vm.edit) {
-                    _vm.createNote("editNote")
+                    _vm.editNote()
                   } else {
-                    _vm.createNote("addNote")
+                    _vm.createNote()
                   }
                 })($event)
               }
@@ -63815,7 +63859,8 @@ var render = function() {
       {
         ref: "card",
         staticClass: "card mb-0 d-inline-block animated zoomIn",
-        class: "d-inline-block background-" + _vm.note.color
+        class: "d-inline-block background-" + _vm.note.color,
+        attrs: { "data-archived": _vm.note.archived }
       },
       [
         _vm.note.has_image
@@ -63837,6 +63882,8 @@ var render = function() {
           { staticClass: "card-body" },
           [
             _c("vue-markdown", { attrs: { source: _vm.note.text } }),
+            _vm._v(" "),
+            _c("div", { staticClass: "float-left text-left" }),
             _vm._v(" "),
             _c("div", { staticClass: "float-right text-right" }, [
               _c(
@@ -64043,7 +64090,7 @@ var staticRenderFns = [
     return _c(
       "button",
       {
-        staticClass: "btn btn-outline-light my-2 my-sm-0 d-inline-block",
+        staticClass: "btn btn-outline-light d-inline-block",
         attrs: { type: "submit" }
       },
       [_c("i", { staticClass: "d-block fa fa-search" })]

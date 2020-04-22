@@ -13,7 +13,7 @@ class HomeController extends Controller
     public function dashboard()
     {
         $filter = ['user_id' => Auth::user()->id, 'archived' => false];
-        $notes = Note::where($filter)->get();
+        $notes = Note::where($filter)->latest()->get();
         return view('dashboard', 
             [
                 'toggles' => true,

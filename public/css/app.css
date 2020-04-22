@@ -17242,6 +17242,14 @@ body {
   #sidebar.active {
     margin-left: 0;
   }
+
+  .search-nav {
+    display: none !important;
+  }
+
+  .search-content {
+    display: flex !important;
+  }
 }
 
 #sidebar {
@@ -17366,5 +17374,15 @@ a[aria-expanded=true] {
 
 .search input[type=search] ::placeholder {
   color: rgba(255, 255, 255, 0.25);
+}
+
+[data-archived="1"] {
+  background-image: url("/img/crumb.png");
+}
+
+.search-content {
+  display: none;
+  padding: 0.5em 1em;
+  background-color: #3a3f44;
 }
 

@@ -6,7 +6,7 @@
         {{ config('app.name') }}
     </a>
 
-    <span class="navbar-nav ml-auto mr-auto w-25">
+    <span class="search-nav navbar-nav ml-auto mr-auto w-25">
         @auth
             @if($toggles)
                 <search></search>

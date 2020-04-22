@@ -1,11 +1,15 @@
 <template>
     <div>
-        <div ref="card" class="card mb-0 d-inline-block animated zoomIn" :class="`d-inline-block background-${note.color}`">
+        <div ref="card" :data-archived="note.archived" class="card mb-0 d-inline-block animated zoomIn" :class="`d-inline-block background-${note.color}`">
 
             <img v-if="note.has_image" @load="$emit('img-loaded', null)" @click="imgModalOpen" :key="note.file" class="cursor-pointer card-img-top" :src="imgSrc">
 
             <div class="card-body">
                 <vue-markdown :source="note.text"></vue-markdown>
+
+                <div class="float-left text-left">
+                    
+                </div>
 
                 <div class="float-right text-right">
                     <button class="btn p-0" type="submit">

@@ -34,7 +34,7 @@ class ApiController extends Controller
         if(null !== $request->query('search')){
             array_push($filter, ['text', 'like', '%'.$request->query('search').'%']);
         } 
-        $notes = Note::where($filter)->orderBy('id', 'desc')->get();
+        $notes = Note::where($filter)->orderBy('archived', 'asc')->latest()->get();
         return $notes->toJson();
     }
 
