@@ -14,16 +14,57 @@ const store = new Vuex.Store(
 import {VueMasonryPlugin} from 'vue-masonry';
 Vue.use(VueMasonryPlugin)
 
-Vue.component('note-list', require('./components/NoteList.vue').default);
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+
+Vue.component('sidebar', require('./components/Sidebar.vue').default);
+Vue.component('navbar', require('./components/Navbar.vue').default);
 Vue.component('note', require('./components/Note.vue').default);
 Vue.component('create-note', require('./components/CreateNote.vue').default);
 Vue.component('color-picker', require('./components/ColorPicker.vue').default);
 Vue.component('create-from-poppup', require('./components/CreateFromPoppup.vue').default);
 Vue.component('search', require('./components/Search.vue').default);
-Vue.component('toggles', require('./components/Toggles.vue').default);
-Vue.component('sidebar-toggle', require('./components/SidebarToggle.vue').default);
+
+import App from './views/App'
+import Notes from './views/Notes'
+import ApiDetails from './views/ApiDetails'
+
+const router = new VueRouter({
+    mode: 'history',
+    routes: [
+        {
+            path: '/active',
+            name: 'active',
+            component: Notes,
+            beforeEnter (to, from, next) {
+                store.dispatch('setFilter', {archived: false, color: null, text: null})
+                next()
+            }
+        },
+        {
+            path: '/archive',
+            name: 'archive',
+            component: Notes,
+            beforeEnter (to, from, next) {
+                store.dispatch('setFilter', {archived: true, color: null, text: null})
+                next()
+            }
+        },
+        {
+            path: '/api-details',
+            name: 'api details',
+            component: ApiDetails,
+        },
+        {
+            path: '*',
+            redirect: '/active'
+        },
+    ],
+});
 
 const app = new Vue({
     el: '#app',
-    store,
+    components: { App },
+    router,
+    store
 });

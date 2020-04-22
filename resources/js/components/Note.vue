@@ -49,18 +49,13 @@
     import VueMarkdown from 'vue-markdown'
 
     export default {
-        data(){
-            return {
-                api_token: window.user.api_token
-            }
-        },
         props: ['note'],
         components: {
             VueMarkdown
         },
         computed: {
             imgSrc: function(){
-                return `/api/get_image?api_token=${this.api_token}&id=${this.note.id}&t=${this.note.image_name}`
+                return `/api/get_image?api_token=${this.$store.getters.getUser.api_token}&id=${this.note.id}&t=${this.note.image_name}`
             }
         },
         methods: {

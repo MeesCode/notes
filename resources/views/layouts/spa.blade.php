@@ -23,28 +23,8 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark shadow-sm">
-            <ul class="navbar-nav ml-auto">
-                <li>
-                    <a class="nav-link" href="{{ route('login') }}">
-                        login
-                    </a>
-                </li>
-                <li>
-                    <a class="nav-link" href="{{ route('register') }}">
-                        register
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <div class="wrapper">
-            <div id="content">
-                <main class="py-4">
-                    @yield('content')
-                </main>
-            </div>
-        </div>   
+        <app :notes="{{json_encode($notes)}}" :user="{{json_encode(Auth::user())}}"></app>
     </div>
+
 </body>
 </html>

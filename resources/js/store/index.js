@@ -3,14 +3,24 @@ export default {
 	state: {
         notes: [],
         filter: {
-            archived: false,
-            color: null
-        }
+            archived: null,
+            color: null,
+            text: null
+        },
+        user: {}
 	},
 
 	getters: {
 
         getNotes(state){ 
+            return state.notes.filter(note => {
+                return ((state.filter.archived == null || note.archived == state.filter.archived) &&
+                    (state.filter.color == null || state.filter.color == note.color) &&
+                    (state.filter.text == null || note.text.toLowerCase().includes(state.filter.text.toLowerCase())))
+            })
+        },
+
+        getAllNotes(state){ 
             return state.notes
         },
 
@@ -18,20 +28,28 @@ export default {
             return state.filter
         },
 
+        getUser(state){ 
+            return state.user
+        },
+
 	},
 
 	actions: {
 
-        setFilter(context, filter){
-            context.commit('filter', filter)
+        setFilter({commit, getters}, filter){
+            commit('filter', filter)
         },
 
-        setNotes(context, notes){
-            context.commit('notes', notes)
+        setUser({commit, getters}, user){
+            commit('user', user)
         },
 
-        getNotes(context, filter){
-            filter.api_token = window.user.api_token
+        setNotes({commit, getters}, notes){
+            commit('notes', notes)
+        },
+
+        getNotes({commit, getters}, filter){
+            filter.api_token = getters.getUser.api_token
             const params = new URLSearchParams(filter).toString();
             fetch(`api/notes?${params}`, {
                 "headers": {
@@ -46,19 +64,19 @@ export default {
                 }
                 res.json()
                 .then(notes => {
-                    context.commit('notes', notes)
+                    commit('notes', notes)
                 })
             })
             .catch(err => console.log('could not fetch resource', err))
         },
 
-        deleteNote(context, id){
+        deleteNote({commit, getters}, id){
             fetch('api/delete_note', {
                 "headers": {
                     "Content-Type": "application/json",
                 },
                 "body": JSON.stringify({
-                    api_token: window.user.api_token,
+                    api_token: getters.getUser.api_token,
                     id: id,
                 }),
                 "method": "DELETE",
@@ -69,18 +87,18 @@ export default {
                     return
                 }
                 res.json()
-                .then(context.commit('deleteNote', id))
+                .then(commit('deleteNote', id))
             })
             .catch(err => console.log('could not fetch resource', err))
         },
 
-        addNote(context, note){
+        addNote({commit, getters}, note){
             fetch('api/create_note', {
                 "headers": {
                     "Content-Type": "application/json",
                 },
                 "body": JSON.stringify({
-                    api_token: window.user.api_token,
+                    api_token: getters.getUser.api_token,
                     note: note,
                 }),
                 "method": "POST",
@@ -92,19 +110,19 @@ export default {
                 }
                 res.json()
                 .then(note => {
-                    context.commit('addNote', note)
+                    commit('addNote', note)
                 })
             })
             .catch(err => console.log('could not fetch resource', err))
         },
 
-        editNote(context, note){
+        editNote({commit, getters}, note){
             fetch('api/edit_note', {
                 "headers": {
                     "Content-Type": "application/json",
                 },
                 "body": JSON.stringify({
-                    api_token: window.user.api_token,
+                    api_token: getters.getUser.api_token,
                     note: note,
                 }),
                 "method": "PATCH",
@@ -116,7 +134,7 @@ export default {
                 }
                 res.json()
                 .then(note => {
-                    context.commit('updateNote', note)
+                    commit('updateNote', note)
                 })
             })
             .catch(err => console.log('could not fetch resource', err))
@@ -129,6 +147,9 @@ export default {
         filter(state,filter) {
             return state.filter = filter
         },
+        user(state,user) {
+            return state.user = user
+        },
         notes(state,data) {
             return state.notes = data
         },
@@ -137,16 +158,10 @@ export default {
             return state.notes.splice(index, 1)
         },
         addNote(state, note){
-            if(!state.filter.archived){
-                return state.notes.unshift(note)
-            }
-            return state.notes
+            return state.notes.unshift(note)
         },
         updateNote(state, note){
             let index = state.notes.findIndex(i => i.id == note.id)
-            if(note.archived != state.notes[index].archived){
-                return state.notes.splice(index, 1)
-            }
             return state.notes.splice(index, 1, note)
         },
 	}

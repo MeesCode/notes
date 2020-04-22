@@ -99,7 +99,6 @@
                 filter.archived = false
                 delete filter.search
                 this.$store.dispatch('setFilter', filter)
-                this.$store.dispatch('getNotes', filter)
 
                 if(this.$refs.image.files[0]){
                     this.getBase64(this.$refs.image.files[0])

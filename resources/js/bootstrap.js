@@ -39,8 +39,3 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
-
-// save user user in window context
-let userHeader = document.head.querySelector('meta[name="user"]');
-window.user = null
-if (userHeader) if (userHeader.content) window.user = JSON.parse(userHeader.content);

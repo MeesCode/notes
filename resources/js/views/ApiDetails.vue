@@ -1,18 +1,14 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="container">
+<template>
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">Welcome</div>
+                <div class="card-header">api token</div>
 
                 <div class="card-body">
-                    The selfhosted nottaking solution
+                    {{ $store.getters.getUser.api_token }}
                 </div>
             </div>
 
         </div>
     </div>
-</div>
-@endsection
+</template>

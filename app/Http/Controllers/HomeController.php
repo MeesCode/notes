@@ -10,22 +10,20 @@ use Illuminate\Support\Facades\Validator;
 class HomeController extends Controller
 {
 
-    public function dashboard()
+    public function spa()
     {
-        $filter = ['user_id' => Auth::user()->id, 'archived' => false];
-        $notes = Note::where($filter)->latest()->get();
-        return view('dashboard', 
-            [
-                'toggles' => true,
-                'filter' => $filter, 
-                'notes' => $notes
-            ]
-        );
+        if(Auth::check()){
+            $filter = ['user_id' => Auth::user()->id];
+            $notes = Note::where($filter)->latest()->get();
+            return view('layouts.spa', ['notes' => $notes]);
+        } else {
+            return view('layouts.spa');
+        }
     }
 
-    public function apiDetails(Request $request)
+    public function tologin(Request $request)
     {
-        return view('apiDetails', ['toggles' => false]);
+        return redirect('login');
     }
 
 }
