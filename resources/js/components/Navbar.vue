@@ -1,9 +1,13 @@
 <template>
     
-    <nav class="navbar fixed-top navbar-expand-md navbar-dark shadow-sm">
+    <nav class="navbar sticky-top navbar-expand-md navbar-dark shadow-sm">
 
         <a class="navbar-brand cursor-pointer mr-auto" @click="toggle">
-            <i class="fa fa-bars mr-2"></i>
+            <div :class="[{'is-active': isActive}, 'hamburger hamburger--spin']" type="button">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </div>
             MeesNote
         </a>
 
@@ -34,9 +38,15 @@
 import EventBus from '../event-bus';
 
 export default {
+    data(){
+        return{
+            isActive: false
+        }
+    },
     props: ['appname'],
     methods: {
         toggle(){
+            this.isActive = !this.isActive
             EventBus.$emit('toggle-sidebar', null);
         },
         openModal(id){

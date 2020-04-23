@@ -2,7 +2,7 @@
     <nav id="sidebar" v-bind:class="{'active': isActive}">
     <ul class="list-unstyled components">
 
-            <li class="nav-item divider mt-3">filters</li>
+            <li class="nav-item divider pt-2">filters</li>
         
             <li class="nav-item cursor-pointer">
                 <router-link :to="{ name: 'notes', query: {archived: false, color: null, text: null} }">
@@ -49,7 +49,7 @@ import EventBus from '../event-bus';
 export default {
     data(){
         return{
-            isActive: false
+            isActive: true
         }
     },
     methods:{

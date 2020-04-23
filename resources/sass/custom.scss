@@ -4,10 +4,6 @@
   }
 }
 
-#app{
-  margin-top: 3.8em;
-}
-
 .color-picker{
   border: none;
   border-radius: 50%;
@@ -57,8 +53,12 @@ body{
   color: #3a3f44;
 }
 
-.note_tile ul{
+.note_tile .card-body ul{
   padding-left: 1em;
+}
+
+.note_tile .card-body{
+  line-height: 1.2;
 }
 
 .wrapper {
@@ -77,12 +77,6 @@ body{
 }
 
 @media (max-width: 768px) {
-  #sidebar {
-      margin-left: -250px;
-  }
-  #sidebar.active {
-      margin-left: 0;
-  }
   .search-nav{
     display: none !important;
   }
@@ -226,4 +220,32 @@ body{
 
 .modal-backdrop{
   z-index: 900;
+}
+
+.hamburger{
+  padding: 0px !important;
+
+  .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after{
+    background-color: white !important;
+    width: 20px;
+    height: 2px;
+  }
+
+  .hamburger-box{
+    width: 25px;
+    height: 12px;
+  }
+
+  .hamburger-inner::before {
+    top: -6px;
+  }
+
+  .hamburger-inner::after {
+    bottom: -6px;
+  }
+
+}
+
+.hamburger:hover, .hamburger.is-active:hover{
+  opacity: 1 !important;
 }

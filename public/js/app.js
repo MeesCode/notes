@@ -2142,11 +2142,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      isActive: false
+    };
+  },
   props: ['appname'],
   methods: {
     toggle: function toggle() {
+      this.isActive = !this.isActive;
       _event_bus__WEBPACK_IMPORTED_MODULE_0__["default"].$emit('toggle-sidebar', null);
     },
     openModal: function openModal(id) {
@@ -2227,6 +2237,13 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     imgSrc: function imgSrc() {
       return "/api/get_image?api_token=".concat(this.$store.getters.getUser.api_token, "&id=").concat(this.note.id, "&t=").concat(this.note.image_name);
+    },
+    text: function text() {
+      if (this.note.text.length > 140) {
+        return this.note.text.substring(0, 140) + '...';
+      }
+
+      return this.note.text;
     }
   },
   methods: {
@@ -2349,7 +2366,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      isActive: false
+      isActive: true
     };
   },
   methods: {
@@ -63893,7 +63910,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "nav",
-    { staticClass: "navbar fixed-top navbar-expand-md navbar-dark shadow-sm" },
+    { staticClass: "navbar sticky-top navbar-expand-md navbar-dark shadow-sm" },
     [
       _c(
         "a",
@@ -63902,7 +63919,17 @@ var render = function() {
           on: { click: _vm.toggle }
         },
         [
-          _c("i", { staticClass: "fa fa-bars mr-2" }),
+          _c(
+            "div",
+            {
+              class: [
+                { "is-active": _vm.isActive },
+                "hamburger hamburger--spin"
+              ],
+              attrs: { type: "button" }
+            },
+            [_vm._m(0)]
+          ),
           _vm._v("\n        MeesNote\n    ")
         ]
       ),
@@ -63946,7 +63973,16 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "hamburger-box" }, [
+      _c("span", { staticClass: "hamburger-inner" })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -63996,7 +64032,7 @@ var render = function() {
           "div",
           { staticClass: "card-body" },
           [
-            _c("vue-markdown", { attrs: { source: _vm.note.text } }),
+            _c("vue-markdown", { attrs: { source: _vm.text } }),
             _vm._v(" "),
             _c("div", { staticClass: "float-left text-left" }),
             _vm._v(" "),
@@ -64186,7 +64222,7 @@ var render = function() {
         "ul",
         { staticClass: "list-unstyled components" },
         [
-          _c("li", { staticClass: "nav-item divider mt-3" }, [
+          _c("li", { staticClass: "nav-item divider pt-2" }, [
             _vm._v("filters")
           ]),
           _vm._v(" "),
@@ -64353,7 +64389,7 @@ var render = function() {
           _c("div", { attrs: { id: "content" } }, [
             _c("div", { staticClass: "search-content" }, [_c("search")], 1),
             _vm._v(" "),
-            _c("main", { staticClass: "py-4" }, [
+            _c("main", { staticClass: "py-2" }, [
               _c("div", { staticClass: "my-container" }, [
                 _c("div", { staticClass: "row justify-content-center" }, [
                   _c(

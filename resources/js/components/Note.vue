@@ -5,7 +5,7 @@
             <img v-if="note.has_image" @load="$emit('img-loaded', null)" @click="imgModalOpen" :key="note.file" class="cursor-pointer card-img-top" :src="imgSrc">
 
             <div class="card-body">
-                <vue-markdown :source="note.text"></vue-markdown>
+                <vue-markdown :source="text"></vue-markdown>
 
                 <div class="float-left text-left">
                     
@@ -56,6 +56,12 @@
         computed: {
             imgSrc: function(){
                 return `/api/get_image?api_token=${this.$store.getters.getUser.api_token}&id=${this.note.id}&t=${this.note.image_name}`
+            },
+            text: function(){
+                if(this.note.text.length > 140){
+                    return this.note.text.substring(0,140) + '...'
+                }
+                return this.note.text
             }
         },
         methods: {
