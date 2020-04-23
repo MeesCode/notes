@@ -17182,16 +17182,20 @@ a.text-dark:focus {
 }
 
 .color-picker {
-  border: 1px solid black;
+  border: none;
   border-radius: 50%;
   width: 1.4em;
   height: 1.4em;
   cursor: pointer;
-  transition: 0.25s ease border-width;
+  transition: 0.1s ease border-width;
+}
+
+.color-picker.blank {
+  border: 1px solid black;
 }
 
 .color-picker.active {
-  border: 3px solid black;
+  border: 3px solid white;
 }
 
 .card {
@@ -17213,6 +17217,16 @@ body {
 .navbar {
   box-shadow: 0px 3px 12px -3px rgba(0, 0, 0, 0.47);
   background-color: #3a3f44;
+}
+
+.btn-navbar {
+  background-color: #2b2a30;
+  border: none;
+  color: white;
+}
+
+.btn-navbar:hover {
+  color: #3a3f44;
 }
 
 .wrapper {
@@ -17347,29 +17361,55 @@ a[aria-expanded=true] {
 }
 
 .search input[type=search] {
-  background: #3a3f44;
-  border: 1px solid white;
+  background-color: #2b2a30;
+  border: none;
   color: white;
 }
 
 .search input[type=search] ::-webkit-input-placeholder {
-  color: rgba(255, 255, 255, 0.25);
+  color: #3d4145;
 }
 
 .search input[type=search] ::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.25);
+  color: #3d4145;
 }
 
 .search input[type=search] :-ms-input-placeholder {
-  color: rgba(255, 255, 255, 0.25);
+  color: #3d4145;
 }
 
 .search input[type=search] ::-ms-input-placeholder {
-  color: rgba(255, 255, 255, 0.25);
+  color: #3d4145;
 }
 
 .search input[type=search] ::placeholder {
-  color: rgba(255, 255, 255, 0.25);
+  color: #3d4145;
+}
+
+.textarea-navbar {
+  background-color: #2b2a30 !important;
+  border: none !important;
+  color: white !important;
+}
+
+.textarea-navbar ::-webkit-input-placeholder {
+  color: #3d4145 !important;
+}
+
+.textarea-navbar ::-moz-placeholder {
+  color: #3d4145 !important;
+}
+
+.textarea-navbar :-ms-input-placeholder {
+  color: #3d4145 !important;
+}
+
+.textarea-navbar ::-ms-input-placeholder {
+  color: #3d4145 !important;
+}
+
+.textarea-navbar ::placeholder {
+  color: #3d4145 !important;
 }
 
 [data-archived="1"] {

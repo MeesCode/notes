@@ -22,7 +22,6 @@ Vue.component('navbar', require('./components/Navbar.vue').default);
 Vue.component('note', require('./components/Note.vue').default);
 Vue.component('create-note', require('./components/CreateNote.vue').default);
 Vue.component('color-picker', require('./components/ColorPicker.vue').default);
-Vue.component('create-from-poppup', require('./components/CreateFromPoppup.vue').default);
 Vue.component('search', require('./components/Search.vue').default);
 
 import App from './views/App'
@@ -49,9 +48,49 @@ const router = new VueRouter({
     ],
 });
 
-const app = new Vue({
+function toBool(s){
+    if(s == null || s == undefined){
+        return null
+    }
+    if(s == 'true' || s == '1' || s == 1 || s == true){
+        return true
+    }
+    return false
+}
+
+new Vue({
     el: '#app',
     components: { App },
     router,
-    store
+    store,
+    mounted: function(){
+        //set initial filter
+
+        let filter = {
+            archived: null,
+            color: null,
+            text: null
+        }
+
+        // default filter
+        if(Object.keys(this.$route.query).length === 0){
+            console.log('no query')
+            filter.archived = false
+        } 
+        
+        // get from query string
+        else {
+            if(this.$route.query.archived != undefined){
+                filter.archived = toBool(this.$route.query.archived)
+            }
+            if(this.$route.query.color != undefined){
+                filter.color = this.$route.query.color
+            }
+            if(this.$route.query.text != undefined){
+                filter.text = this.$route.query.text
+            }
+        }
+
+        this.$store.dispatch('setFilter', filter)
+    }
 });

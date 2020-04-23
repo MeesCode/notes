@@ -1,7 +1,7 @@
 <template>
     <form class="search" v-on:submit.prevent="search">
         <input class="form-control mr-2" ref="text" type="search" placeholder="Search">
-        <button class="btn btn-outline-light d-inline-block" type="submit">
+        <button class="btn btn-navbar d-inline-block" type="submit">
             <i class="d-block fa fa-search"></i>
         </button>
     </form>

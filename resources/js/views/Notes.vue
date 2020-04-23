@@ -1,6 +1,6 @@
 <template>
     <div v-masonry='masonryId' transition-duration="0.5s" item-selector=".note_tile">
-        <div v-for="note of getNotes" v-bind:key="note.id" v-masonry-tile class="note_tile">
+        <div v-for="note of $store.getters.getNotes" v-bind:key="note.id" v-masonry-tile class="note_tile">
             <note v-on:img-loaded="redraw" :note="note"></note>
         </div>
     </div>
@@ -17,7 +17,7 @@ export default {
         EventBus.$on('toggle-sidebar', (payLoad) => {
             setTimeout(() => {
                 this.redraw()
-            }, 300)
+            }, 400)
         });
     },
     methods:{
@@ -25,23 +25,12 @@ export default {
             this.$redrawVueMasonry(this.masonryId)
         }
     },
-    computed: {
-        getNotes(){
-            return this.$store.getters.getNotes
-        },
-        getFilter(){
-            return this.$store.getters.getFilter
-        },
-    },
     watch: {
-        filter(val){
-            this.$store.dispatch('setFilter', this.filter)
-        },
-        getNotes(val){
+        '$store.getters.getNotes': function (val){
             setTimeout(() => {
                 this.redraw()
-            }, 100)
-        }
+            }, 20)
+        },
     }
 
 };

@@ -8,8 +8,8 @@
                 <form v-on:submit.prevent="() => { if(edit){ editNote() } else { createNote() }}" >
 
                     <div class="form-group">
-                        <textarea v-if="!edit" ref="text" name="text" class="form-control" rows="10" placeholder="enter text"></textarea>
-                        <textarea v-else ref="text" name="text" class="form-control" rows="10" :value="note.text"></textarea>
+                        <textarea v-if="!edit" ref="text" name="text" class="form-control textarea-navbar" rows="10" placeholder="enter text"></textarea>
+                        <textarea v-else ref="text" name="text" class="form-control textarea-navbar" rows="10" :value="note.text"></textarea>
                     </div>
 
                     <div class="form-group">
@@ -17,7 +17,7 @@
                     </div>
 
                     <div class="form-group">
-                        <a v-if="edit && note.has_image" @click="removeImage" type="submit" class="text-danger">
+                        <a v-if="edit && note.has_image" @click="removeImage" class="text-danger">
                             remove image
                         </a>
                     </div>
@@ -27,10 +27,12 @@
                         <color-picker v-else :color="color" v-on:color-change="changeColor"></color-picker>
                     </div>
 
-                    <button v-if="!edit" type="submit" class="btn btn-primary">
+                    <button v-if="!edit" type="submit" class="btn btn-navbar">
+                        <i class="fa fa-plus-square"></i>
                         create note
                     </button>
-                    <button v-else type="submit" class="btn btn-primary">
+                    <button v-else type="submit" class="btn btn-navbar">
+                        <i class="fa fa-edit"></i>
                         edit note
                     </button>							
                 </form>
@@ -68,7 +70,8 @@
                 this.$emit('note-edited', null)
                 let note = {
                     id: this.note.id,
-                    has_image: false
+                    has_image: false,
+                    image_name: null
                 }
                 this.$store.dispatch('editNote', note)
             },
