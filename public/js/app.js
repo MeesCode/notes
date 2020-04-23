@@ -1929,6 +1929,11 @@ __webpack_require__.r(__webpack_exports__);
       type: String
     }
   },
+  watch: {
+    color: function color(val) {
+      this.curColor = val;
+    }
+  },
   methods: {
     setColor: function setColor(c) {
       this.curColor = c;
@@ -2297,6 +2302,7 @@ __webpack_require__.r(__webpack_exports__);
         color: null
       };
       filter.text = this.$refs.text.value;
+      this.$refs.text.value = "";
       this.$router.push({
         path: 'notes',
         query: filter
@@ -2370,12 +2376,15 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    changeColor: function changeColor(c) {
-      var filter = {
-        archived: null,
-        text: null
-      };
-      filter.color = c;
+    changeColor: function changeColor(val) {
+      var filter = this.$store.getters.getFilter; // we ignore white and show everything instead
+
+      if (val == 'white') {
+        filter.color = null;
+      } else {
+        filter.color = val;
+      }
+
       this.$router.push({
         path: 'notes',
         query: filter
@@ -63741,7 +63750,10 @@ var render = function() {
       return _c("i", {
         key: c,
         class: [
-          { active: c == _vm.curColor, blank: c == "white" },
+          {
+            active: c == _vm.curColor || (c == "white" && _vm.curColor == null),
+            blank: c == "white"
+          },
           "color-picker mr-1 d-inline-block background-" + c
         ],
         on: {
@@ -64228,7 +64240,16 @@ var render = function() {
           _vm._v(" "),
           _c(
             "li",
-            { staticClass: "nav-item cursor-pointer" },
+            {
+              class: [
+                {
+                  active:
+                    !_vm.$store.getters.getFilter.archived &&
+                    _vm.$store.getters.getFilter.archived != null
+                },
+                "nav-item cursor-pointer toggle-button"
+              ]
+            },
             [
               _c(
                 "router-link",
@@ -64236,7 +64257,7 @@ var render = function() {
                   attrs: {
                     to: {
                       name: "notes",
-                      query: { archived: false, color: null, text: null }
+                      query: { archived: false, color: null, search: null }
                     }
                   }
                 },
@@ -64251,7 +64272,12 @@ var render = function() {
           _vm._v(" "),
           _c(
             "li",
-            { staticClass: "nav-item cursor-pointer" },
+            {
+              class: [
+                { active: _vm.$store.getters.getFilter.archived },
+                "nav-item cursor-pointer toggle-button"
+              ]
+            },
             [
               _c(
                 "router-link",
@@ -64259,7 +64285,7 @@ var render = function() {
                   attrs: {
                     to: {
                       name: "notes",
-                      query: { archived: true, color: null, text: null }
+                      query: { archived: true, color: null, search: null }
                     }
                   }
                 },
@@ -64274,7 +64300,7 @@ var render = function() {
           _vm._v(" "),
           _c("color-picker", {
             staticClass: "ml-3 my-2",
-            attrs: { color: "white" },
+            attrs: { color: _vm.$store.getters.getFilter.color },
             on: { "color-change": _vm.changeColor }
           }),
           _vm._v(" "),

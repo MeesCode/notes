@@ -13,6 +13,7 @@ export default {
         search(){
             let filter = {archived: null, color: null}
             filter.text = this.$refs.text.value
+            this.$refs.text.value = ""
             this.$router.push({ path: 'notes', query: filter })
         }
     }

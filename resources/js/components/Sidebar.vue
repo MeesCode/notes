@@ -4,21 +4,21 @@
 
             <li class="nav-item divider pt-2">filters</li>
         
-            <li class="nav-item cursor-pointer">
-                <router-link :to="{ name: 'notes', query: {archived: false, color: null, text: null} }">
+            <li :class="[{'active': !$store.getters.getFilter.archived && $store.getters.getFilter.archived != null}, 'nav-item cursor-pointer toggle-button']">
+                <router-link :to="{name: 'notes', query: {archived: false, color: null, search: null}}">
                     <i class="mr-2 fa fa-sticky-note"></i>
                     active
                 </router-link>
             </li>
 
-            <li class="nav-item cursor-pointer">
-                <router-link :to="{ name: 'notes', query: {archived: true, color: null, text: null} }">
+            <li :class="[{'active': $store.getters.getFilter.archived}, 'nav-item cursor-pointer toggle-button']">
+                <router-link :to="{name: 'notes', query: {archived: true, color: null, search: null}}">
                     <i class="mr-2 fa fa-archive"></i>
                     archive
                 </router-link>
             </li>
 
-            <color-picker class="ml-3 my-2" color="white" v-on:color-change="changeColor"></color-picker>
+            <color-picker class="ml-3 my-2" :color="$store.getters.getFilter.color" v-on:color-change="changeColor"></color-picker>
 
             <li class="nav-item divider mt-3">pages</li>
 
@@ -49,13 +49,20 @@ import EventBus from '../event-bus';
 export default {
     data(){
         return{
-            isActive: true
+            isActive: true, 
         }
     },
     methods:{
-        changeColor(c){
-            let filter = {archived: null, text: null}
-            filter.color = c
+        changeColor(val){
+            let filter = this.$store.getters.getFilter
+
+            // we ignore white and show everything instead
+            if(val == 'white'){
+                filter.color = null
+            } else {
+                filter.color = val
+            }
+
             this.$router.push({ path: 'notes', query: filter })
         }
     },  
