@@ -2459,7 +2459,7 @@ __webpack_require__.r(__webpack_exports__);
     _event_bus__WEBPACK_IMPORTED_MODULE_0__["default"].$on('toggle-sidebar', function (payLoad) {
       setTimeout(function () {
         _this.redraw();
-      }, 400);
+      }, 300);
     });
   },
   methods: {

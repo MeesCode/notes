@@ -17229,6 +17229,10 @@ body {
   color: #3a3f44;
 }
 
+.note_tile ul {
+  padding-left: 1em;
+}
+
 .wrapper {
   display: flex;
   align-items: stretch;

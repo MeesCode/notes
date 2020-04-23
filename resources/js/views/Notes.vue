@@ -17,7 +17,7 @@ export default {
         EventBus.$on('toggle-sidebar', (payLoad) => {
             setTimeout(() => {
                 this.redraw()
-            }, 400)
+            }, 300)
         });
     },
     methods:{
