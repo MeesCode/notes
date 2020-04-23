@@ -30,6 +30,13 @@
             </li>
 
             <li class="nav-item divider mt-3">actions</li>
+
+            <li class="nav-item">
+                <a @click="refresh" class="cursor-pointer">
+                    <i class="mr-2 fa fa-refresh"></i>
+                    refresh notes
+                </a>
+            </li>
             
             <li class="nav-item">
                 <a class="dropdown-item" href="/logout">
@@ -64,6 +71,9 @@ export default {
             }
 
             this.$router.push({ path: 'notes', query: filter })
+        },
+        refresh(){
+            this.$store.dispatch("getNotes", {archived: null, color: null, test: null})
         }
     },  
     mounted(){

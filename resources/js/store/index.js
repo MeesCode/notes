@@ -50,6 +50,14 @@ export default {
 
         getNotes({commit, getters}, filter){
             filter.api_token = getters.getUser.api_token
+            console.log('before', filter)
+            for(let [key, value] of Object.entries(filter)){
+                console.log(key, value)
+                if(value == null){
+                    delete filter[key]
+                }
+            }
+            console.log('after', filter)
             const params = new URLSearchParams(filter).toString();
             fetch(`api/notes?${params}`, {
                 "headers": {

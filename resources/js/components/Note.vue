@@ -5,7 +5,7 @@
             <img v-if="note.has_image" @load="$emit('img-loaded', null)" @click="imgModalOpen" :key="note.file" class="cursor-pointer card-img-top" :src="imgSrc">
 
             <div class="card-body">
-                <vue-markdown :source="text"></vue-markdown>
+                <div v-html="markdown"></div>
 
                 <div class="float-left text-left">
                     
@@ -46,22 +46,30 @@
 </template>
 
 <script>
-    import VueMarkdown from 'vue-markdown'
+    import MarkdownIt from 'markdown-it'
+    import emoji from 'markdown-it-emoji'
+    const md = new MarkdownIt({
+        html: true,
+        linkify: true,
+        breaks: true
+    });
+    md.use(emoji)
 
     export default {
         props: ['note'],
-        components: {
-            VueMarkdown
-        },
         computed: {
             imgSrc: function(){
                 return `/api/get_image?api_token=${this.$store.getters.getUser.api_token}&id=${this.note.id}&t=${this.note.image_name}`
             },
-            text: function(){
-                if(this.note.text.length > 140){
-                    return this.note.text.substring(0,140) + '...'
+            markdown: function(){
+                let t = md.render(this.note.text)
+                let span = document.createElement('span');
+                span.innerHTML = t;
+                console.log(span)
+                if(span.textContent.length > 230){
+                    return t.substring(0,230)
                 }
-                return this.note.text
+                return t
             }
         },
         methods: {
