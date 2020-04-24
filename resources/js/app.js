@@ -23,6 +23,7 @@ Vue.component('note', require('./components/Note.vue').default);
 Vue.component('create-note', require('./components/CreateNote.vue').default);
 Vue.component('color-picker', require('./components/ColorPicker.vue').default);
 Vue.component('search', require('./components/Search.vue').default);
+Vue.component('notification', require('./components/Notification.vue').default);
 
 import App from './views/App'
 import Notes from './views/Notes'

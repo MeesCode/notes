@@ -46,6 +46,8 @@
 </template>
 
 <script>
+    import EventBus from '../event-bus';
+
     import MarkdownIt from 'markdown-it'
     import emoji from 'markdown-it-emoji'
     const md = new MarkdownIt({
@@ -65,7 +67,6 @@
                 let t = md.render(this.note.text)
                 let span = document.createElement('span');
                 span.innerHTML = t;
-                console.log(span)
                 if(span.textContent.length > 230){
                     return t.substring(0,230)
                 }
@@ -84,6 +85,7 @@
             },
             deleteNode(id){
                 this.$store.dispatch("deleteNote", id)
+                .catch(error => EventBus.$emit('notification', error))
             },
             toggleArchiveNode(){
                 let n = {
@@ -91,6 +93,7 @@
                     archived: !this.note.archived
                 }
                 this.$store.dispatch('editNote', n)
+                .catch(error => EventBus.$emit('notification', error))
             },
         },
     }

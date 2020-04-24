@@ -1,3 +1,28 @@
+
+function customFetch(url, body, method, commit, commitType){
+    return new Promise((resolve, reject) => {
+        fetch(url, {
+            "headers": {
+                "Content-Type": "application/json",
+            },
+            "method": method,
+            "body": body,
+            "mode": "cors" })
+        .then(res => {
+            if(res.status != 200) {
+                reject('operation failed, please refresh')
+            }
+            res.json()
+            .then(res => {
+                commit(commitType, res)
+                resolve('success')
+            })
+            .catch(error => reject('server returned invalid result'))
+        })
+        .catch(error => reject('could not contact the server'))
+    });
+}
+
 export default {
 
 	state: {
@@ -50,106 +75,39 @@ export default {
 
         getNotes({commit, getters}, filter){
             filter.api_token = getters.getUser.api_token
-            console.log('before', filter)
             for(let [key, value] of Object.entries(filter)){
-                console.log(key, value)
                 if(value == null){
                     delete filter[key]
                 }
             }
-            console.log('after', filter)
-            const params = new URLSearchParams(filter).toString();
-            fetch(`api/notes?${params}`, {
-                "headers": {
-                    "Content-Type": "application/json",
-                },
-                "method": "GET",
-                "mode": "cors" })
-            .then(res => {
-                if(res.status != 200) {
-                    console.log('the server did not accept our request')
-                    return
-                }
-                res.json()
-                .then(notes => {
-                    commit('notes', notes)
-                })
-            })
-            .catch(err => console.log('could not fetch resource', err))
+            const url = `api/notes?${new URLSearchParams(filter).toString()}`
+            return customFetch(url, null, 'GET', commit, 'notes')
         },
 
         deleteNote({commit, getters}, id){
-            fetch('api/delete_note', {
-                "headers": {
-                    "Content-Type": "application/json",
-                },
-                "body": JSON.stringify({
-                    api_token: getters.getUser.api_token,
-                    id: id,
-                }),
-                "method": "DELETE",
-                "mode": "cors" })
-            .then(res => {
-                if(res.status != 200) {
-                    console.log('the server did not accept our request')
-                    return
-                }
-                res.json()
-                .then(commit('deleteNote', id))
+            const body = JSON.stringify({
+                api_token: getters.getUser.api_token,
+                id: id,
             })
-            .catch(err => console.log('could not fetch resource', err))
+            return customFetch('api/delete_note', body, 'DELETE', commit, 'deleteNote')
         },
 
         addNote({commit, getters}, note){
-            fetch('api/create_note', {
-                "headers": {
-                    "Content-Type": "application/json",
-                },
-                "body": JSON.stringify({
-                    api_token: getters.getUser.api_token,
-                    note: note,
-                }),
-                "method": "POST",
-                "mode": "cors" })
-            .then(res => {
-                if(res.status != 200) {
-                    console.log('the server did not accept our request')
-                    return
-                }
-                res.json()
-                .then(note => {
-                    commit('addNote', note)
-                })
+            const body = JSON.stringify({
+                api_token: getters.getUser.api_token,
+                note: note,
             })
-            .catch(err => console.log('could not fetch resource', err))
+            return customFetch('api/create_note', body, 'POST', commit, 'addNote')
         },
 
         editNote({commit, getters}, note){
-            fetch('api/edit_note', {
-                "headers": {
-                    "Content-Type": "application/json",
-                },
-                "body": JSON.stringify({
-                    api_token: getters.getUser.api_token,
-                    note: note,
-                }),
-                "method": "PATCH",
-                "mode": "cors" })
-            .then(res => {
-                if(res.status != 200) {
-                    console.log('the server did not accept our request')
-                    return
-                }
-                res.json()
-                .then(note => {
-                    commit('updateNote', note)
-                })
+            const body = JSON.stringify({
+                api_token: getters.getUser.api_token,
+                note: note,
             })
-            .catch(err => console.log('could not fetch resource', err))
+            return customFetch('api/edit_note', body, 'PATCH', commit, 'updateNote')
         },
-
-
-	},
+    },
 
 	mutations: {
         filter(state,filter) {
@@ -161,8 +119,8 @@ export default {
         notes(state,data) {
             return state.notes = data
         },
-        deleteNote(state, id){
-            let index = state.notes.findIndex(i => i.id == id)
+        deleteNote(state, note){
+            let index = state.notes.findIndex(i => i.id == note.id)
             return state.notes.splice(index, 1)
         },
         addNote(state, note){

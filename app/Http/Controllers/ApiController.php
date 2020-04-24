@@ -53,7 +53,7 @@ class ApiController extends Controller
         }
         $note->delete();
 
-        return response()->json(['success' => 'success'], 200);
+        return $note->toJson();
     }
 
     public function getImage(Request $request)

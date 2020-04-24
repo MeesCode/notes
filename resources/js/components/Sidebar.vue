@@ -32,7 +32,7 @@
             <li class="nav-item divider mt-3">actions</li>
 
             <li class="nav-item">
-                <a @click="refresh" class="cursor-pointer">
+                <a @click="refresh" href="javascript: void(0)" class="cursor-pointer">
                     <i class="mr-2 fa fa-refresh"></i>
                     refresh notes
                 </a>
@@ -74,6 +74,8 @@ export default {
         },
         refresh(){
             this.$store.dispatch("getNotes", {archived: null, color: null, test: null})
+            .then(res => EventBus.$emit('notification', 'notes refreshed'))
+            .catch(error => EventBus.$emit('notification', error))
         }
     },  
     mounted(){

@@ -22,7 +22,9 @@
                 </main>
             </div>
 
-        </div>  
+        </div> 
+
+        <notification></notification> 
     </div>
 </template>
 

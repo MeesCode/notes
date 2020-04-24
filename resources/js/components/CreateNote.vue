@@ -43,6 +43,8 @@
 </template>
 
 <script>
+    import EventBus from '../event-bus';
+
     export default {
         data(){
             return {
@@ -74,6 +76,7 @@
                     image_name: null
                 }
                 this.$store.dispatch('editNote', note)
+                .catch(error => EventBus.$emit('notification', error))
             },
             generateNote(){
                 let note = {}
@@ -102,6 +105,7 @@
                 filter.archived = false
                 delete filter.search
                 this.$store.dispatch('setFilter', filter)
+                .catch(error => EventBus.$emit('notification', error))
 
                 if(this.$refs.image.files[0]){
                     this.getBase64(this.$refs.image.files[0])
@@ -127,10 +131,12 @@
                         note.has_image = true
                         note.image_data = encodedFile
                         this.$store.dispatch('editNote', note)
+                        .catch(error => EventBus.$emit('notification', error))
                         this.emptyFields()
                     })
                 } else {
                     this.$store.dispatch('editNote', note)
+                    .catch(error => EventBus.$emit('notification', error))
                     this.emptyFields()
                 }
             },
