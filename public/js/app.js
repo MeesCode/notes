@@ -2267,7 +2267,7 @@ md.use(markdown_it_emoji__WEBPACK_IMPORTED_MODULE_2___default.a);
       span.innerHTML = t;
 
       if (span.textContent.length > 230) {
-        return t.substring(0, 230);
+        return t.substring(0, 230) + '<span>...</span>';
       }
 
       return t;

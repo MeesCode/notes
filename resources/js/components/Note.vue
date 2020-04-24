@@ -68,7 +68,7 @@
                 let span = document.createElement('span');
                 span.innerHTML = t;
                 if(span.textContent.length > 230){
-                    return t.substring(0,230)
+                    return t.substring(0,230) + '<span>...</span>'
                 }
                 return t
             }
