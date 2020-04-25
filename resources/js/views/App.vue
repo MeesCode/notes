@@ -1,6 +1,6 @@
 <template>
     <div>
-        <navbar></navbar>
+        <navbar :appname="appname"></navbar>
         <div class="wrapper">
 
             <sidebar></sidebar>
@@ -30,7 +30,7 @@
 
 <script>
 export default {
-    props: ['notes', 'user'],
+    props: ['notes', 'user', 'appname'],
     mounted() {
         this.$store.dispatch('setNotes', this.notes)
         this.$store.dispatch('setUser', this.user)

@@ -6246,11 +6246,11 @@
 }
 
 .text-yellow {
-  color: #fbe836;
+  color: #e6d11b;
 }
 
 .background-yellow {
-  background-color: #fbe836 !important;
+  background-color: #e6d11b !important;
 }
 
 .text-green {
@@ -6299,7 +6299,7 @@
   --pink: #eb6e97;
   --red: #f14b45;
   --orange: #fd9c3c;
-  --yellow: #fbe836;
+  --yellow: #e6d11b;
   --green: #48dd68;
   --teal: #20c997;
   --cyan: #17a2b8;
@@ -17222,7 +17222,7 @@ body {
 }
 
 .btn-navbar:hover {
-  color: #3a3f44;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .note_tile .card-body ul {
@@ -17363,23 +17363,23 @@ a[aria-expanded=true] {
 }
 
 .search input[type=search] ::-webkit-input-placeholder {
-  color: #3d4145;
+  color: #979699;
 }
 
 .search input[type=search] ::-moz-placeholder {
-  color: #3d4145;
+  color: #979699;
 }
 
 .search input[type=search] :-ms-input-placeholder {
-  color: #3d4145;
+  color: #979699;
 }
 
 .search input[type=search] ::-ms-input-placeholder {
-  color: #3d4145;
+  color: #979699;
 }
 
 .search input[type=search] ::placeholder {
-  color: #3d4145;
+  color: #979699;
 }
 
 .textarea-navbar {

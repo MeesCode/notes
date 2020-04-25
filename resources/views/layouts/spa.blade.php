@@ -23,7 +23,12 @@
 </head>
 <body>
     <div id="app">
-        <app :notes="{{json_encode($notes)}}" :user="{{json_encode(Auth::user())}}"></app>
+        <app 
+            :notes="{{ json_encode($notes) }}" 
+            :user="{{ json_encode(Auth::user()) }}"
+            :appname="'{{ config('app.name', 'Laravel') }}'"
+            >
+        </app>
     </div>
 </body>
 </html>

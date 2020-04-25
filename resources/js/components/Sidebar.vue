@@ -24,7 +24,7 @@
 
             <li class="nav-item">
                 <router-link :to="{ name: 'api details' }">
-                    <i class="mr-2 fa fa-cog"></i>
+                    <i class="mr-2 fa fa-link"></i>
                     api details
                 </router-link>
             </li>

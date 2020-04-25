@@ -84,8 +84,10 @@
                 $(this.$refs.modal).modal('hide')
             },
             deleteNode(id){
-                this.$store.dispatch("deleteNote", id)
-                .catch(error => EventBus.$emit('notification', error))
+                if(confirm('This will permanently delete this note')){
+                    this.$store.dispatch("deleteNote", id)
+                    .catch(error => EventBus.$emit('notification', error))
+                }
             },
             toggleArchiveNode(){
                 let n = {

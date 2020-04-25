@@ -8,7 +8,7 @@
                     <span class="hamburger-inner"></span>
                 </span>
             </div>
-            MeesNote
+            {{ appname }}
         </a>
 
         <span class="search-nav navbar-nav ml-auto mr-auto w-25">

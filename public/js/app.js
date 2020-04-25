@@ -2284,9 +2284,11 @@ md.use(markdown_it_emoji__WEBPACK_IMPORTED_MODULE_2___default.a);
       $(this.$refs.modal).modal('hide');
     },
     deleteNode: function deleteNode(id) {
-      this.$store.dispatch("deleteNote", id)["catch"](function (error) {
-        return _event_bus__WEBPACK_IMPORTED_MODULE_0__["default"].$emit('notification', error);
-      });
+      if (confirm('This will permanently delete this note')) {
+        this.$store.dispatch("deleteNote", id)["catch"](function (error) {
+          return _event_bus__WEBPACK_IMPORTED_MODULE_0__["default"].$emit('notification', error);
+        });
+      }
     },
     toggleArchiveNode: function toggleArchiveNode() {
       var n = {
@@ -2525,7 +2527,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['notes', 'user'],
+  props: ['notes', 'user', 'appname'],
   mounted: function mounted() {
     this.$store.dispatch('setNotes', this.notes);
     this.$store.dispatch('setUser', this.user);
@@ -49532,7 +49534,7 @@ var render = function() {
             },
             [_vm._m(0)]
           ),
-          _vm._v("\n        MeesNote\n    ")
+          _vm._v("\n        " + _vm._s(_vm.appname) + "\n    ")
         ]
       ),
       _vm._v(" "),
@@ -49922,7 +49924,7 @@ var render = function() {
             { staticClass: "nav-item" },
             [
               _c("router-link", { attrs: { to: { name: "api details" } } }, [
-                _c("i", { staticClass: "mr-2 fa fa-cog" }),
+                _c("i", { staticClass: "mr-2 fa fa-link" }),
                 _vm._v("\n                    api details\n                ")
               ])
             ],
@@ -50030,7 +50032,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("navbar"),
+      _c("navbar", { attrs: { appname: _vm.appname } }),
       _vm._v(" "),
       _c(
         "div",

@@ -50,7 +50,7 @@ body{
 }
 
 .btn-navbar:hover{
-  color: #3a3f44;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .note_tile .card-body ul{
@@ -192,7 +192,7 @@ body{
     // background-color: rgba(255, 255, 255, 0.25);
 
     ::placeholder{
-      color: #3d4145;
+      color: #979699;
     }
   }
 }
