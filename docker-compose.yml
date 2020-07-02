@@ -20,6 +20,21 @@ services:
     networks:
       - app-network
 
+  #adminer
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    restart: unless-stopped
+    tty: true
+    environment:
+      ADMINER_DEFAULT_DB_DRIVER: mysql
+      ADMINER_DEFAULT_DB_HOST: db
+      ADMINER_DEFAULT_DB_NAME: notes
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+
   #Nginx Service
   webserver:
     image: nginx:latest
