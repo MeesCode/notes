@@ -1,7 +1,7 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+import Vue from 'vue/dist/vue'
 
 import Vuex from 'vuex'
 Vue.use(Vuex)

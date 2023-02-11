@@ -12,6 +12,10 @@
                 </div>
 
                 <div class="float-right text-right">
+                    <button v-if="markdown.length > 230" class="btn p-0" type="submit">
+                        <i v-if="!expanded" @click="expand()" title="expand note" class="fa fa-expand text-white note-edit-button"></i>
+                        <i v-else @click="expand()" title="expand note" class="fa fa-compress text-white note-edit-button"></i>
+                    </button>	
                     <button class="btn p-0" type="submit">
                         <i @click="editNode()" title="edit this note" class="fa fa-edit text-white note-edit-button"></i>
                     </button>	
@@ -58,6 +62,11 @@
     md.use(emoji)
 
     export default {
+        data(){
+            return{
+                expanded: false,
+            }
+        },
         props: ['note'],
         computed: {
             imgSrc: function(){
@@ -67,13 +76,17 @@
                 let t = md.render(this.note.text)
                 let span = document.createElement('span');
                 span.innerHTML = t;
-                if(span.textContent.length > 230){
+                if(span.textContent.length > 230 && !this.expanded){
                     return t.substring(0,230) + '<span>...</span>'
                 }
                 return t
             }
         },
         methods: {
+            expand(){
+                this.expanded = !this.expanded
+                EventBus.$emit('redraw', null);
+            },
             editNode(id){
                 $(this.$refs.modal).modal('show')
             },

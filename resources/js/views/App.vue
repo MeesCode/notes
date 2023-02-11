@@ -11,7 +11,7 @@
                     <search></search>
                 </div>
 
-                <main class="py-2">
+                <main class="pt-2 mb-5">
                     <div class="my-container">
                         <div class="row justify-content-center">
                             <div class="col-md-10">

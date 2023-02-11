@@ -14,10 +14,16 @@ export default {
         masonryId: 'note_grid'
     }),
     mounted() {
-        EventBus.$on('toggle-sidebar', (payLoad) => {
+        EventBus.$on('toggle-sidebar', _ => {
             setTimeout(() => {
                 this.redraw()
             }, 300)
+        });
+        EventBus.$on('redraw', _ => {
+            console.log('test')
+            setTimeout(() => {
+                this.redraw()
+            }, 100)
         });
     },
     methods:{
