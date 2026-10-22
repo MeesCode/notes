@@ -18,9 +18,6 @@
 
     <app-dialog class="dialog-image" :open="store.viewingImage !== null" @close="store.viewingImage = null">
         <img v-if="store.viewingImage" :src="store.viewingImage" alt="">
-        <button class="icon-btn" aria-label="Close image" @click="store.viewingImage = null">
-            <X :size="22" />
-        </button>
     </app-dialog>
 
     <notification />
@@ -29,7 +26,7 @@
 <script setup>
 import { watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { Plus, X } from '@lucide/vue'
+import { Plus } from '@lucide/vue'
 import { useNotesStore } from '../store'
 import Navbar from '../components/Navbar.vue'
 import Sidebar from '../components/Sidebar.vue'

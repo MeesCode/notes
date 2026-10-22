@@ -12,8 +12,9 @@
     --border-strong: rgb(255 255 255 / 0.16);
     --text: #ececee;
     --text-muted: #a3a3ab;
-    --accent: #f6c453;
-    --accent-text: #1d1a12;
+    --accent: #33acb7;
+    --accent-hover: #4fc3cd;
+    --accent-text: #06272a;
     --danger: #ff6b6b;
 
     --radius-sm: 8px;
@@ -98,7 +99,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .btn:hover { background: var(--surface-3); }
 .btn:active { transform: scale(0.97); }
 .btn-primary { background: var(--accent); color: var(--accent-text); }
-.btn-primary:hover { background: #ffd36e; }
+.btn-primary:hover { background: var(--accent-hover); }
 .btn-ghost { background: transparent; }
 .btn-ghost:hover { background: rgb(255 255 255 / 0.08); }
 .btn-danger { color: var(--danger); }
@@ -133,7 +134,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .input:focus, .textarea:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgb(246 196 83 / 0.25);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 .input::placeholder, .textarea::placeholder { color: var(--text-muted); }
 
@@ -245,7 +246,7 @@ button, input, textarea { font: inherit; color: inherit; }
     cursor: pointer;
 }
 .nav-link:hover { background: var(--surface-2); }
-.nav-link.active { background: rgb(246 196 83 / 0.16); color: var(--accent); }
+.nav-link.active { background: color-mix(in srgb, var(--accent) 18%, transparent); color: var(--accent-hover); }
 .nav-link svg { flex-shrink: 0; }
 
 .sidebar .color-picker { padding: 4px 16px 4px 22px; }
@@ -506,7 +507,8 @@ dialog:focus { outline: none; }
 }
 
 .dialog-image {
-    width: auto;
+    width: fit-content;
+    height: fit-content;
     max-width: 95vw;
     max-height: 95dvh;
     margin: auto;
@@ -515,14 +517,11 @@ dialog:focus { outline: none; }
     background: transparent;
     padding: 0;
 }
-.dialog-image img { display: block; max-width: 95vw; max-height: 90dvh; border-radius: var(--radius); }
-.dialog-image .icon-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: rgb(0 0 0 / 0.55);
-    color: #fff;
+.dialog-image::backdrop {
+    background: rgb(0 0 0 / 0.85);
+    backdrop-filter: blur(4px);
 }
+.dialog-image img { display: block; max-width: 95vw; max-height: 90dvh; border-radius: var(--radius); }
 @media (max-width: 599px) {
     .dialog-image { margin: auto; border-radius: var(--radius); padding: 0; }
 }
