@@ -10,9 +10,16 @@ class TrustProxies extends Middleware
     /**
      * The trusted proxies for this application.
      *
+     * The app runs behind nginx proxy manager and the docker nginx
+     * container, which both connect from private network addresses.
+     *
      * @var array|string
      */
-    protected $proxies;
+    protected $proxies = [
+        '10.0.0.0/8',
+        '172.16.0.0/12',
+        '192.168.0.0/16',
+    ];
 
     /**
      * The headers that should be used to detect proxies.
