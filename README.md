@@ -20,9 +20,9 @@ $ php artisan key:generate
 $ docker-compose up
 ```
 
-4. start the watcher for automagically building the vue parts
+4. start the Vite dev server for hot reloading the vue parts (or `npm run build` for production assets)
 ```
-$ npm run watch
+$ npm run dev
 ```
 
 5. run a migration inside the correct container
@@ -30,4 +30,4 @@ $ npm run watch
 $ docker-compose exec app php artisan migrate:fresh --seed
 ```
 
-The app will be on port 80 and an adminer instance will run on port 8080
+The app will be on port 80

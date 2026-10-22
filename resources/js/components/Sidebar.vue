@@ -1,87 +1,75 @@
 <template>
-    <nav id="sidebar" v-bind:class="{'active': isActive}">
-    <ul class="list-unstyled components">
+    <div class="sidebar-scrim" :class="{ open: store.sidebarOpen }" @click="store.sidebarOpen = false"></div>
 
-            <li class="nav-item divider pt-2">filters</li>
-        
-            <li :class="[{'active': !$store.getters.getFilter.archived && $store.getters.getFilter.archived != null}, 'nav-item cursor-pointer toggle-button']">
-                <router-link :to="{name: 'notes', query: {archived: false, color: null, search: null}}">
-                    <i class="mr-2 fa fa-sticky-note"></i>
-                    active
-                </router-link>
-            </li>
+    <aside class="sidebar" :class="{ open: store.sidebarOpen }" :inert="!store.sidebarOpen" aria-label="Navigation">
+        <div class="sidebar-section">Notes</div>
+        <router-link :to="{ name: 'notes', query: { archived: 'false' } }" :class="['nav-link', { active: isNotes && store.filter.archived === false && !store.filter.text }]">
+            <StickyNote :size="20" />
+            Active
+        </router-link>
+        <router-link :to="{ name: 'notes', query: { archived: 'true' } }" :class="['nav-link', { active: isNotes && store.filter.archived === true && !store.filter.text }]">
+            <Archive :size="20" />
+            Archive
+        </router-link>
 
-            <li :class="[{'active': $store.getters.getFilter.archived}, 'nav-item cursor-pointer toggle-button']">
-                <router-link :to="{name: 'notes', query: {archived: true, color: null, search: null}}">
-                    <i class="mr-2 fa fa-archive"></i>
-                    archive
-                </router-link>
-            </li>
+        <div class="sidebar-section">Filter by color</div>
+        <color-picker :model-value="store.filter.color" default-label="All colors" @update:model-value="changeColor" />
 
-            <color-picker class="ml-3 my-2" :color="$store.getters.getFilter.color" v-on:color-change="changeColor"></color-picker>
-
-            <li class="nav-item divider mt-3">pages</li>
-
-            <li class="nav-item">
-                <router-link :to="{ name: 'api details' }">
-                    <i class="mr-2 fa fa-link"></i>
-                    api details
-                </router-link>
-            </li>
-
-            <li class="nav-item divider mt-3">actions</li>
-
-            <li class="nav-item">
-                <a @click="refresh" href="javascript: void(0)" class="cursor-pointer">
-                    <i class="mr-2 fa fa-refresh"></i>
-                    refresh notes
-                </a>
-            </li>
-            
-            <li class="nav-item">
-                <a class="dropdown-item" href="/logout">
-                    <i class="mr-2 fa fa-sign-out"></i>
-                    logout
-                </a>
-            </li>
-
-    </ul>
-    
-</nav>
+        <div class="sidebar-section">More</div>
+        <router-link :to="{ name: 'api details' }" class="nav-link" active-class="active">
+            <KeyRound :size="20" />
+            API details
+        </router-link>
+        <button class="nav-link" @click="refresh">
+            <RefreshCw :size="20" />
+            Refresh notes
+        </button>
+        <a class="nav-link" href="/logout">
+            <LogOut :size="20" />
+            Log out
+        </a>
+    </aside>
 </template>
 
-<script>
-import EventBus from '../event-bus';
+<script setup>
+import { computed, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { Archive, KeyRound, LogOut, RefreshCw, StickyNote } from '@lucide/vue'
+import { useNotesStore } from '../store'
+import ColorPicker from './ColorPicker.vue'
 
-export default {
-    data(){
-        return{
-            isActive: true, 
-        }
-    },
-    methods:{
-        changeColor(val){
-            let filter = this.$store.getters.getFilter
+const store = useNotesStore()
+const route = useRoute()
+const router = useRouter()
 
-            // we ignore white and show everything instead
-            if(val == 'white'){
-                filter.color = null
-            } else {
-                filter.color = val
-            }
+const isNotes = computed(() => route.name === 'notes')
 
-            this.$router.push({ path: 'notes', query: filter })
-        },
-        refresh(){
-            this.$store.dispatch("getNotes", {archived: null, color: null, test: null})
-            .then(res => EventBus.$emit('notification', 'notes refreshed'))
-            .catch(error => EventBus.$emit('notification', error))
-        }
-    },  
-    mounted(){
-        EventBus.$on('toggle-sidebar', (payLoad) => {
-            this.isActive = !this.isActive
-        });
-    },
+// the drawer covers the page on small screens, so close it after navigating
+watch(() => route.fullPath, () => {
+    if (!store.isDesktop) {
+        store.sidebarOpen = false
+    }
+})
+
+function changeColor(color) {
+    const { archived, text } = store.filter
+    const query = {}
+    if (archived !== null) {
+        query.archived = String(archived)
+    }
+    if (text) {
+        query.text = text
+    }
+    // white means "show every color"
+    if (color !== 'white') {
+        query.color = color
+    }
+    router.push({ name: 'notes', query })
+}
+
+function refresh() {
+    store.refresh()
+        .then(() => store.notify('Notes refreshed'))
+        .catch(error => store.notify(error))
 }
 </script>

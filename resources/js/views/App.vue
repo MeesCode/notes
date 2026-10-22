@@ -1,44 +1,49 @@
 <template>
-    <div>
-        <navbar :appname="appname"></navbar>
-        <div class="wrapper">
+    <navbar :appname="appname" />
 
-            <sidebar></sidebar>
-
-            <div id="content">
-
-                <div class="search-content">
-                    <search></search>
-                </div>
-
-                <main class="pt-2 mb-5">
-                    <div class="my-container">
-                        <div class="row justify-content-center">
-                            <div class="col-md-10">
-                                <router-view></router-view>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-
-        </div> 
-
-        <notification></notification> 
+    <div class="layout">
+        <sidebar />
+        <main class="content">
+            <router-view />
+        </main>
     </div>
+
+    <button class="fab" aria-label="New note" @click="store.editing = {}">
+        <Plus :size="28" />
+    </button>
+
+    <app-dialog class="dialog" :open="store.editing !== null" @close="store.editing = null">
+        <create-note v-if="store.editing !== null" :note="store.editing" @done="store.editing = null" />
+    </app-dialog>
+
+    <app-dialog class="dialog-image" :open="store.viewingImage !== null" @close="store.viewingImage = null">
+        <img v-if="store.viewingImage" :src="store.viewingImage" alt="">
+        <button class="icon-btn" aria-label="Close image" @click="store.viewingImage = null">
+            <X :size="22" />
+        </button>
+    </app-dialog>
+
+    <notification />
 </template>
 
-<script>
-export default {
-    props: ['notes', 'user', 'appname'],
-    mounted() {
-        this.$store.dispatch('setNotes', this.notes)
-        this.$store.dispatch('setUser', this.user)
-    },
-    watch: {
-        '$route.params': function (val) {
-            this.$store.dispatch('setFilter', this.$route.query)
-        },
-    }
-}
+<script setup>
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { Plus, X } from '@lucide/vue'
+import { useNotesStore } from '../store'
+import Navbar from '../components/Navbar.vue'
+import Sidebar from '../components/Sidebar.vue'
+import CreateNote from '../components/CreateNote.vue'
+import AppDialog from '../components/AppDialog.vue'
+import Notification from '../components/Notification.vue'
+
+const props = defineProps(['notes', 'user', 'appname'])
+
+const store = useNotesStore()
+store.notes = props.notes
+store.user = props.user
+
+// the url query is the source of truth for the active filter
+const route = useRoute()
+watch(() => route.query, query => store.setFilterFromQuery(query), { immediate: true })
 </script>

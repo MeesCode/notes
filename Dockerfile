@@ -1,4 +1,5 @@
-FROM php:7.2-fpm
+# PHP >= 8.4.27 is required (CVE-2026-109618, CVE-2026-109619)
+FROM php:8.4-fpm
 
 # Copy composer.lock and composer.json
 COPY composer.lock composer.json /var/www/
@@ -13,6 +14,8 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
+    libonig-dev \
+    libzip-dev \
     locales \
     zip \
     jpegoptim optipng pngquant gifsicle \
@@ -26,11 +29,11 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install extensions
 RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
-RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
 
 # Install composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 # Add user for laravel application
 RUN groupadd -g 1000 www

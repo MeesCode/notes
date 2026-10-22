@@ -1,115 +1,95 @@
 <template>
-    <div>
-        <div ref="card" :data-archived="note.archived" class="card mb-0 d-inline-block" :class="`d-inline-block background-${note.color}`">
+    <article class="note" :class="[`note-${note.color}`, { archived: note.archived }]">
+        <button v-if="note.has_image" class="note-image" aria-label="View image" @click="store.viewingImage = imgSrc">
+            <img :src="imgSrc" alt="" loading="lazy">
+        </button>
 
-            <img v-if="note.has_image" @load="$emit('img-loaded', null)" @click="imgModalOpen" :key="note.file" class="cursor-pointer card-img-top" :src="imgSrc">
-
-            <div class="card-body">
-                <div v-html="markdown"></div>
-
-                <div class="float-left text-left">
-                    
-                </div>
-
-                <div class="float-right text-right">
-                    <button v-if="markdown.length > 230" class="btn p-0" type="submit">
-                        <i v-if="!expanded" @click="expand()" title="expand note" class="fa fa-expand text-white note-edit-button"></i>
-                        <i v-else @click="expand()" title="expand note" class="fa fa-compress text-white note-edit-button"></i>
-                    </button>	
-                    <button class="btn p-0" type="submit">
-                        <i @click="editNode()" title="edit this note" class="fa fa-edit text-white note-edit-button"></i>
-                    </button>	
-                    <button class="btn p-0" type="submit">
-                        <i @click="toggleArchiveNode(note.id)" title="toggle archive" class="fa fa-archive text-white note-edit-button"></i>
-                    </button>						
-                    <button class="btn p-0" type="submit">
-                        <i @click="deleteNode(note.id)" title="delete this note" class="fa fa-trash text-white note-edit-button"></i>
-                    </button>						
-                </div>
-            </div>
-
+        <div class="note-body" @click="editFromBody">
+            <div ref="text" class="note-text" :class="{ collapsed: !expanded, faded: !expanded && overflowing }" v-html="html"></div>
         </div>
 
-        <div class="modal fade" tabindex="-1" ref="modal" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <create-note v-on:note-edited="closeModal" edit="true" :note="note"></create-note>
-                </div>
-            </div>
-        </div>
+        <div class="note-actions">
+            <span v-if="note.archived && store.filter.archived !== true" class="note-badge">archived</span>
 
-        <div v-if="note.has_image" class="modal fade" tabindex="-1" ref="imgModal" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <img class="w-100" :src="imgSrc">
-                </div>
-            </div>
+            <button v-if="overflowing || expanded" class="icon-btn" :title="expanded ? 'Collapse' : 'Expand'" :aria-label="expanded ? 'Collapse note' : 'Expand note'" @click="expanded = !expanded">
+                <Minimize2 v-if="expanded" :size="20" />
+                <Maximize2 v-else :size="20" />
+            </button>
+            <button class="icon-btn note-edit" title="Edit" aria-label="Edit note" @click="store.editing = note">
+                <Pencil :size="20" />
+            </button>
+            <button class="icon-btn" :title="note.archived ? 'Unarchive' : 'Archive'" :aria-label="note.archived ? 'Unarchive note' : 'Archive note'" @click="toggleArchive">
+                <ArchiveRestore v-if="note.archived" :size="20" />
+                <Archive v-else :size="20" />
+            </button>
+            <button class="icon-btn" title="Delete" aria-label="Delete note" @click="deleteNote">
+                <Trash2 :size="20" />
+            </button>
         </div>
-
-    </div>
+    </article>
 </template>
 
-<script>
-    import EventBus from '../event-bus';
+<script setup>
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { Archive, ArchiveRestore, Maximize2, Minimize2, Pencil, Trash2 } from '@lucide/vue'
+import MarkdownIt from 'markdown-it'
+import { full as emoji } from 'markdown-it-emoji'
+import DOMPurify from 'dompurify'
+import { useNotesStore } from '../store'
 
-    import MarkdownIt from 'markdown-it'
-    import emoji from 'markdown-it-emoji'
-    const md = new MarkdownIt({
-        html: true,
-        linkify: true,
-        breaks: true
-    });
-    md.use(emoji)
+const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    breaks: true,
+}).use(emoji)
 
-    export default {
-        data(){
-            return{
-                expanded: false,
-            }
-        },
-        props: ['note'],
-        computed: {
-            imgSrc: function(){
-                return `/api/get_image?api_token=${this.$store.getters.getUser.api_token}&id=${this.note.id}&t=${this.note.image_name}`
-            },
-            markdown: function(){
-                let t = md.render(this.note.text)
-                let span = document.createElement('span');
-                span.innerHTML = t;
-                if(span.textContent.length > 230 && !this.expanded){
-                    return t.substring(0,230) + '<span>...</span>'
-                }
-                return t
-            }
-        },
-        methods: {
-            expand(){
-                this.expanded = !this.expanded
-                EventBus.$emit('redraw', null);
-            },
-            editNode(id){
-                $(this.$refs.modal).modal('show')
-            },
-            imgModalOpen(id){
-                $(this.$refs.imgModal).modal('show')
-            },
-            closeModal(){
-                $(this.$refs.modal).modal('hide')
-            },
-            deleteNode(id){
-                if(confirm('This will permanently delete this note')){
-                    this.$store.dispatch("deleteNote", id)
-                    .catch(error => EventBus.$emit('notification', error))
-                }
-            },
-            toggleArchiveNode(){
-                let n = {
-                    id: this.note.id,
-                    archived: !this.note.archived
-                }
-                this.$store.dispatch('editNote', n)
-                .catch(error => EventBus.$emit('notification', error))
-            },
-        },
+const props = defineProps(['note'])
+const store = useNotesStore()
+
+const text = ref(null)
+const expanded = ref(false)
+const overflowing = ref(false)
+
+const html = computed(() => DOMPurify.sanitize(md.render(props.note.text || '')))
+const imgSrc = computed(() =>
+    `/api/get_image?api_token=${store.user.api_token}&id=${props.note.id}&t=${props.note.image_name}`
+)
+
+// only offer the expand button when the collapsed text is actually cut off
+function measure() {
+    if (!expanded.value && text.value) {
+        overflowing.value = text.value.scrollHeight > text.value.clientHeight + 1
     }
+}
+
+let observer
+onMounted(() => {
+    observer = new ResizeObserver(measure)
+    observer.observe(text.value)
+})
+onBeforeUnmount(() => observer.disconnect())
+watch(html, () => nextTick(measure))
+
+// tapping the note opens the editor, unless a link was clicked or text was selected
+function editFromBody(e) {
+    if (e.target.closest('a') || window.getSelection().toString()) {
+        return
+    }
+    store.editing = props.note
+}
+
+function toggleArchive() {
+    const archived = !props.note.archived
+    store.editNote({ id: props.note.id, archived })
+        .then(() => store.notify(archived ? 'Note archived' : 'Note restored'))
+        .catch(error => store.notify(error))
+}
+
+function deleteNote() {
+    if (confirm('This will permanently delete this note')) {
+        store.deleteNote(props.note.id)
+            .then(() => store.notify('Note deleted'))
+            .catch(error => store.notify(error))
+    }
+}
 </script>

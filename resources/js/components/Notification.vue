@@ -1,28 +1,16 @@
 <template>
-    <div :class="[{'active': isActive}, 'notification']">
-        {{notfication}}
+    <div class="toast" :class="{ visible: store.toast }" role="status" aria-live="polite">
+        {{ message }}
     </div>
 </template>
 
-<script>
-import EventBus from '../event-bus';
+<script setup>
+import { ref, watch } from 'vue'
+import { useNotesStore } from '../store'
 
-export default {
-    data(){
-        return{
-            isActive: false,
-            notfication: 'empty notification'
-        }
-    },
-    mounted(){
-        EventBus.$on('notification', (payLoad) => {
-            this.notfication = payLoad
-            this.isActive = true
+const store = useNotesStore()
 
-            setTimeout(() => {
-                this.isActive = false
-            }, 3000)
-        });
-    },
-}
+// keep showing the last message while the toast slides out
+const message = ref('')
+watch(() => store.toast, t => { if (t) message.value = t })
 </script>

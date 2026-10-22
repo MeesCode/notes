@@ -1,60 +1,30 @@
 <template>
-    
-    <nav class="navbar sticky-top navbar-expand-md navbar-dark shadow-sm">
+    <header class="appbar">
+        <button class="icon-btn" aria-label="Toggle menu" :aria-expanded="store.sidebarOpen" @click="store.sidebarOpen = !store.sidebarOpen">
+            <Menu :size="24" />
+        </button>
 
-        <a class="navbar-brand cursor-pointer mr-auto" @click="toggle">
-            <div :class="[{'is-active': isActive}, 'hamburger hamburger--spin']" type="button">
-                <span class="hamburger-box">
-                    <span class="hamburger-inner"></span>
-                </span>
-            </div>
-            {{ appname }}
-        </a>
+        <router-link class="appbar-brand" :to="{ name: 'notes' }">
+            <img src="/note.svg" alt="">
+            <span>{{ appname }}</span>
+        </router-link>
 
-        <span class="search-nav navbar-nav ml-auto mr-auto w-25">
-            <search></search>
-        </span>
-
-        <span class="navbar-nav ml-auto">
-            <button class="btn btn-navbar" @click="openModal">
-                <i class="fa fa-plus-square"></i>
-                add note
-            </button>
-        </span>
-
-        <div class="modal fade" tabindex="-1" ref="modal" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <create-note v-on:note-edited="closeModal"></create-note>
-                </div>
-            </div>
+        <div class="appbar-search">
+            <search />
         </div>
 
-    </nav>
-
+        <button class="btn btn-primary appbar-new" @click="store.editing = {}">
+            <Plus :size="20" />
+            New note
+        </button>
+    </header>
 </template>
 
-<script>
-import EventBus from '../event-bus';
+<script setup>
+import { Menu, Plus } from '@lucide/vue'
+import { useNotesStore } from '../store'
+import Search from './Search.vue'
 
-export default {
-    data(){
-        return{
-            isActive: false
-        }
-    },
-    props: ['appname'],
-    methods: {
-        toggle(){
-            this.isActive = !this.isActive
-            EventBus.$emit('toggle-sidebar', null);
-        },
-        openModal(id){
-            $(this.$refs.modal).modal('show')
-        },
-        closeModal(){
-            $(this.$refs.modal).modal('hide')
-        },
-    }
-}
+defineProps(['appname'])
+const store = useNotesStore()
 </script>
